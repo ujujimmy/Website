@@ -44,7 +44,7 @@ export const lighthouse = {
 export const stats = [
   { value: "1,800+", label: "Reviews generated for one client" },
   { value: "3.9 → 4.4", label: "Rating lift on that campaign" },
-  { value: "3", label: "Businesses currently served" },
+  { value: "92/100", label: "Google's speed score for this site" },
   { value: "100%", label: "Results verifiable on Google" },
 ];
 

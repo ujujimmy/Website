@@ -16,7 +16,7 @@ export const brand = {
   tagline: "Reviews, Websites & SEO for Local Businesses",
   /** One-sentence positioning. Appears in metadata and JSON-LD. */
   description:
-    "We help local businesses in the US, Canada and the UK earn more 5-star Google reviews, launch websites that convert, and rank where their customers are searching.",
+    "We help local businesses earn more 5-star Google reviews, launch websites that convert, and rank where customers are searching. Delhi-based, US hours.",
 
   /** No trailing slash. TODO(brand): point at the real domain. */
   url: "https://northbound.agency",

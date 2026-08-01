@@ -37,6 +37,6 @@ export const faqs: Faq[] = [
   },
   {
     q: "Which industries do you work with?",
-    a: "Mostly local service businesses where reviews drive the buying decision — dental and medical practices, home services, med spas, veterinary clinics, restaurants and professional services. If reviews and local search matter to how you get customers, the approach applies.",
+    a: "Our own track record is strongest in hospitality and personal care — restaurants and a salon, all in Delhi. The approach applies to any local business where reviews and local search drive the buying decision: dental and medical practices, home services, med spas, veterinary clinics. If we have not worked in your exact trade we will say so rather than pretend otherwise."
   },
 ];

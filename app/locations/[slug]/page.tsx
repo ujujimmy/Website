@@ -9,7 +9,7 @@ import { Section, SectionHeading } from "@/components/ui/Section";
 import { Reveal } from "@/components/ui/Reveal";
 import { Button } from "@/components/ui/Button";
 import { Scorecard } from "@/components/home/Scorecard";
-import { FaqSection, ClosingCta } from "@/components/home/Supporting";
+import { ClosingCta } from "@/components/home/Supporting";
 import { JsonLd } from "@/components/JsonLd";
 import { breadcrumbLd } from "@/lib/seo";
 
@@ -27,15 +27,17 @@ export async function generateMetadata({
   if (!location) return {};
 
   const service = serviceBySlug(location.service);
-  const title = `${service?.name ?? "Local marketing"} for ${location.industry} in ${location.city}`;
+  // industryShort + metaDescription keep the title under ~60 chars and the
+  // description under ~155, which is where Google truncates each.
+  const title = `${service?.name ?? "Local marketing"} for ${location.industryShort} in ${location.city}`;
 
   return {
     title,
-    description: `${location.targetSearch}. ${service?.blurb ?? ""} Verifiable results, month to month, no long contracts.`,
+    description: location.metaDescription,
     alternates: { canonical: `/locations/${location.slug}` },
     openGraph: {
       title: `${title} — ${brand.name}`,
-      description: location.localContext,
+      description: location.metaDescription,
       url: `/locations/${location.slug}`,
     },
   };
@@ -172,7 +174,40 @@ export default async function LocationPage({
         </div>
       </Section>
 
-      <FaqSection limit={4} />
+      {/* This page's own questions, not the site-wide list. Repeating the
+          generic FAQ made four supposedly distinct pages read as one
+          template. */}
+      <Section className="border-t border-line">
+        <div className="container-page grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
+          <SectionHeading
+            eyebrow="Questions"
+            title={`${location.city}, specifically.`}
+          />
+          <div className="flex flex-col">
+            {location.faqs.map((faq, i) => (
+              <Reveal key={faq.q} delay={i * 0.04}>
+                <details className="group border-b border-line py-5">
+                  <summary className="flex cursor-pointer list-none items-start justify-between gap-6 text-left text-[0.975rem] font-medium marker:hidden">
+                    {faq.q}
+                    <span
+                      aria-hidden="true"
+                      className="mt-1 shrink-0 text-muted transition-transform duration-300 group-open:rotate-45"
+                    >
+                      <svg viewBox="0 0 16 16" className="h-4 w-4 stroke-current stroke-[1.8]">
+                        <path d="M8 3v10M3 8h10" strokeLinecap="round" />
+                      </svg>
+                    </span>
+                  </summary>
+                  <p className="mt-3.5 max-w-2xl text-sm leading-relaxed text-muted">
+                    {faq.a}
+                  </p>
+                </details>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </Section>
+
       <ClosingCta
         title={`Find out where you stand in ${location.city}.`}
         sub={`A free written audit: your Google profile against your three closest ${location.city} competitors, your site's speed, and the searches you're missing. No call required.`}
@@ -188,9 +223,20 @@ export default async function LocationPage({
       <JsonLd
         data={{
           "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: location.faqs.map((faq) => ({
+            "@type": "Question",
+            name: faq.q,
+            acceptedAnswer: { "@type": "Answer", text: faq.a },
+          })),
+        }}
+      />
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
           "@type": "Service",
           name: `${service.name} for ${location.industry} in ${location.city}`,
-          description: location.localContext,
+          description: location.metaDescription,
           url: `${brand.url}/locations/${location.slug}`,
           provider: { "@id": `${brand.url}/#organization` },
           areaServed: {

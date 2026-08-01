@@ -23,7 +23,14 @@ export type Service = {
   deliverables: { title: string; body: string }[];
   /** The delivery process, 4 steps. */
   process: { step: string; title: string; body: string }[];
-  /** Outcome stats shown on the service page. TODO(proof): replace with real numbers. */
+  /**
+   * Numbers shown on the service page.
+   *
+   * These must be either (a) a result we can evidence and name the client for,
+   * or (b) a target/commitment whose label makes clear it is one. Never a
+   * "typical client sees X" figure — that implies a client base we do not have
+   * and is the first thing a sceptical prospect would probe.
+   */
   outcomes: { value: string; label: string }[];
   /** Which pricing tiers include this service. */
   includedIn: string[];
@@ -45,7 +52,7 @@ export const services: Service[] = [
     seo: {
       title: "Google Review Management & Generation Service",
       description:
-        "Get more 5-star Google reviews on autopilot. Review request automation, Google Business Profile optimization, and response management for local businesses in the US, Canada and UK.",
+        "Get more 5-star Google reviews. Review request automation, Google Business Profile optimisation and response management for local businesses.",
     },
     problem: {
       heading: "A 3.9 rating is quietly costing you customers",
@@ -98,9 +105,9 @@ export const services: Service[] = [
       },
     ],
     outcomes: [
-      { value: "4.8★", label: "Typical rating after 90 days" },
-      { value: "6×", label: "Increase in monthly review volume" },
-      { value: "<24h", label: "Response time on new reviews" },
+      { value: "3.9 → 4.4", label: "Rating lift, Gangnam Korean Restaurant" },
+      { value: "1,800+", label: "Reviews generated for that client" },
+      { value: "<24h", label: "Our response time on new reviews" },
     ],
     includedIn: ["Starter", "Growth", "Authority"],
     accent: "gold",
@@ -117,7 +124,7 @@ export const services: Service[] = [
     seo: {
       title: "Conversion-Focused Web Design & Development",
       description:
-        "Custom-built, fast-loading websites for local businesses. Designed around conversion, built for Core Web Vitals, and structured so SEO actually works. US, Canada and UK.",
+        "Custom-built, fast-loading websites for local businesses. Designed around one action, built for Core Web Vitals, structured so SEO works.",
     },
     problem: {
       heading: "Your site gets traffic. It just doesn't get calls.",
@@ -170,9 +177,9 @@ export const services: Service[] = [
       },
     ],
     outcomes: [
-      { value: "<2s", label: "Target mobile load time" },
-      { value: "90+", label: "Lighthouse performance score" },
-      { value: "2–4wk", label: "Typical build to launch" },
+      { value: "<2s", label: "Mobile load time we build to" },
+      { value: "92", label: "Lighthouse score on this very site" },
+      { value: "2–4wk", label: "Build to launch" },
     ],
     includedIn: ["Growth", "Authority"],
     accent: "brand-2",

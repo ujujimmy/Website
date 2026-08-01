@@ -22,7 +22,7 @@ export default function WorkPage() {
       <PageHero
         eyebrow="Work"
         title="What changed, and by how much."
-        sub="Every number below is something you could verify yourself — a rating, a ranking, a page speed score. That's deliberate."
+        sub="Real clients, real numbers — and where a campaign's numbers weren't recorded, we say so instead of inventing one. Every listing below is public, so you can check any of it yourself."
         breadcrumb={[
           { name: "Home", href: "/" },
           { name: "Work", href: "/work" },

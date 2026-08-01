@@ -28,6 +28,9 @@ export default function PricingPage() {
 
       <Section className="pt-0">
         <div className="container-page">
+          {/* The tier names are h3s. Without this the page jumps h1 → h3,
+              which fails heading-order for screen reader navigation. */}
+          <h2 className="sr-only">Plans and pricing</h2>
           <PricingTable />
         </div>
       </Section>

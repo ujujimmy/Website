@@ -16,20 +16,27 @@ export function TrustBar() {
     <section className="relative border-y border-line bg-ink-2/60 py-10 backdrop-blur-sm">
       <div className="container-page">
         <dl className="grid grid-cols-2 gap-8 lg:grid-cols-4">
+          {/*
+            Reveal's own <div> is the direct child of <dl>. An extra wrapper
+            here puts two levels between <dl> and its <dt>/<dd>, which is
+            invalid — a definition list allows at most one <div> grouping.
+          */}
           {stats.map((stat, i) => (
-            <Reveal key={stat.label} delay={i * 0.06}>
-              <div className="text-center lg:text-left">
-                <dt className="sr-only">{stat.label}</dt>
-                <dd>
-                  <StatCounter
-                    value={stat.value}
-                    className="block text-3xl font-semibold text-gradient sm:text-4xl"
-                  />
-                  <span className="mt-1 block text-xs text-faint">
-                    {stat.label}
-                  </span>
-                </dd>
-              </div>
+            <Reveal
+              key={stat.label}
+              delay={i * 0.06}
+              className="text-center lg:text-left"
+            >
+              <dt className="sr-only">{stat.label}</dt>
+              <dd>
+                <StatCounter
+                  value={stat.value}
+                  className="block text-3xl font-semibold text-gradient sm:text-4xl"
+                />
+                <span className="mt-1 block text-xs text-faint">
+                  {stat.label}
+                </span>
+              </dd>
             </Reveal>
           ))}
         </dl>
@@ -252,9 +259,15 @@ export function ClosingCta({
       <div className="container-page">
         <Reveal>
           <div className="relative overflow-hidden rounded-[2rem] border border-line bg-linear-to-br from-brand/[0.16] via-surface to-brand-2/[0.1] px-8 py-16 text-center sm:px-16">
+            {/* Gradient rather than a blurred circle — same look, no
+                rasterisation cost. See ScenePoster. */}
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute -top-32 left-1/2 h-72 w-[42rem] -translate-x-1/2 rounded-full bg-brand/25 blur-[90px]"
+              className="pointer-events-none absolute inset-0"
+              style={{
+                background:
+                  "radial-gradient(50% 60% at 50% 0%, rgba(109,92,246,0.30) 0%, transparent 70%)",
+              }}
             />
             <div className="relative">
               <h2 className="mx-auto max-w-2xl text-3xl font-semibold leading-tight sm:text-4xl">

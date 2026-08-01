@@ -107,15 +107,19 @@ export default function AboutPage() {
               { term: "Contracts", desc: "Month to month, 30 days notice" },
               { term: "Payment", desc: "Card, bank transfer or Wise, in USD" },
             ].map((item, i) => (
-              <Reveal key={item.term} delay={i * 0.06}>
-                <div className="border-t border-line pt-5">
-                  <dt className="text-xs uppercase tracking-[0.14em] text-faint">
-                    {item.term}
-                  </dt>
-                  <dd className="mt-2 text-sm leading-relaxed text-muted">
-                    {item.desc}
-                  </dd>
-                </div>
+              // Reveal's <div> is the direct child of <dl>; a second wrapper
+              // here would make the definition list invalid.
+              <Reveal
+                key={item.term}
+                delay={i * 0.06}
+                className="border-t border-line pt-5"
+              >
+                <dt className="text-xs uppercase tracking-[0.14em] text-faint">
+                  {item.term}
+                </dt>
+                <dd className="mt-2 text-sm leading-relaxed text-muted">
+                  {item.desc}
+                </dd>
               </Reveal>
             ))}
           </dl>

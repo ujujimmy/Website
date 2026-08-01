@@ -1,14 +1,24 @@
-"use client";
-
-import { motion, useReducedMotion } from "motion/react";
 import { brand } from "@/content/brand";
 import { homeCopy } from "@/content/site";
 import { Button } from "@/components/ui/Button";
 import { Stars } from "@/components/ui/Stars";
 import { RevealPhrase, RevealWords } from "@/components/ui/Reveal";
 
+/**
+ * Everything here animates via CSS rather than motion, which also lets this
+ * stay a server component with no client JS of its own.
+ *
+ * That's a performance requirement, not a preference: the hero paragraph is
+ * this page's LCP element, and while its entrance was motion-driven its
+ * server-rendered opacity:0 kept it invisible until hydration — measuring
+ * ~1.9s LCP on a throttled mobile profile. CSS animations paint on the first
+ * frame instead, and the global prefers-reduced-motion rule already
+ * neutralises them.
+ */
+
+const ENTER = "animate-[fade-up_0.7s_cubic-bezier(0.16,1,0.3,1)_both]";
+
 export function Hero() {
-  const reduced = useReducedMotion();
   const { hero } = homeCopy;
 
   return (
@@ -17,40 +27,34 @@ export function Hero() {
       className="relative flex min-h-screen items-center justify-center py-32 text-center"
     >
       <div className="container-page flex flex-col items-center">
-        <motion.p
-          initial={reduced ? false : { opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="reveal glass inline-flex items-center gap-2.5 rounded-full px-4 py-1.5 text-xs font-medium tracking-wide text-muted"
+        <p
+          className={`glass inline-flex ${ENTER} items-center gap-2.5 rounded-full px-4 py-1.5 text-xs font-medium tracking-wide text-muted`}
+          style={{ animationDelay: "0.02s" }}
         >
           <Stars size={13} />
           {hero.eyebrow}
-        </motion.p>
+        </p>
 
         <h1 className="mt-8 max-w-4xl text-[clamp(2.5rem,7vw,4.75rem)] font-semibold leading-[1.04]">
-          <RevealWords text="Get chosen before" delay={0.15} />{" "}
+          <RevealWords text="Get chosen before" delay={0.06} />{" "}
           {/* Gradient text must animate as one unit — see RevealPhrase. */}
           <RevealPhrase
             text="they ever call you."
             className="text-gradient"
-            delay={0.38}
+            delay={0.16}
           />
         </h1>
 
-        <motion.p
-          initial={reduced ? false : { opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="reveal mt-7 max-w-2xl text-lg leading-relaxed text-muted sm:text-xl"
+        <p
+          className={`mt-7 max-w-2xl ${ENTER} text-lg leading-relaxed text-muted sm:text-xl`}
+          style={{ animationDelay: "0.3s" }}
         >
           {hero.sub}
-        </motion.p>
+        </p>
 
-        <motion.div
-          initial={reduced ? false : { opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.85, ease: [0.16, 1, 0.3, 1] }}
-          className="reveal mt-10 flex flex-col items-center gap-4 sm:flex-row"
+        <div
+          className={`mt-10 flex ${ENTER} flex-col items-center gap-4 sm:flex-row`}
+          style={{ animationDelay: "0.4s" }}
         >
           <Button href={brand.primaryCta.href} size="lg">
             {brand.primaryCta.label}
@@ -61,16 +65,14 @@ export function Hero() {
           <Button href={brand.secondaryCta.href} size="lg" variant="secondary">
             {brand.secondaryCta.label}
           </Button>
-        </motion.div>
+        </div>
 
-        <motion.p
-          initial={reduced ? false : { opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 1 }}
-          className="reveal mt-6 text-sm text-faint"
+        <p
+          className={`mt-6 ${ENTER} text-sm text-faint`}
+          style={{ animationDelay: "0.48s" }}
         >
           {hero.note}
-        </motion.p>
+        </p>
       </div>
 
       <ScrollHint />

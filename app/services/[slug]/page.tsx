@@ -74,20 +74,19 @@ export default async function ServicePage({
       <section className="border-y border-line bg-ink-2/60 py-10">
         <div className="container-page">
           <dl className="grid gap-8 sm:grid-cols-3">
+            {/* Reveal's <div> must be the direct child of <dl> — see TrustBar. */}
             {service.outcomes.map((outcome, i) => (
               <Reveal key={outcome.label} delay={i * 0.06}>
-                <div>
-                  <dt className="sr-only">{outcome.label}</dt>
-                  <dd>
-                    <StatCounter
-                      value={outcome.value}
-                      className="block text-3xl font-semibold text-gradient sm:text-4xl"
-                    />
-                    <span className="mt-1.5 block text-xs text-faint">
-                      {outcome.label}
-                    </span>
-                  </dd>
-                </div>
+                <dt className="sr-only">{outcome.label}</dt>
+                <dd>
+                  <StatCounter
+                    value={outcome.value}
+                    className="block text-3xl font-semibold text-gradient sm:text-4xl"
+                  />
+                  <span className="mt-1.5 block text-xs text-faint">
+                    {outcome.label}
+                  </span>
+                </dd>
               </Reveal>
             ))}
           </dl>

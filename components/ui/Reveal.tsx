@@ -75,8 +75,8 @@ export function RevealWords({
         <span key={i}>
           <span className="inline-block overflow-hidden align-bottom">
             <span
-              className="inline-block animate-[word-up_0.9s_cubic-bezier(0.16,1,0.3,1)_both]"
-              style={{ animationDelay: `${delay + i * 0.055}s` }}
+              className="inline-block animate-[word-up_0.62s_cubic-bezier(0.16,1,0.3,1)_both]"
+              style={{ animationDelay: `${delay + i * 0.04}s` }}
             >
               {word}
             </span>
@@ -110,7 +110,7 @@ export function RevealPhrase({
     <span className="inline-block overflow-hidden align-bottom">
       <span
         className={cn(
-          "inline-block animate-[word-up_0.9s_cubic-bezier(0.16,1,0.3,1)_both]",
+          "inline-block animate-[word-up_0.62s_cubic-bezier(0.16,1,0.3,1)_both]",
           className,
         )}
         style={{ animationDelay: `${delay}s` }}

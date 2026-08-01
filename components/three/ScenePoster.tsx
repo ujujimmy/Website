@@ -1,28 +1,36 @@
 /**
- * The no-WebGL fallback: a pure-CSS approximation of the scene's mood.
+ * The always-present background layer: the canvas's backdrop, and the entire
+ * visual when WebGL is unavailable or the visitor asked for reduced motion.
  *
- * This renders for reduced-motion visitors, devices without WebGL2, and —
- * importantly — as the server-rendered background before the canvas mounts,
- * so the page never flashes flat black on first paint.
+ * Built from plain radial gradients with no `filter: blur()`. An earlier
+ * version used large blurred circles (blur(110px) over a ~830px element),
+ * which cost seconds of rasterisation on a throttled mobile profile. A radial
+ * gradient is already soft-edged, so the blur bought nothing visually and
+ * everything in main-thread time.
  */
 export function ScenePoster() {
   return (
     <div aria-hidden="true" className="pointer-events-none fixed inset-0 -z-10">
       <div className="absolute inset-0 bg-ink" />
+
+      {/* Central brand glow. */}
       <div
-        className="absolute left-1/2 top-[38%] h-[52rem] w-[52rem] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-45 blur-[110px]"
+        className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(circle, rgba(109,92,246,0.55) 0%, rgba(34,211,238,0.22) 45%, transparent 70%)",
+            "radial-gradient(60% 46% at 50% 38%, rgba(109,92,246,0.30) 0%, rgba(109,92,246,0.13) 38%, rgba(34,211,238,0.06) 62%, transparent 80%)",
         }}
       />
+
+      {/* Cooler secondary glow, offset low and right. */}
       <div
-        className="absolute -right-40 top-[65%] h-[34rem] w-[34rem] rounded-full opacity-30 blur-[120px]"
+        className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(circle, rgba(34,211,238,0.5) 0%, transparent 70%)",
+            "radial-gradient(38% 34% at 88% 76%, rgba(34,211,238,0.16) 0%, transparent 72%)",
         }}
       />
+
       {/* Faint grid gives the void some structure without costing anything. */}
       <div
         className="absolute inset-0 opacity-[0.045]"
@@ -31,6 +39,8 @@ export function ScenePoster() {
             "linear-gradient(to right, #fff 1px, transparent 1px), linear-gradient(to bottom, #fff 1px, transparent 1px)",
           backgroundSize: "64px 64px",
           maskImage:
+            "radial-gradient(ellipse 80% 60% at 50% 40%, #000 30%, transparent 75%)",
+          WebkitMaskImage:
             "radial-gradient(ellipse 80% 60% at 50% 40%, #000 30%, transparent 75%)",
         }}
       />

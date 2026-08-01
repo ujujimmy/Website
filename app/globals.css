@@ -1,0 +1,199 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   Design tokens
+   Dark, high-contrast, "deep space" palette. The signature is a violet→cyan
+   gradient for brand moments and a warm gold reserved exclusively for review
+   stars, so five-star imagery always reads as the same visual idea.
+--------------------------------------------------------------------------- */
+@theme {
+  --color-ink: #06070c;
+  --color-ink-2: #0a0c14;
+  --color-surface: #0f121d;
+  --color-surface-2: #161a29;
+  --color-line: #232838;
+
+  --color-fg: #eceef5;
+  --color-muted: #979eb5;
+  --color-faint: #6b7288;
+
+  --color-brand: #6d5cf6;
+  --color-brand-2: #22d3ee;
+  --color-brand-soft: #a5b4fc;
+  --color-gold: #ffc24b;
+  --color-success: #34d399;
+  --color-danger: #f87171;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, sans-serif;
+  --font-display: var(--font-display), var(--font-inter), ui-sans-serif,
+    system-ui, sans-serif;
+
+  --radius-card: 1.25rem;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-shimmer: shimmer 2.4s linear infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Base
+--------------------------------------------------------------------------- */
+@layer base {
+  * {
+    border-color: var(--color-line);
+  }
+
+  html {
+    /* Lenis drives smooth scrolling; native smooth would fight it. */
+    scroll-behavior: auto;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-ink);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--color-brand) 55%, transparent);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand-2);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* Lenis: the wrapper must not use native smooth scrolling. */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Utilities
+--------------------------------------------------------------------------- */
+@utility container-page {
+  width: 100%;
+  margin-inline: auto;
+  max-width: 80rem;
+  padding-inline: 1.25rem;
+  @media (min-width: 768px) {
+    padding-inline: 2rem;
+  }
+}
+
+/* Gradient display text used for the one key phrase per section. */
+@utility text-gradient {
+  background-image: linear-gradient(
+    100deg,
+    var(--color-fg) 10%,
+    var(--color-brand-soft) 45%,
+    var(--color-brand-2) 90%
+  );
+  background-clip: text;
+  color: transparent;
+}
+
+/* Frosted card that sits legibly on top of the WebGL canvas. */
+@utility glass {
+  background: color-mix(in oklab, var(--color-surface) 72%, transparent);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid color-mix(in oklab, var(--color-line) 90%, transparent);
+}
+
+/* Hairline gradient border — used on pricing cards and the featured tier. */
+@utility ring-gradient {
+  position: relative;
+}
+
+/* Screen-reader-only, for skip links and form labels. */
+@utility sr-only-focusable {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  &:focus {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    width: auto;
+    height: auto;
+    clip-path: none;
+    z-index: 100;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Motion safety — one global switch.
+   Everything animated must degrade here, including the WebGL poster fallback.
+--------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

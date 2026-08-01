@@ -9,11 +9,12 @@ opposite directions — heavy 3D usually means a slow, badly-indexed site, which
 fatal when SEO is one of the things you sell. So the whole build treats **a fast,
 crawlable site with a cinematic 3D layer** as the requirement, not "a 3D site".
 
-Current scores (Lighthouse, throttled mobile — 4× CPU, slow 4G):
+Current scores (Lighthouse, throttled mobile — 4× CPU, slow 4G).
+The homepage carries the first-visit intro, which costs it ~3 points:
 
 | Page | Performance | Accessibility | SEO | CLS |
 |---|---|---|---|---|
-| `/` | 94 | 100 | 100 | 0 |
+| `/` | 92 | 100 | 100 | 0 |
 | `/services/*` | 95 | 100 | 100 | 0 |
 | `/pricing` | 95 | 100 | 100 | 0 |
 | `/audit` | 94 | 100 | 100 | 0 |
@@ -128,9 +129,10 @@ obvious way:
 - **Gradient text must animate as one element** (`RevealPhrase`, not
   `RevealWords`): `background-clip: text` cannot paint through a descendant
   carrying a transform, and per-word animation renders the text invisible.
-- **The route transition never plays on first load** (`RouteTransition`). An
-  overlay covering the hero at initial paint would delay the LCP element and
-  undo the mobile score outright.
+- **The first-visit intro costs ~0.7s of LCP** (`components/layout/Intro.tsx`)
+  — measured: 94-97 without it, 92-93 with. That is a deliberate trade for the
+  arrival moment, kept bounded by playing once per session. Remove `<Intro />`
+  from `app/layout.tsx` to get the points back.
 
 ### Graceful degradation
 

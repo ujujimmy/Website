@@ -85,46 +85,86 @@
 }
 
 /* ---------------------------------------------------------------------------
-   Route transition.
-   The site's section marker is a short violet→cyan hairline (see Eyebrow), so
-   the transition is that same mark scaled up: a light seam draws across the
-   middle, then the ink splits along it and retracts to reveal the new page.
+   First-visit intro.
+   The loader is the product: five stars fill with gold and the rating counts
+   to 4.9, so a visitor understands what this agency sells before the page
+   itself appears. Shown once per session — see components/layout/Intro.tsx.
 --------------------------------------------------------------------------- */
-@keyframes rt-seam {
-  0% {
+@keyframes intro-fill {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes intro-sweep {
+  from {
     transform: scaleX(0);
-    opacity: 0;
   }
-  35% {
-    opacity: 1;
-  }
-  70% {
+  to {
     transform: scaleX(1);
-    opacity: 1;
-  }
-  100% {
-    transform: scaleX(1);
-    opacity: 0;
   }
 }
 
-@keyframes rt-retract-up {
-  0%,
-  22% {
-    transform: scaleY(1);
+@keyframes intro-glow {
+  0% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  60% {
+    opacity: 1;
   }
   100% {
-    transform: scaleY(0);
+    opacity: 0.85;
+    transform: scale(1);
   }
 }
 
-@keyframes rt-retract-down {
-  0%,
-  22% {
-    transform: scaleY(1);
+@keyframes intro-rating {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
   }
   100% {
-    transform: scaleY(0);
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes intro-mark {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* The whole panel lifts away rather than simply fading — it reads as a
+   curtain rising off the hero instead of a dialog disappearing. */
+@keyframes intro-lift {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100%);
+    opacity: 1;
+  }
+}
+
+@keyframes intro-inner-rise {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-28px);
+    opacity: 0;
   }
 }
 
@@ -262,58 +302,112 @@
   }
 }
 
-/* Route transition element. Inert unless [data-active] is set, so it can never
-   swallow a click or cover content if the animation is interrupted. */
-.route-transition {
+/* First-visit intro. `.intro-done` is stamped on <html> by an inline script in
+   the document head BEFORE first paint when the visitor has already seen it
+   this session, so a repeat view never flashes the panel. */
+.intro {
   position: fixed;
   inset: 0;
-  z-index: 80;
-  pointer-events: none;
-  visibility: hidden;
-}
-.route-transition[data-active] {
-  visibility: visible;
-}
-.route-transition .rt-panel {
-  position: absolute;
-  inset-inline: 0;
-  height: 50.5%; /* slight overlap so no hairline gap shows at the seam */
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
   background: var(--color-ink);
-  transform: scaleY(0);
+  animation: intro-lift 650ms var(--ease-out-expo) 1020ms forwards;
 }
-.route-transition .rt-top {
-  top: 0;
-  transform-origin: top;
-}
-.route-transition .rt-bottom {
-  bottom: 0;
-  transform-origin: bottom;
-}
-.route-transition .rt-seam {
+/* Soft brand glow behind the mark, echoing the site's background poster so
+   the intro feels like part of the page rather than a separate screen. */
+.intro::before {
+  content: "";
   position: absolute;
-  top: 50%;
-  left: 0;
+  width: min(46rem, 90vw);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    color-mix(in oklab, var(--color-brand) 26%, transparent) 0%,
+    color-mix(in oklab, var(--color-brand-2) 8%, transparent) 45%,
+    transparent 70%
+  );
+  opacity: 0;
+  animation: intro-glow 900ms var(--ease-out-expo) 40ms forwards;
+}
+.intro-inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  animation: intro-inner-rise 420ms var(--ease-out-expo) 1000ms forwards;
+}
+.intro-stars {
+  position: relative;
+  display: block;
+  width: min(19rem, 74vw);
+}
+.intro-stars svg {
+  display: block;
   width: 100%;
+  height: auto;
+}
+/* The gold row sits exactly on top of the outline row and is revealed by a
+   left-to-right clip — one continuous sweep across all five stars. Eased
+   nearly linearly on purpose: ease-out-expo finished 94% of the wipe in the
+   first 40% of its duration, so the fill was over before the eye caught it. */
+.intro-stars-fill {
+  position: absolute;
+  inset: 0;
+  clip-path: inset(0 100% 0 0);
+  animation: intro-fill 820ms cubic-bezier(0.55, 0.1, 0.3, 1) 90ms forwards;
+}
+/* No drop-shadow here on purpose. Combined with the clip it rasterised as a
+   halo of the clip RECTANGLE — a visible box around the filled portion — and
+   the stars already read vividly against the radial glow behind them. */
+.intro-rating {
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  letter-spacing: 0.02em;
+  color: var(--color-muted);
+  opacity: 0;
+  animation: intro-rating 400ms var(--ease-out-expo) 700ms forwards;
+}
+.intro-rating b {
+  color: var(--color-fg);
+  font-weight: 600;
+}
+.intro-mark {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--color-faint);
+  opacity: 0;
+  animation: intro-mark 440ms var(--ease-out-expo) 200ms forwards;
+}
+/* The site's section marker, used once more as a progress hairline. */
+.intro-sweep {
+  width: min(19rem, 74vw);
   height: 1px;
   transform: scaleX(0);
-  opacity: 0;
+  transform-origin: left;
   background: linear-gradient(
     to right,
     transparent,
-    var(--color-brand) 25%,
-    var(--color-brand-2) 75%,
-    transparent
+    var(--color-brand) 30%,
+    var(--color-brand-2) 100%
   );
-  box-shadow: 0 0 22px 1px color-mix(in oklab, var(--color-brand) 55%, transparent);
+  animation: intro-sweep 880ms cubic-bezier(0.55, 0.1, 0.3, 1) 90ms forwards;
 }
-.route-transition[data-active] .rt-top {
-  animation: rt-retract-up 620ms var(--ease-out-expo) forwards;
+.intro-done .intro,
+.no-js .intro {
+  display: none;
 }
-.route-transition[data-active] .rt-bottom {
-  animation: rt-retract-down 620ms var(--ease-out-expo) forwards;
-}
-.route-transition[data-active] .rt-seam {
-  animation: rt-seam 620ms var(--ease-out-expo) forwards;
+/* Anyone who asked for less motion gets the page, not a performance. */
+@media (prefers-reduced-motion: reduce) {
+  .intro {
+    display: none;
+  }
 }
 
 /* ---------------------------------------------------------------------------

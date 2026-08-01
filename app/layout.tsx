@@ -4,7 +4,7 @@ import { brand } from "@/content/brand";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Scene } from "@/components/three/Scene";
-import { RouteTransition } from "@/components/layout/RouteTransition";
+import { Intro } from "@/components/layout/Intro";
 import { SmoothScroll } from "@/components/providers/SmoothScroll";
 import { JsonLd } from "@/components/JsonLd";
 import { organizationLd, websiteLd } from "@/lib/seo";
@@ -70,9 +70,18 @@ export default function RootLayout({
     // motion-driven scroll reveals visible instead of leaving the page blank.
     <html lang="en" className={`no-js ${inter.variable} ${sora.variable}`}>
       <head>
+        {/*
+          Runs before first paint. Removes the no-js guard, and — when this
+          visitor has already seen the intro in this session — stamps
+          `intro-done` so the panel is hidden by CSS immediately rather than
+          flashing on every navigation and refresh.
+        */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `document.documentElement.classList.remove('no-js')`,
+            __html:
+              `document.documentElement.classList.remove('no-js');` +
+              `try{if(sessionStorage.getItem('nb:intro')==='1')` +
+              `document.documentElement.classList.add('intro-done')}catch(e){}`,
           }}
         />
       </head>
@@ -81,11 +90,11 @@ export default function RootLayout({
           Skip to content
         </a>
 
+        <Intro />
+
         {/* One persistent background layer for the whole site. */}
         <Scene />
         <SmoothScroll />
-
-        <RouteTransition />
 
         <Header />
         <div id="main">{children}</div>

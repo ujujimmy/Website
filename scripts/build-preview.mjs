@@ -239,6 +239,12 @@ const poster = posterStart === -1 ? "" : grabElement(html, posterStart) ?? "";
 if (!poster) console.error("  WARNING: poster not found — background will be flat");
 else console.error(`  poster extracted: ${poster.length} bytes`);
 
+// First-visit intro. Lives outside <main>, so it has to be lifted separately.
+const introStart = html.indexOf('<div class="intro"');
+const intro = introStart === -1 ? "" : toEntities(grabElement(html, introStart) ?? "");
+if (!intro) console.error("  WARNING: intro not found");
+else console.error(`  intro extracted: ${intro.length} bytes`);
+
 let panels = "";
 for (const route of ROUTES) {
   const res = await fetch(`${BASE}${route}`);
@@ -323,12 +329,14 @@ h1 span, h2 span, h3 span { color: inherit; }
 @media (max-width: 640px) { .preview-note { display: none; } }
 </style>
 
+<script>
+/* Runs during parse, before the intro below is painted, so a visitor who has
+   already seen it this session never gets a flash of it. */
+try{if(sessionStorage.getItem('nb:intro')==='1')document.documentElement.classList.add('intro-done')}catch(e){}
+</script>
+${intro}
+
 <canvas id="scene-canvas" aria-hidden="true"></canvas>
-<div class="route-transition" aria-hidden="true">
-  <span class="rt-panel rt-top"></span>
-  <span class="rt-panel rt-bottom"></span>
-  <span class="rt-seam"></span>
-</div>
 ${poster}
 ${header}
 <div id="main">
@@ -342,6 +350,13 @@ ${footer}
 <script>${sceneJs}</script>
 <script>
 (function () {
+  /* --------------------------------------------------------------- intro */
+  // Matches the CSS: 1020ms delay + 650ms lift, plus slack.
+  setTimeout(function () {
+    document.documentElement.classList.add("intro-done");
+    try { sessionStorage.setItem("nb:intro", "1"); } catch (e) {}
+  }, 1750);
+
   /* ------------------------------------------------------------- 3D scene */
   var canvas = document.getElementById("scene-canvas");
   function sizeCanvas() {
@@ -354,10 +369,6 @@ ${footer}
 
   /* -------------------------------------------------------------- router */
   var panels = Array.prototype.slice.call(document.querySelectorAll("[data-route]"));
-  var overlay = document.querySelector(".route-transition");
-  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var rtTimer;
-
   function swap() {
     var want = (location.hash || "#/").slice(1).split("?")[0] || "/";
     var found = false;
@@ -373,23 +384,8 @@ ${footer}
     window.dispatchEvent(new Event("resize"));
   }
 
-  function route(animate) {
-    swap();
-    if (!animate || reduced || !overlay) return;
-    // Restart the CSS animation: removing the attribute and forcing a reflow
-    // before re-adding it, otherwise a rapid second navigation would not
-    // replay it.
-    overlay.removeAttribute("data-active");
-    void overlay.offsetWidth;
-    overlay.setAttribute("data-active", "");
-    clearTimeout(rtTimer);
-    rtTimer = setTimeout(function () {
-      overlay.removeAttribute("data-active");
-    }, 700);
-  }
-
-  window.addEventListener("hashchange", function () { route(true); });
-  route(false); // no transition on first paint
+  window.addEventListener("hashchange", swap);
+  swap();
 
   /* --------------------------------------------------------- page chrome */
   var header = document.querySelector("header");

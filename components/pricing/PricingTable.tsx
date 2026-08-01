@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { tiers, pricingAssurances } from "@/content/pricing";
 import { useCurrency, formatPrice } from "@/lib/currency";
 import { Button } from "@/components/ui/Button";
@@ -39,7 +40,18 @@ function CurrencySwitcher({
   );
 }
 
-export function PricingTable({ compact = false }: { compact?: boolean }) {
+export function PricingTable({
+  compact = false,
+  payable = [],
+}: {
+  compact?: boolean;
+  /**
+   * Tier IDs with a Razorpay plan configured. Resolved on the server (see
+   * `payableTierIds` in lib/razorpay.ts) and passed down, because this is a
+   * client component and must not advertise a checkout that would fail.
+   */
+  payable?: string[];
+}) {
   const { currency, setCurrency, ready } = useCurrency();
 
   return (
@@ -94,6 +106,17 @@ export function PricingTable({ compact = false }: { compact?: boolean }) {
               >
                 {tier.cta.label}
               </Button>
+
+              {/* The audit stays the primary CTA — this is the shortcut for
+                  people who already know what they want. */}
+              {payable.includes(tier.id) && (
+                <Link
+                  href={`/subscribe?plan=${tier.id}`}
+                  className="mt-3 text-center text-xs text-faint underline decoration-line underline-offset-4 transition-colors hover:text-brand-2"
+                >
+                  Or pay now and start today
+                </Link>
+              )}
 
               <ul className="mt-8 flex flex-col gap-3 border-t border-line pt-7">
                 {tier.features.map((feature) => (

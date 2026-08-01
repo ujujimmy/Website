@@ -42,11 +42,9 @@ export function useCurrency() {
   return { currency, setCurrency, ready };
 }
 
-/** Whole-number formatting; these prices never need decimals. */
-export function formatPrice(amount: number, currency: Currency) {
-  return new Intl.NumberFormat(currency === "INR" ? "en-IN" : "en-US", {
-    style: "currency",
-    currency,
-    maximumFractionDigits: 0,
-  }).format(amount);
-}
+/**
+ * Re-exported so client components keep a single import for currency
+ * concerns. The implementation lives in lib/format.ts because server code
+ * needs it too and cannot import from a `"use client"` module.
+ */
+export { formatPrice } from "@/lib/format";

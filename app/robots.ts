@@ -6,8 +6,9 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      // Conversion confirmation page — no reason for it to be indexed.
-      disallow: ["/thank-you"],
+      // Conversion confirmation and checkout pages — no reason to index
+      // these, and /api is machine-only (Razorpay webhooks live there).
+      disallow: ["/thank-you", "/subscribe", "/api/"],
     },
     sitemap: `${brand.url}/sitemap.xml`,
     host: brand.url,

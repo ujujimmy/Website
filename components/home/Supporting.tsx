@@ -9,6 +9,7 @@ import { stats, clientLogos, testimonials, caseStudies } from "@/content/proof";
 import { processSteps } from "@/content/site";
 import { faqs } from "@/content/faq";
 import { brand } from "@/content/brand";
+import { payableTierIds } from "@/lib/razorpay";
 
 /** Trust bar — placeholder figures until real ones exist. See content/proof.ts. */
 export function TrustBar() {
@@ -192,7 +193,7 @@ export function PricingPreview() {
           className="mx-auto items-center"
         />
         <div className="mt-14">
-          <PricingTable compact />
+          <PricingTable compact payable={payableTierIds()} />
         </div>
       </div>
     </Section>

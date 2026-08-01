@@ -2,6 +2,7 @@ import "server-only";
 import { z } from "zod";
 import fs from "node:fs/promises";
 import path from "node:path";
+import { sendNotification } from "@/lib/notify";
 
 /**
  * Lead intake. Storage is deliberately isolated behind `saveLead` so swapping
@@ -68,50 +69,27 @@ async function persist(lead: Lead) {
 }
 
 /**
- * Email notification via Resend.
+ * Email notification via Resend — see lib/notify.ts.
  *
  * TODO(email): set RESEND_API_KEY and LEAD_NOTIFY_EMAIL in the environment.
  * Without a key this no-ops and logs, so local development works unconfigured.
  */
 async function notify(lead: Lead) {
-  const key = process.env.RESEND_API_KEY;
-  const to = process.env.LEAD_NOTIFY_EMAIL;
-  if (!key || !to) {
-    console.info("[leads] email skipped (RESEND_API_KEY/LEAD_NOTIFY_EMAIL unset):", lead.email);
-    return;
-  }
-
-  const lines = [
-    `Service: ${lead.service}`,
-    `Business: ${lead.business}`,
-    lead.website ? `Website: ${lead.website}` : null,
-    lead.industry ? `Industry: ${lead.industry}` : null,
-    `Name: ${lead.name}`,
-    `Email: ${lead.email}`,
-    lead.phone ? `Phone: ${lead.phone}` : null,
-    `Country: ${lead.country}`,
-    lead.notes ? `\nNotes:\n${lead.notes}` : null,
-  ].filter(Boolean);
-
-  try {
-    const res = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${key}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        from: process.env.LEAD_FROM_EMAIL ?? "leads@resend.dev",
-        to: [to],
-        reply_to: lead.email,
-        subject: `New audit request — ${lead.business} (${lead.country})`,
-        text: lines.join("\n"),
-      }),
-    });
-    if (!res.ok) console.error("[leads] resend error:", res.status, await res.text());
-  } catch (err) {
-    console.error("[leads] notify failed:", err);
-  }
+  await sendNotification({
+    subject: `New audit request — ${lead.business} (${lead.country})`,
+    replyTo: lead.email,
+    lines: [
+      `Service: ${lead.service}`,
+      `Business: ${lead.business}`,
+      lead.website ? `Website: ${lead.website}` : null,
+      lead.industry ? `Industry: ${lead.industry}` : null,
+      `Name: ${lead.name}`,
+      `Email: ${lead.email}`,
+      lead.phone ? `Phone: ${lead.phone}` : null,
+      `Country: ${lead.country}`,
+      lead.notes ? `\nNotes:\n${lead.notes}` : null,
+    ],
+  });
 }
 
 export type SaveResult =

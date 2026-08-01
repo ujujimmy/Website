@@ -54,17 +54,83 @@ Search the codebase for `TODO(` to find them all.
 | **Pricing** | `content/pricing.ts` — sanity-check against what you actually want to charge |
 | **Lead storage** | `lib/leads.ts` — writes to a local JSON file, which does not persist on Vercel |
 | **Lead email** | Set `RESEND_API_KEY` and `LEAD_NOTIFY_EMAIL` |
+| **Payments** | Razorpay plans must exist in the dashboard before checkout works — see below |
 
 If you only have two or three Indian clients, use those. Real modest numbers
 convert far better than impressive invented ones.
 
 ### Environment variables
 
-```bash
-RESEND_API_KEY=re_...          # without this, submissions still save + log, email no-ops
-LEAD_NOTIFY_EMAIL=you@...      # where lead notifications go
-LEAD_FROM_EMAIL=leads@...      # optional, defaults to resend.dev
+See `.env.example` for the annotated list. Copy it to `.env.local`. Nothing is
+required for `pnpm dev` — every integration no-ops and logs when unconfigured.
+
+---
+
+## Payments (Razorpay Subscriptions)
+
+Monthly plans are charged as Razorpay subscriptions, in **INR only**. Razorpay
+accounts are INR-native and charging USD needs International Payments
+activated separately, so the pricing page displays USD while checkout always
+collects the rupee figure. `/subscribe` says so, and offers a manual invoice.
+
+**The prices customers are charged live in the Razorpay dashboard, not in this
+repo.** `content/pricing.ts` only controls what the site *displays*. To stop
+those drifting apart, `lib/razorpay.ts` fetches the plan before every checkout
+and refuses to proceed if the amount, currency or period disagrees with the
+tier — so a price edit here fails loudly instead of quietly charging the old
+amount.
+
+### Setup
+
+1. **API keys** — Dashboard → Settings → API Keys. Set `RAZORPAY_KEY_ID` and
+   `RAZORPAY_KEY_SECRET`. Start with `rzp_test_*`; the checkout page shows a
+   "test mode" banner whenever the key isn't `rzp_live_*`.
+2. **Plans** — Dashboard → Subscriptions → Plans. Create one **monthly INR**
+   plan per tier at the price in `content/pricing.ts` (₹15,000 / ₹45,000 /
+   ₹105,000). Paste the IDs into `RAZORPAY_PLAN_STARTER`, `_GROWTH`,
+   `_AUTHORITY`. Don't add setup fees to the plan — those ride along as an
+   addon on the first invoice, from `tier.setup.INR`.
+3. **Webhook** — Dashboard → Settings → Webhooks →
+   `https://<domain>/api/razorpay/webhook`. Subscribe to `subscription.activated`,
+   `subscription.charged`, `subscription.halted`, `subscription.cancelled` and
+   `payment.failed`. Put the webhook's secret in `RAZORPAY_WEBHOOK_SECRET` —
+   without it every webhook is rejected, because nothing can be verified.
+4. **Redeploy.** The "pay now" links on `/pricing` and the homepage are gated
+   on the plan IDs being present, and those pages are statically prerendered —
+   so the env vars must be set *at build time*, not just at runtime.
+
+A tier with no plan ID configured is simply not purchasable: no link renders,
+and `/subscribe?plan=…` for it falls back to a "we'll invoice you" panel
+instead of a broken checkout.
+
+### How it flows
+
 ```
+/pricing → /subscribe?plan=growth   details form, shows first charge
+  POST /api/razorpay/subscription   creates the subscription, returns its id
+  Razorpay Checkout (browser)       customer authorises the mandate
+  POST /api/razorpay/verify         checks the callback signature → success page
+  POST /api/razorpay/webhook        Razorpay confirms — the authoritative record
+```
+
+The verify endpoint exists to show the customer a truthful success page. The
+**webhook** is what tells you money actually moved: browsers close, networks
+drop, and the callback can be forged. Both funnel into
+`recordSubscriptionEvent` (`lib/subscriptions.ts`), which emails you and
+appends to `.data/subscriptions.json` — same ephemeral-storage caveat as
+leads, so Razorpay's dashboard stays the system of record until that's on a
+real database.
+
+Signature note for anyone maintaining this: subscriptions sign
+`payment_id|subscription_id`, the reverse of the one-time-order flow's
+`order_id|payment_id`. It looks like a bug and isn't.
+
+### Testing before launch
+
+With test keys, run a payment through with Razorpay's test card
+(`4111 1111 1111 1111`, any future expiry/CVV). To exercise the webhook
+locally, tunnel port 3000 (`ngrok http 3000`) and point a test-mode webhook at
+`https://<tunnel>/api/razorpay/webhook`.
 
 ---
 
@@ -77,12 +143,16 @@ components/
   home/              homepage beats + the scroll tracker
   ui/                Button, Section, Reveal, Stars, StatCounter
   forms/AuditForm    3-step lead capture
+  checkout/          Razorpay subscription form
 content/             ALL copy as typed data — edit here, not in components
 lib/
   three/shapes.ts    the seven position buffers
   scroll.ts          mutable scroll state the canvas reads each frame
   device.ts          graphics tier detection
   leads.ts           lead validation + storage (swap the storage here)
+  razorpay.ts        subscription creation + signature verification
+  subscriptions.ts   payment event log (swap the storage here)
+  notify.ts          shared Resend sender
   seo.ts             JSON-LD builders
 ```
 

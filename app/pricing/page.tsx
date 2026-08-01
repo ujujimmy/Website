@@ -5,6 +5,7 @@ import { PricingTable } from "@/components/pricing/PricingTable";
 import { FaqSection, ClosingCta } from "@/components/home/Supporting";
 import { JsonLd } from "@/components/JsonLd";
 import { breadcrumbLd } from "@/lib/seo";
+import { payableTierIds } from "@/lib/razorpay";
 
 export const metadata: Metadata = {
   title: "Pricing",
@@ -31,7 +32,7 @@ export default function PricingPage() {
           {/* The tier names are h3s. Without this the page jumps h1 → h3,
               which fails heading-order for screen reader navigation. */}
           <h2 className="sr-only">Plans and pricing</h2>
-          <PricingTable />
+          <PricingTable payable={payableTierIds()} />
         </div>
       </Section>
 

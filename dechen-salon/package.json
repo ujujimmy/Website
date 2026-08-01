@@ -1,0 +1,39 @@
+{
+  "name": "dechen-salon",
+  "version": "0.1.0",
+  "private": true,
+  "description": "3D scrolling website for DECHEN Salon, Majnu-ka-Tilla, New Delhi",
+  "license": "UNLICENSED",
+  "packageManager": "pnpm@10.33.0",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "shots": "node scripts/screenshots.mjs",
+    "a11y": "node scripts/a11y.mjs",
+    "lighthouse": "node scripts/lighthouse.mjs",
+    "images": "python3 scripts/extract-images.py"
+  },
+  "dependencies": {
+    "@react-three/fiber": "^9.7.0",
+    "lenis": "^1.3.25",
+    "next": "^16.2.12",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "three": "^0.185.1"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.12.1",
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/node": "^26.1.2",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "@types/three": "^0.185.3",
+    "lighthouse": "^13.4.1",
+    "playwright": "^1.62.1",
+    "postcss": "^8.5.25",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^6.0.3"
+  }
+}

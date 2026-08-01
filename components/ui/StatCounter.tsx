@@ -28,7 +28,12 @@ export function StatCounter({
   const decimals = match?.[2].includes(".") ? 1 : 0;
   const grouped = match?.[2].includes(",") ?? false;
 
-  const [display, setDisplay] = useState(reduced || numeric === null ? numeric ?? 0 : 0);
+  // Starts at the FINAL value, not zero. The server-rendered HTML is what a
+  // crawler and a JS-less visitor see, and rendering "0" there turned every
+  // proof point on the site into "0.0★" / "0 businesses served" — the exact
+  // opposite of what these stats are for. The count-up starts from zero only
+  // once we know scripting is live.
+  const [display, setDisplay] = useState(numeric ?? 0);
 
   useEffect(() => {
     if (!inView || numeric === null || reduced) return;

@@ -29,6 +29,12 @@ pnpm dev            # http://localhost:3000
 pnpm build && pnpm start
 pnpm typecheck
 pnpm shots          # Playwright captures of every scroll beat, desktop + mobile
+
+# Single self-contained HTML of the homepage, for sharing as a preview link.
+# Needs a running server; inlines the CSS, both webfonts and the three.js
+# scene so the file works with no network at all.
+pnpm build && pnpm start -p 3100 &
+pnpm preview http://localhost:3100 preview.html
 ```
 
 Node 22, pnpm 10.

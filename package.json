@@ -10,7 +10,8 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "shots": "node scripts/screenshots.mjs"
+    "shots": "node scripts/screenshots.mjs",
+    "preview": "node scripts/build-preview.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.5.7",
@@ -32,6 +33,7 @@
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
     "@types/three": "^0.185.3",
+    "esbuild": "^0.28.1",
     "lighthouse": "^13.4.1",
     "playwright": "^1.62.1",
     "postcss": "^8.5.25",

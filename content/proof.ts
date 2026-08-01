@@ -1,23 +1,20 @@
 /**
- * ⚠️  PLACEHOLDER PROOF — READ BEFORE SHOWING THIS SITE TO A PROSPECT.
+ * Proof.
  *
- * Every number, logo, name and quote in this file is invented for layout
- * purposes. The whole job of this website is credibility, and fabricated
- * results are the single fastest way to destroy it — a prospect who checks
- * one of these and finds nothing is gone for good.
+ * The case studies below are REAL clients, supplied by the owner. Two rules
+ * apply to everything in this file and should not be relaxed:
  *
- * TODO(proof): replace ALL of the below with real client data before any
- * outreach. If you only have two or three Indian clients, use those — real
- * modest numbers convert far better than impressive invented ones.
+ * 1. Never invent a number. Where a result wasn't measured, the copy says
+ *    what was done instead of inventing a metric.
+ * 2. Never invent a quote. These are real businesses; attributing words to
+ *    them that they never said is the single fastest way to destroy the
+ *    credibility this whole site exists to build. `testimonials` is empty
+ *    until real ones are collected — see the TODO there.
  */
 
 /**
- * This site's own Google Lighthouse scores.
- *
- * Unlike everything else in this file these are REAL — measured on the
- * production build, throttled mobile profile. They are the one proof point
- * here that needs no client to vouch for it, because any visitor can re-run
- * the test themselves in ten seconds.
+ * This site's own Google Lighthouse scores — the one proof point that needs
+ * nobody to vouch for it, because any visitor can re-run the test.
  *
  * TODO(scores): re-measure after the first deploy and update these. Hosting,
  * domain and network all move the number, and a score that does not match
@@ -34,22 +31,28 @@ export const lighthouse = {
   ],
 };
 
-/** Headline stats in the trust bar. TODO(proof): replace with real figures. */
+/**
+ * Trust bar figures.
+ *
+ * Only claims that can be backed up. There is deliberately no "150+ clients"
+ * here — three named clients is what exists today, and an inflated number is
+ * exactly what a prospect checks first.
+ *
+ * TODO(proof): as more work lands, add it here. If you can evidence a total
+ * across clients, a "reviews generated" figure is the strongest one to grow.
+ */
 export const stats = [
-  { value: "150+", label: "Businesses served" },
-  { value: "12,000+", label: "Reviews generated" },
-  { value: "4.8★", label: "Average client rating" },
-  { value: "4", label: "Countries served" },
+  { value: "1,800+", label: "Reviews generated for one client" },
+  { value: "3.9 → 4.4", label: "Rating lift on that campaign" },
+  { value: "3", label: "Businesses currently served" },
+  { value: "100%", label: "Results verifiable on Google" },
 ];
 
-/** TODO(proof): swap for real client logos in /public/logos, or delete the row. */
+/** Real client names, shown as a simple wordmark row. */
 export const clientLogos = [
-  "Rivera Dental",
-  "Northside Plumbing",
-  "Bloom Med Spa",
-  "Kettle & Co",
-  "Apex Roofing",
-  "Lakeside Vets",
+  "Gangnam Korean Restaurant",
+  "Sopa Himalayan Kitchen",
+  "Dachen Salon",
 ];
 
 export type Testimonial = {
@@ -61,36 +64,15 @@ export type Testimonial = {
   rating: number;
 };
 
-/** TODO(proof): replace with real, attributable testimonials. */
-export const testimonials: Testimonial[] = [
-  {
-    quote:
-      "We went from 31 reviews to over 200 in four months without anyone on my team having to remember to ask. That alone changed how many first-time patients we see.",
-    name: "Dana Rivera",
-    role: "Practice Owner",
-    company: "Rivera Dental",
-    location: "Austin, TX",
-    rating: 5,
-  },
-  {
-    quote:
-      "The old site looked fine and did nothing. The new one gets me calls. Same traffic, completely different result — I wish I'd rebuilt it two years earlier.",
-    name: "Mark Halloran",
-    role: "Owner",
-    company: "Northside Plumbing",
-    location: "Calgary, AB",
-    rating: 5,
-  },
-  {
-    quote:
-      "They explained what they were doing in plain English every month, which no agency had ever done for me. We're in the map pack for our main service now.",
-    name: "Priya Raman",
-    role: "Founder",
-    company: "Bloom Med Spa",
-    location: "Manchester, UK",
-    rating: 5,
-  },
-];
+/**
+ * Intentionally empty.
+ *
+ * TODO(proof): collect real testimonials before adding any. Ask each client
+ * for one or two sentences and explicit permission to publish it with their
+ * business name. Any component rendering this array must handle it being
+ * empty — the site simply omits the section rather than showing filler.
+ */
+export const testimonials: Testimonial[] = [];
 
 export type CaseStudy = {
   slug: string;
@@ -102,72 +84,67 @@ export type CaseStudy = {
   results: { value: string; label: string }[];
   duration: string;
   services: string[];
+  /** Shown as a "check it yourself" prompt where results are public. */
+  verifiable?: string;
 };
 
-/** TODO(proof): replace entirely with real case studies. */
 export const caseStudies: CaseStudy[] = [
   {
-    slug: "rivera-dental",
-    client: "Rivera Dental",
-    industry: "Dental practice",
-    location: "Austin, TX",
+    slug: "gangnam-korean-restaurant",
+    client: "Gangnam Korean Restaurant",
+    industry: "Restaurant",
+    location: "Delhi, India",
     challenge:
-      "A 3.8 rating with 31 reviews, sitting below four competitors in the map pack for every service term that mattered.",
+      "A well-liked restaurant sitting at 3.9 stars — below the threshold where most diners stop scrolling. Plenty of happy customers, almost none of them leaving a review.",
     approach: [
-      "Rebuilt the Google Business Profile with correct primary and secondary categories",
-      "Connected review requests to the existing appointment reminder system",
-      "Responded to every historic review, including the four negatives",
-      "Published six service pages targeting treatment-specific searches",
+      "Rebuilt the Google Business Profile: categories, menu, hours, photos",
+      "Put review requests in front of diners at the moment they were happiest, not days later",
+      "Responded to reviews consistently, including the critical ones",
+      "Kept requests running continuously so the rating climbed on volume, not luck",
     ],
     results: [
-      { value: "3.8 → 4.9", label: "Google rating" },
-      { value: "+172", label: "New reviews in 4 months" },
-      { value: "#1", label: "Map pack position, primary term" },
+      { value: "3.9 → 4.4", label: "Google rating" },
+      { value: "1,800+", label: "Reviews generated" },
     ],
-    duration: "4 months",
-    services: ["Google Reviews", "SEO"],
+    duration: "Ongoing",
+    services: ["Google Reviews"],
+    verifiable: "Search the restaurant on Google Maps and see the rating and review count for yourself.",
   },
   {
-    slug: "northside-plumbing",
-    client: "Northside Plumbing",
-    industry: "Home services",
-    location: "Calgary, AB",
+    slug: "sopa-himalayan-kitchen",
+    client: "Sopa Himalayan Kitchen",
+    industry: "Restaurant",
+    location: "Majnu-ka-Tilla, Delhi",
     challenge:
-      "Decent traffic from an old template site that converted almost nobody, with no way to tell which pages drove calls.",
+      "Strong food and steady regulars, but a review count that badly understated how many people the kitchen actually makes happy.",
     approach: [
-      "Rebuilt the site around a single primary action — call now",
-      "Cut mobile load time from 6.4s to 1.6s",
-      "Added emergency-callout landing pages for each service area",
-      "Wired up call tracking so lead source was finally visible",
+      "Google Business Profile cleaned up and completed",
+      "A repeatable review request routine the staff could actually keep up with",
+      "Ongoing review responses in the restaurant's own voice",
     ],
-    results: [
-      { value: "6.4s → 1.6s", label: "Mobile load time" },
-      { value: "3.1×", label: "Increase in calls from site" },
-      { value: "94", label: "Lighthouse performance" },
-    ],
-    duration: "6 weeks",
-    services: ["Web Design", "SEO"],
+    // No invented metrics: the campaign's numbers weren't recorded.
+    // TODO(proof): add before/after rating and review count when available.
+    results: [],
+    duration: "Ongoing",
+    services: ["Google Reviews"],
+    verifiable: "Their Google listing is public — the review activity speaks for itself.",
   },
   {
-    slug: "bloom-med-spa",
-    client: "Bloom Med Spa",
-    industry: "Health & beauty",
-    location: "Manchester, UK",
+    slug: "dachen-salon",
+    client: "Dachen Salon",
+    industry: "Hair & beauty",
+    location: "Delhi, India",
     challenge:
-      "Strong word of mouth locally but effectively invisible in search for every treatment they offered.",
+      "No proper website. Customers looking for the salon online found no clear way to see services or get in touch.",
     approach: [
-      "Technical cleanup — fixed indexation on 40% of the site that was not being crawled",
-      "Treatment-level content targeting buying-intent searches",
-      "Citation consistency across 30+ UK directories",
-      "Review generation to strengthen local ranking signals",
+      "Built a fast, mobile-first website around one action: getting in touch",
+      "Services and pricing laid out plainly instead of buried",
+      "Structured so the salon shows up properly in local search",
     ],
-    results: [
-      { value: "+310%", label: "Organic traffic" },
-      { value: "Top 3", label: "For 11 treatment terms" },
-      { value: "+88", label: "Reviews in 5 months" },
-    ],
-    duration: "5 months",
-    services: ["SEO", "Google Reviews"],
+    // TODO(proof): add load time, traffic or enquiry numbers if measured.
+    results: [],
+    duration: "Completed",
+    services: ["Web Design"],
   },
 ];
 

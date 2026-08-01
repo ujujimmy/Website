@@ -5,6 +5,7 @@ import { Section } from "@/components/ui/Section";
 import { Reveal } from "@/components/ui/Reveal";
 import { Button } from "@/components/ui/Button";
 import { FaqSection } from "@/components/home/Supporting";
+import { BookingEmbed } from "@/components/contact/BookingEmbed";
 import { JsonLd } from "@/components/JsonLd";
 import { breadcrumbLd } from "@/lib/seo";
 
@@ -79,11 +80,14 @@ export default function ContactPage() {
           </Reveal>
         </div>
 
-        {/*
-          TODO(booking): a Cal.com or Calendly embed slots in here if you want
-          prospects to book directly rather than going through the audit first.
-          Keep it below the audit CTA — the audit converts colder traffic.
-        */}
+        {/* Below the audit CTA on purpose — the audit converts colder
+            traffic, booking suits people who are already interested. */}
+        <div className="container-page mt-12">
+          <Reveal>
+            <BookingEmbed />
+          </Reveal>
+        </div>
+
         <div className="container-page mt-12">
           <Reveal>
             <div className="rounded-[var(--radius-card)] border border-line bg-ink-2/60 p-7 text-sm leading-relaxed text-muted sm:p-9">
@@ -91,12 +95,13 @@ export default function ContactPage() {
                 Where we are, plainly
               </h2>
               <p className="mt-3 max-w-3xl">
-                We&apos;re a remote-first team based in India, working with
-                businesses across the United States, Canada and the United
-                Kingdom. Calls happen on your clock — {brand.hours}. We put
-                everything in writing so nothing depends on catching someone at
-                the right moment, and we&apos;re happy to give you references in
-                your own timezone.
+                We&apos;re a small team based in Delhi. Our clients are here
+                today, and we&apos;re set up to work with businesses in the
+                United States, Canada and the United Kingdom — calls happen on
+                your clock, {brand.hours}. We put everything in writing so
+                nothing depends on catching someone at the right moment, and
+                every result we claim is on a public Google listing you can
+                check yourself.
               </p>
             </div>
           </Reveal>

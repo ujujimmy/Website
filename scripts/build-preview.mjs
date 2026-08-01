@@ -32,7 +32,11 @@ const ROUTES = [
   "/pricing",
   "/about",
   "/contact",
+  "/locations",
+  "/locations/google-reviews-restaurants-delhi",
+  "/locations/google-reviews-dentists-austin",
   "/audit",
+  "/audit/sample",
   "/thank-you",
 ];
 

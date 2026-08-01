@@ -91,6 +91,10 @@ export function Process() {
 }
 
 export function Testimonials() {
+  // Renders nothing until real, permissioned quotes exist. An empty
+  // testimonial section is invisible; a fabricated one is a liability.
+  if (testimonials.length === 0) return null;
+
   return (
     <Section id="testimonials">
       <div className="container-page">
@@ -156,21 +160,29 @@ export function WorkPreview() {
                 <p className="mt-3 grow text-sm leading-relaxed text-muted">
                   {study.challenge}
                 </p>
-                <dl className="mt-6 grid grid-cols-3 gap-3 border-t border-line pt-5">
-                  {study.results.map((result) => (
-                    <div key={result.label}>
-                      <dt className="sr-only">{result.label}</dt>
-                      <dd>
-                        <span className="block text-base font-semibold text-brand-2">
-                          {result.value}
-                        </span>
-                        <span className="mt-1 block text-[0.7rem] leading-tight text-faint">
-                          {result.label}
-                        </span>
-                      </dd>
-                    </div>
-                  ))}
-                </dl>
+                {/* Where a campaign's numbers weren't recorded we show the
+                    services instead of inventing metrics to fill the space. */}
+                {study.results.length > 0 ? (
+                  <dl className="mt-6 grid grid-cols-2 gap-3 border-t border-line pt-5">
+                    {study.results.map((result) => (
+                      <div key={result.label}>
+                        <dt className="sr-only">{result.label}</dt>
+                        <dd>
+                          <span className="block text-base font-semibold text-brand-2">
+                            {result.value}
+                          </span>
+                          <span className="mt-1 block text-[0.7rem] leading-tight text-faint">
+                            {result.label}
+                          </span>
+                        </dd>
+                      </div>
+                    ))}
+                  </dl>
+                ) : (
+                  <p className="mt-6 border-t border-line pt-5 text-[0.7rem] uppercase tracking-[0.14em] text-faint">
+                    {study.services.join(" · ")}
+                  </p>
+                )}
               </Link>
             </Reveal>
           ))}

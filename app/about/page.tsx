@@ -54,9 +54,10 @@ export default function AboutPage() {
           />
           <div className="flex flex-col gap-5 text-lg leading-relaxed text-muted">
             <p>
-              We're based in India and work with businesses across the United
-              States, Canada and the United Kingdom. You were going to wonder
-              about it, so let's deal with it directly.
+              We're based in Delhi, and that's where our clients are today.
+              We're set up to work with businesses in the United States, Canada
+              and the United Kingdom. You were going to wonder about it, so
+              let's deal with it directly.
             </p>
             <p>
               What it means in practice: you get senior attention at a fraction
@@ -67,10 +68,11 @@ export default function AboutPage() {
               publicly verifiable.
             </p>
             <p>
-              That last part matters most. You don't have to take our word for
-              any of it. Your rating, your rankings and your page speed are all
-              things you can check yourself, from your own phone, any day of the
-              week.
+              That last part matters most, and it cuts both ways. Look up
+              Gangnam Korean Restaurant in Delhi and check its rating and review
+              count against what we claim on this site. Do the same with your
+              own listing once we start. You never have to take our word for
+              anything.
             </p>
           </div>
         </div>

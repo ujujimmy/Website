@@ -84,8 +84,14 @@ export default function WorkPage() {
 
                   <div className="rounded-2xl border border-line bg-ink-2/70 p-7">
                     <h3 className="text-xs font-semibold uppercase tracking-[0.14em] text-faint">
-                      Results
+                      {study.results.length > 0 ? "Results" : "Check it yourself"}
                     </h3>
+                    {study.results.length === 0 && (
+                      <p className="mt-4 text-sm leading-relaxed text-muted">
+                        {study.verifiable ??
+                          "This campaign's numbers weren't recorded. We'd rather say so than invent one."}
+                      </p>
+                    )}
                     <dl className="mt-6 flex flex-col gap-7">
                       {study.results.map((result) => (
                         <div key={result.label}>
@@ -102,6 +108,11 @@ export default function WorkPage() {
                         </div>
                       ))}
                     </dl>
+                    {study.results.length > 0 && study.verifiable && (
+                      <p className="mt-7 border-t border-line pt-5 text-xs leading-relaxed text-faint">
+                        {study.verifiable}
+                      </p>
+                    )}
                   </div>
                 </div>
               </article>
@@ -110,6 +121,8 @@ export default function WorkPage() {
         </div>
       </Section>
 
+      {/* Hidden entirely until real, permissioned quotes exist. */}
+      {testimonials.length > 0 && (
       <Section className="border-t border-line pt-24">
         <div className="container-page grid gap-6 lg:grid-cols-3">
           {testimonials.map((testimonial, i) => (
@@ -131,6 +144,7 @@ export default function WorkPage() {
           ))}
         </div>
       </Section>
+      )}
 
       <ClosingCta
         title="Your business could be the next one on this page."

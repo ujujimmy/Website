@@ -33,7 +33,7 @@ export default async function AuditPage({
   searchParams: Promise<{ plan?: string }>;
 }) {
   const { plan } = await searchParams;
-  const testimonial = testimonials[0];
+  const testimonial = testimonials.at(0);
 
   return (
     <main className="pb-28 pt-36 sm:pt-44">
@@ -71,7 +71,19 @@ export default async function AuditPage({
             ))}
           </ul>
 
-          <div className="mt-10 flex flex-wrap gap-x-6 gap-y-2 border-t border-line pt-7 text-sm text-faint">
+          <div className="mt-8">
+            <a
+              href="/audit/sample"
+              className="inline-flex items-center gap-2 text-sm font-medium text-brand-2 underline underline-offset-4"
+            >
+              See a filled-in example first
+              <svg viewBox="0 0 20 20" className="h-4 w-4 fill-none stroke-current stroke-[2]" aria-hidden="true">
+                <path d="M4 10h11M11 5.5L15.5 10 11 14.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </a>
+          </div>
+
+          <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2 border-t border-line pt-7 text-sm text-faint">
             <span>No call required</span>
             <span aria-hidden="true">·</span>
             <span>Yours to keep</span>
@@ -79,6 +91,7 @@ export default async function AuditPage({
             <span>No obligation</span>
           </div>
 
+          {testimonial && (
           <figure className="mt-10 border-l-2 border-brand/40 pl-5">
             <Stars count={testimonial.rating} size={14} />
             <blockquote className="mt-3 text-sm leading-relaxed text-fg/85">
@@ -88,6 +101,7 @@ export default async function AuditPage({
               {testimonial.name}, {testimonial.company} · {testimonial.location}
             </figcaption>
           </figure>
+          )}
         </div>
 
         {/* Form side */}

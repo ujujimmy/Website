@@ -32,6 +32,7 @@ export const footerNav = [
       { label: "About", href: "/about" },
       { label: "Work", href: "/work" },
       { label: "Pricing", href: "/pricing" },
+      { label: "Areas we serve", href: "/locations" },
       { label: "Contact", href: "/contact" },
     ],
   },
@@ -39,6 +40,7 @@ export const footerNav = [
     title: "Get started",
     links: [
       { label: "Free audit", href: "/audit" },
+      { label: "Sample audit", href: "/audit/sample" },
       { label: `Email us`, href: `mailto:${brand.contact.email}` },
       { label: "Call us", href: brand.contact.phoneHref },
     ],
@@ -84,13 +86,13 @@ export const homeCopy = {
   },
   global: {
     eyebrow: "Where we work",
-    headline: "Local results, wherever local is for you.",
-    sub: "We work with businesses across the United States, Canada, the United Kingdom and India. Calls happen on your clock — we keep US Eastern and Pacific hours — and every result we produce is something you can verify yourself.",
+    headline: "Based in Delhi. Set up for your timezone.",
+    sub: "Our clients today are here in India, and their results are public — you can verify every claim on this site in about a minute. We keep US Eastern and Pacific hours, and we would rather show you checkable work from Delhi than a client list we do not have.",
     markers: [
-      { label: "United States", detail: "ET & PT coverage" },
-      { label: "Canada", detail: "ET & MT coverage" },
-      { label: "United Kingdom", detail: "GMT coverage" },
-      { label: "India", detail: "Where we're based" },
+      { label: "Delhi, India", detail: "Where we are, and where our clients are today" },
+      { label: "United States", detail: "ET & PT hours covered" },
+      { label: "Canada", detail: "ET & MT hours covered" },
+      { label: "United Kingdom", detail: "GMT hours covered" },
     ],
   },
   cta: {

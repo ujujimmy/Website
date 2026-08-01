@@ -17,7 +17,7 @@ export const faqs: Faq[] = [
   },
   {
     q: "You're based overseas. Why does that work for me?",
-    a: "It means you get senior work at a fraction of a US agency's rate, because our costs are lower — not because the work is thinner. We keep US Eastern and Pacific hours for calls, communicate in writing so nothing gets lost, and you can check every result yourself: reviews, rankings and site speed are all publicly verifiable. Ask us for references in your timezone.",
+    a: "It means you get senior work at a fraction of a US agency's rate, because our costs are lower — not because the work is thinner. We keep US Eastern and Pacific hours for calls and communicate in writing so nothing gets lost. Our clients today are in Delhi, and we would rather tell you that than pretend otherwise — their listings are public, so you can check the rating and review counts we claim in about a minute. That is the whole point: you never have to take our word for anything.",
   },
   {
     q: "Am I locked into a contract?",

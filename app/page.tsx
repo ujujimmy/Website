@@ -7,6 +7,7 @@ import {
   GlobalBeat,
   AuditBeat,
 } from "@/components/home/Beats";
+import { Scorecard } from "@/components/home/Scorecard";
 import {
   TrustBar,
   Process,
@@ -44,6 +45,7 @@ export default function HomePage() {
       <TrustBar />
       <Process />
       <WorkPreview />
+      <Scorecard />
       <Testimonials />
       <PricingPreview />
       <FaqSection limit={6} />

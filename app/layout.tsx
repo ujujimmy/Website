@@ -4,6 +4,7 @@ import { brand } from "@/content/brand";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Scene } from "@/components/three/Scene";
+import { RouteTransition } from "@/components/layout/RouteTransition";
 import { SmoothScroll } from "@/components/providers/SmoothScroll";
 import { JsonLd } from "@/components/JsonLd";
 import { organizationLd, websiteLd } from "@/lib/seo";
@@ -83,6 +84,8 @@ export default function RootLayout({
         {/* One persistent background layer for the whole site. */}
         <Scene />
         <SmoothScroll />
+
+        <RouteTransition />
 
         <Header />
         <div id="main">{children}</div>

@@ -128,6 +128,9 @@ obvious way:
 - **Gradient text must animate as one element** (`RevealPhrase`, not
   `RevealWords`): `background-clip: text` cannot paint through a descendant
   carrying a transform, and per-word animation renders the text invisible.
+- **The route transition never plays on first load** (`RouteTransition`). An
+  overlay covering the hero at initial paint would delay the LCP element and
+  undo the mobile score outright.
 
 ### Graceful degradation
 

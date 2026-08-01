@@ -324,6 +324,11 @@ h1 span, h2 span, h3 span { color: inherit; }
 </style>
 
 <canvas id="scene-canvas" aria-hidden="true"></canvas>
+<div class="route-transition" aria-hidden="true">
+  <span class="rt-panel rt-top"></span>
+  <span class="rt-panel rt-bottom"></span>
+  <span class="rt-seam"></span>
+</div>
 ${poster}
 ${header}
 <div id="main">
@@ -349,7 +354,11 @@ ${footer}
 
   /* -------------------------------------------------------------- router */
   var panels = Array.prototype.slice.call(document.querySelectorAll("[data-route]"));
-  function route() {
+  var overlay = document.querySelector(".route-transition");
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var rtTimer;
+
+  function swap() {
     var want = (location.hash || "#/").slice(1).split("?")[0] || "/";
     var found = false;
     panels.forEach(function (el) {
@@ -363,8 +372,24 @@ ${footer}
     // now that a different panel is visible.
     window.dispatchEvent(new Event("resize"));
   }
-  window.addEventListener("hashchange", route);
-  route();
+
+  function route(animate) {
+    swap();
+    if (!animate || reduced || !overlay) return;
+    // Restart the CSS animation: removing the attribute and forcing a reflow
+    // before re-adding it, otherwise a rapid second navigation would not
+    // replay it.
+    overlay.removeAttribute("data-active");
+    void overlay.offsetWidth;
+    overlay.setAttribute("data-active", "");
+    clearTimeout(rtTimer);
+    rtTimer = setTimeout(function () {
+      overlay.removeAttribute("data-active");
+    }, 700);
+  }
+
+  window.addEventListener("hashchange", function () { route(true); });
+  route(false); // no transition on first paint
 
   /* --------------------------------------------------------- page chrome */
   var header = document.querySelector("header");

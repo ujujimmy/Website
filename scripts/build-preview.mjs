@@ -27,6 +27,53 @@ if (!cssHref) throw new Error("Could not find the stylesheet link in the page");
 
 let css = await fetch(`${BASE}${cssHref}`).then((r) => r.text());
 
+/**
+ * Strip Tailwind's `@layer` wrappers so every rule becomes unlayered.
+ *
+ * The host page around this preview ships its own unlayered stylesheet, and
+ * in the CSS cascade *any* unlayered declaration beats *everything* in a
+ * layer, regardless of specificity. That let a host rule as weak as
+ * `body { color: #111 }` override this site's base colour, rendering the
+ * headline near-black on its own dark ground. Unwrapping puts the site's
+ * rules on equal footing, where ordinary specificity applies and a class
+ * utility (0,1,0) comfortably outranks a host element selector (0,0,1).
+ */
+function unwrapLayers(source) {
+  let out = "";
+  let i = 0;
+  while (i < source.length) {
+    const at = source.indexOf("@layer", i);
+    if (at === -1) {
+      out += source.slice(i);
+      break;
+    }
+    out += source.slice(i, at);
+
+    let j = at + "@layer".length;
+    while (j < source.length && source[j] !== "{" && source[j] !== ";") j++;
+
+    // `@layer a, b, c;` — an ordering statement with no block. Just drop it.
+    if (source[j] === ";") {
+      i = j + 1;
+      continue;
+    }
+
+    let depth = 0;
+    let k = j;
+    for (; k < source.length; k++) {
+      if (source[k] === "{") depth++;
+      else if (source[k] === "}" && --depth === 0) break;
+    }
+    out += source.slice(j + 1, k); // keep the block's contents, lose the wrapper
+    i = k + 1;
+  }
+  return out;
+}
+
+const layerCount = (css.match(/@layer/g) || []).length;
+css = unwrapLayers(css);
+console.error(`  unwrapped ${layerCount} @layer block(s)`);
+
 // next/font's @font-face rules reference the woff2 files *relative* to the
 // stylesheet (../media/…), not by absolute path — match both forms.
 const fontUrls = [
@@ -120,6 +167,27 @@ const css_ = css;
 
 const page = `<style>
 ${css_}
+/* This design commits to a single dark world — it is not theme-adaptive, and
+   the whole palette is built for a near-black ground. Pin it so a light-themed
+   host cannot hand the page its own inherited text colour, which is what made
+   the headline render black-on-black. */
+:root { color-scheme: dark; }
+:root[data-theme="light"], :root[data-theme="dark"] { color-scheme: dark; }
+html { background-color: var(--color-ink) !important; }
+body {
+  background-color: var(--color-ink) !important;
+  color: var(--color-fg) !important;
+}
+/* Some host resets colour headings directly, which beats an inherited value.
+   Safe to force: the gradient treatment is only ever applied to a <span>
+   inside a heading, never to the heading element itself, and a class selector
+   still outranks this one. */
+h1, h2, h3, h4, h5, h6 { color: inherit !important; }
+/* The headline reveal wraps each word in a bare span, so a host span rule
+   would recolour the words themselves. Two element selectors (0,0,2) beat a
+   host's (0,0,1) while still losing to .text-gradient (0,1,0), which is
+   exactly the ordering we want. */
+h1 span, h2 span, h3 span { color: inherit; }
 /* Preview-only. The page's scroll reveals are motion-driven and ship with an
    inline opacity:0; with no React runtime here to animate them in, they must
    be forced visible or every section below the hero renders blank. */

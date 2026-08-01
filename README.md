@@ -30,9 +30,11 @@ pnpm build && pnpm start
 pnpm typecheck
 pnpm shots          # Playwright captures of every scroll beat, desktop + mobile
 
-# Single self-contained HTML of the homepage, for sharing as a preview link.
-# Needs a running server; inlines the CSS, both webfonts and the three.js
-# scene so the file works with no network at all.
+# One self-contained HTML file of the WHOLE site, for sharing as a preview
+# link. Needs a running server; inlines the CSS, both webfonts and the three.js
+# scene so the file works with no network at all. Every route is bundled as a
+# panel behind a hash router, so navigation, the pricing table and the audit
+# form all work. The form is a demo — it sends nothing.
 pnpm build && pnpm start -p 3100 &
 pnpm preview http://localhost:3100 preview.html
 ```

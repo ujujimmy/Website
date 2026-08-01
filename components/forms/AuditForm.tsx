@@ -142,7 +142,15 @@ export function AuditForm({ defaultPlan }: { defaultPlan?: string }) {
         ))}
       </div>
 
-      <h2 className="mt-7 text-xl font-semibold">{steps[step].title}</h2>
+      {steps.map((s, i) => (
+        <h2
+          key={s.title}
+          className="mt-7 text-xl font-semibold"
+          hidden={step !== i}
+        >
+          {s.title}
+        </h2>
+      ))}
 
       {/* Honeypot — visually hidden, never announced, must stay empty. */}
       <div aria-hidden="true" className="absolute h-0 w-0 overflow-hidden">
@@ -157,8 +165,8 @@ export function AuditForm({ defaultPlan }: { defaultPlan?: string }) {
       </div>
 
       {/* STEP 1 */}
-      {step === 0 && (
-        <fieldset className="mt-6">
+      {/* All three panels stay mounted; only visibility changes. */}
+      <fieldset className="mt-6" data-step="0" hidden={step !== 0}>
           <legend className="sr-only">What do you need help with?</legend>
           <div className="flex flex-col gap-3">
             {serviceOptions.map((option) => (
@@ -203,11 +211,11 @@ export function AuditForm({ defaultPlan }: { defaultPlan?: string }) {
             ))}
           </div>
         </fieldset>
-      )}
+
 
       {/* STEP 2 */}
-      {step === 1 && (
-        <div className="mt-6 flex flex-col gap-5">
+
+      <div className="mt-6 flex flex-col gap-5" data-step="1" hidden={step !== 1}>
           <Field
             label="Business name"
             error={errors.business?.message}
@@ -246,11 +254,11 @@ export function AuditForm({ defaultPlan }: { defaultPlan?: string }) {
             />
           </Field>
         </div>
-      )}
+
 
       {/* STEP 3 */}
-      {step === 2 && (
-        <div className="mt-6 flex flex-col gap-5">
+
+      <div className="mt-6 flex flex-col gap-5" data-step="2" hidden={step !== 2}>
           <Field label="Your name" error={errors.name?.message} required>
             <input
               type="text"
@@ -302,7 +310,7 @@ export function AuditForm({ defaultPlan }: { defaultPlan?: string }) {
             />
           </Field>
         </div>
-      )}
+
 
       {serverError && (
         <p role="alert" className="mt-5 text-sm text-danger">

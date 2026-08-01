@@ -1,15 +1,18 @@
 /**
- * Builds a single self-contained HTML file of the homepage, for hosting as a
- * shareable preview link.
+ * Builds a single self-contained HTML file of the whole site, for hosting as
+ * a shareable preview link.
  *
  * The published page runs under a strict CSP that blocks every external host,
  * so the CSS, both webfonts and the whole three.js scene have to be inlined
- * into one document. Rather than re-authoring the page, this takes the real
- * server-rendered HTML and swaps its asset references for inline equivalents,
- * so the preview stays honest to what the site actually renders.
+ * into one document. Rather than re-authoring anything, this takes the real
+ * server-rendered HTML for each route and swaps its asset references for
+ * inline equivalents, so the preview stays honest to what the site renders.
+ *
+ * Every route is bundled as a panel and a hash router swaps between them, so
+ * navigation, the pricing table and the audit form all actually work.
  *
  *   pnpm build && pnpm start -p 3100
- *   node scripts/build-preview.mjs http://localhost:3100 > preview.html
+ *   pnpm preview http://localhost:3100 preview.html
  */
 import { readFile, writeFile } from "node:fs/promises";
 import { build } from "esbuild";
@@ -17,6 +20,21 @@ import path from "node:path";
 
 const BASE = process.argv[2] ?? "http://localhost:3100";
 const OUT = process.argv[3] ?? "preview.html";
+
+/** Every route the preview can reach. Order sets the nav fallback. */
+const ROUTES = [
+  "/",
+  "/services",
+  "/services/google-reviews",
+  "/services/web-design",
+  "/services/seo",
+  "/work",
+  "/pricing",
+  "/about",
+  "/contact",
+  "/audit",
+  "/thank-you",
+];
 
 const html = await fetch(BASE).then((r) => r.text());
 
@@ -85,12 +103,11 @@ const fontUrls = [
 let inlined = 0;
 for (const url of fontUrls) {
   const filename = url.split("/").pop();
-  const httpUrl = `/_next/static/media/${filename}`;
   let buf;
   try {
     buf = await readFile(path.join(".next", "static", "media", filename));
   } catch {
-    const res = await fetch(`${BASE}${httpUrl}`);
+    const res = await fetch(`${BASE}/_next/static/media/${filename}`);
     if (!res.ok) {
       console.error(`  WARNING: could not inline ${filename}`);
       continue;
@@ -103,7 +120,9 @@ for (const url of fontUrls) {
   );
   inlined++;
 }
-if (inlined === 0) throw new Error("No fonts inlined — the page would fall back to system fonts");
+if (inlined === 0) {
+  throw new Error("No fonts inlined — the page would fall back to system fonts");
+}
 console.error(`  inlined ${inlined}/${fontUrls.length} font files`);
 
 // next/font exposes --font-inter / --font-display through classes on <html>.
@@ -136,21 +155,26 @@ console.error(`  bundled scene: ${(sceneJs.length / 1024).toFixed(0)} KB`);
 
 /* ------------------------------------------------------------ page markup */
 
-// Take the rendered body, drop Next's own scripts (there's no React runtime
-// here) and the empty canvas mount, then re-add our own.
-let body = html.match(/<body[^>]*>([\s\S]*)<\/body>/)?.[1] ?? "";
-body = body
-  .replace(/<script[\s\S]*?<\/script>/g, "")
-  .replace(/<template[\s\S]*?<\/template>/g, "")
-  .replace(/<link[^>]*>/g, "")
-  .replace(/<!--\$-->|<!--\/\$-->|<!--\$\?-->|<!--\/\$\?-->/g, "");
+const stripRuntime = (s) =>
+  s
+    .replace(/<script[\s\S]*?<\/script>/g, "")
+    .replace(/<template[\s\S]*?<\/template>/g, "")
+    .replace(/<link[^>]*>/g, "")
+    .replace(/<!--\$-->|<!--\/\$-->|<!--\$\?-->|<!--\/\$\?-->/g, "");
 
-// Rewrite internal links: the preview is a single page, so anything pointing
-// at another route becomes a no-op rather than a dead 404.
-body = body.replace(/href="\/(?!\/)[^"]*"/g, (m) => {
-  const href = m.slice(6, -1);
-  return href.startsWith("/#") ? `href="${href.slice(1)}"` : 'href="#" data-inert="1"';
-});
+/**
+ * Point internal links at the hash router instead of a server route. Anchors,
+ * mailto:, tel: and external URLs are left alone. A query string is dropped —
+ * `/audit?plan=growth` and `/audit` are the same panel here.
+ */
+function rewriteLinks(s) {
+  return s.replace(/href="(\/[^"]*)"/g, (m, href) => {
+    if (href.startsWith("/#")) return `href="${href.slice(1)}"`;
+    const clean = href.split("?")[0].replace(/\/$/, "") || "/";
+    if (ROUTES.includes(clean)) return `href="#${clean}"`;
+    return 'href="#/" data-inert="1"';
+  });
+}
 
 /**
  * The published page supplies its own <head>, so we can't declare a charset.
@@ -161,21 +185,92 @@ body = body.replace(/href="\/(?!\/)[^"]*"/g, (m) => {
 const toEntities = (s) =>
   s.replace(/[^\x00-\x7F]/g, (ch) => `&#${ch.charCodeAt(0)};`);
 
-body = toEntities(body);
+const prep = (s) => toEntities(rewriteLinks(stripRuntime(s)));
 
-const css_ = css;
+/** Shared chrome, taken once from the homepage. */
+const grab = (source, tag) => {
+  const start = source.indexOf(`<${tag}`);
+  const end = source.lastIndexOf(`</${tag}>`);
+  if (start === -1 || end === -1) return "";
+  return source.slice(start, end + `</${tag}>`.length);
+};
+
+const header = prep(grab(html, "header"));
+const footer = prep(grab(html, "footer"));
+if (!header || !footer) throw new Error("Could not extract shared header/footer");
+
+/**
+ * Extract one element by walking nested open/close tags.
+ *
+ * A non-greedy regex is not good enough here: the poster is a <div> with four
+ * sibling <div> children, so `[\s\S]*?</div></div>` stops at the first close
+ * pair and truncates it. That leaves unbalanced markup, which the parser then
+ * re-nests — and the WebGL canvas ended up inside it, invisible.
+ */
+function grabElement(source, startIndex, tag = "div") {
+  const open = new RegExp(`<${tag}[\\s>]`, "g");
+  const close = new RegExp(`</${tag}>`, "g");
+  let depth = 0;
+  let i = startIndex;
+  while (i < source.length) {
+    open.lastIndex = i;
+    close.lastIndex = i;
+    const o = open.exec(source);
+    const c = close.exec(source);
+    if (!c) return null;
+    if (o && o.index < c.index) {
+      depth++;
+      i = o.index + 1;
+    } else {
+      depth--;
+      i = c.index + `</${tag}>`.length;
+      if (depth === 0) return source.slice(startIndex, i);
+    }
+  }
+  return null;
+}
+
+// The poster sits behind everything and is identical on every route, so it is
+// lifted out of the route panels and rendered once.
+const posterStart = html.indexOf(
+  '<div aria-hidden="true" class="pointer-events-none fixed inset-0 -z-10">',
+);
+const poster = posterStart === -1 ? "" : grabElement(html, posterStart) ?? "";
+if (!poster) console.error("  WARNING: poster not found — background will be flat");
+else console.error(`  poster extracted: ${poster.length} bytes`);
+
+let panels = "";
+for (const route of ROUTES) {
+  const res = await fetch(`${BASE}${route}`);
+  if (!res.ok) {
+    console.error(`  WARNING: ${route} returned ${res.status}, skipping`);
+    continue;
+  }
+  const pageHtml = await res.text();
+  const main = grab(pageHtml, "main");
+  if (!main) {
+    console.error(`  WARNING: no <main> found for ${route}, skipping`);
+    continue;
+  }
+  panels += `<div data-route="${route}"${route === "/" ? "" : " hidden"}>${prep(main)}</div>\n`;
+  console.error(`  panel ${route.padEnd(26)} ${(main.length / 1024).toFixed(0)} KB`);
+}
 
 const page = `<style>
-${css_}
+${css}
 /* This design commits to a single dark world — it is not theme-adaptive, and
    the whole palette is built for a near-black ground. Pin it so a light-themed
    host cannot hand the page its own inherited text colour, which is what made
    the headline render black-on-black. */
 :root { color-scheme: dark; }
 :root[data-theme="light"], :root[data-theme="dark"] { color-scheme: dark; }
+/* The dark ground lives on <html> ONLY. Setting it on both html and body
+   stops body's background being propagated to the root, so body paints it as
+   an ordinary element background — which lands ON TOP of the negative
+   z-index poster and WebGL canvas and hides the entire particle scene. */
 html { background-color: var(--color-ink) !important; }
 body {
-  background-color: var(--color-ink) !important;
+  background-color: transparent !important;
   color: var(--color-fg) !important;
 }
 /* Some host resets colour headings directly, which beats an inherited value.
@@ -192,6 +287,7 @@ h1 span, h2 span, h3 span { color: inherit; }
    inline opacity:0; with no React runtime here to animate them in, they must
    be forced visible or every section below the hero renders blank. */
 .reveal { opacity: 1 !important; transform: none !important; }
+[hidden] { display: none !important; }
 
 /* Canvas replaces the React-mounted one. It must sit ABOVE the poster: both
    are negative z-index, and the poster (which paints an opaque bg-ink layer)
@@ -214,7 +310,7 @@ h1 span, h2 span, h3 span { color: inherit; }
   z-index: 60;
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.5rem;
   padding: 0.5rem 0.9rem;
   border-radius: 999px;
   border: 1px solid var(--color-line);
@@ -222,33 +318,55 @@ h1 span, h2 span, h3 span { color: inherit; }
   color: var(--color-muted);
   font-size: 0.72rem;
   line-height: 1;
-  letter-spacing: 0.01em;
 }
 .preview-note b { color: var(--color-fg); font-weight: 600; }
 @media (max-width: 640px) { .preview-note { display: none; } }
 </style>
 
 <canvas id="scene-canvas" aria-hidden="true"></canvas>
-
-${body}
+${poster}
+${header}
+<div id="main">
+${panels}</div>
+${footer}
 
 <p class="preview-note">
-  <b>Preview</b> &mdash; homepage only. Other pages and the audit form are live in the repo.
+  <b>Preview</b> &mdash; fully clickable. The audit form is a demo; it sends nothing.
 </p>
 
 <script>${sceneJs}</script>
 <script>
 (function () {
+  /* ------------------------------------------------------------- 3D scene */
   var canvas = document.getElementById("scene-canvas");
-  function size() {
+  function sizeCanvas() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
   }
-  size();
-  window.addEventListener("resize", size);
+  sizeCanvas();
+  window.addEventListener("resize", sizeCanvas);
   try { PreviewScene.startScene(canvas); } catch (e) { console.error(e); }
 
-  // Header solidifies once you scroll past the hero.
+  /* -------------------------------------------------------------- router */
+  var panels = Array.prototype.slice.call(document.querySelectorAll("[data-route]"));
+  function route() {
+    var want = (location.hash || "#/").slice(1).split("?")[0] || "/";
+    var found = false;
+    panels.forEach(function (el) {
+      var match = el.getAttribute("data-route") === want;
+      el.hidden = !match;
+      if (match) found = true;
+    });
+    if (!found) panels.forEach(function (el, i) { el.hidden = i !== 0; });
+    window.scrollTo(0, 0);
+    // The scene measures the homepage's beat sections; tell it to re-measure
+    // now that a different panel is visible.
+    window.dispatchEvent(new Event("resize"));
+  }
+  window.addEventListener("hashchange", route);
+  route();
+
+  /* --------------------------------------------------------- page chrome */
   var header = document.querySelector("header");
   if (header) {
     var onScroll = function () {
@@ -262,28 +380,134 @@ ${body}
     window.addEventListener("scroll", onScroll, { passive: true });
   }
 
-  // Currency toggle on the pricing preview.
-  var priceEls = document.querySelectorAll("[data-price-usd]");
-  document.querySelectorAll('[role="group"][aria-label="Currency"] button').forEach(function (btn) {
-    btn.addEventListener("click", function () {
-      var cur = btn.textContent.trim();
-      btn.parentElement.querySelectorAll("button").forEach(function (b) {
-        var active = b === btn;
-        b.setAttribute("aria-pressed", String(active));
-        b.className = active
-          ? "rounded-full px-4 py-1.5 text-xs font-medium transition-all bg-linear-to-r from-brand to-brand-2 text-ink"
-          : "rounded-full px-4 py-1.5 text-xs font-medium transition-all text-muted hover:text-fg";
-      });
-      priceEls.forEach(function (el) {
-        el.textContent = el.getAttribute(cur === "INR" ? "data-price-inr" : "data-price-usd");
+  // Mobile menu.
+  var menuBtn = document.querySelector('[aria-controls="mobile-menu"]');
+  var menu = document.getElementById("mobile-menu");
+  if (menuBtn && menu) {
+    menuBtn.addEventListener("click", function () {
+      var open = menu.hasAttribute("hidden");
+      if (open) menu.removeAttribute("hidden"); else menu.setAttribute("hidden", "");
+      menuBtn.setAttribute("aria-expanded", String(open));
+    });
+    menu.addEventListener("click", function (e) {
+      if (e.target.closest("a")) {
+        menu.setAttribute("hidden", "");
+        menuBtn.setAttribute("aria-expanded", "false");
+      }
+    });
+  }
+
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest('[data-inert="1"]');
+    if (a) e.preventDefault();
+  });
+
+  /* ------------------------------------------------------ currency toggle */
+  document.querySelectorAll('[role="group"][aria-label="Currency"]').forEach(function (group) {
+    group.querySelectorAll("button").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var cur = btn.textContent.trim();
+        group.querySelectorAll("button").forEach(function (b) {
+          var active = b === btn;
+          b.setAttribute("aria-pressed", String(active));
+          b.className = active
+            ? "rounded-full px-4 py-1.5 text-xs font-medium transition-all bg-linear-to-r from-brand to-brand-2 text-ink"
+            : "rounded-full px-4 py-1.5 text-xs font-medium transition-all text-muted hover:text-fg";
+        });
+        var scope = group.closest("[data-route]") || document;
+        scope.querySelectorAll("[data-price-usd]").forEach(function (el) {
+          el.textContent = el.getAttribute(cur === "INR" ? "data-price-inr" : "data-price-usd");
+        });
       });
     });
   });
 
-  // Links to other routes don't exist in a one-page preview.
-  document.querySelectorAll('[data-inert="1"]').forEach(function (a) {
-    a.addEventListener("click", function (e) { e.preventDefault(); });
-  });
+  /* ----------------------------------------------------------- audit form */
+  var form = document.querySelector("form");
+  if (form) {
+    var stepPanels = form.querySelectorAll("[data-step]");
+    var headings = form.querySelectorAll("h2");
+    var bars = form.querySelectorAll(".flex-1 span:first-child");
+    var current = 0;
+
+    function show(n) {
+      current = n;
+      stepPanels.forEach(function (el, i) { el.hidden = i !== n; });
+      headings.forEach(function (el, i) { el.hidden = i !== n; });
+      bars.forEach(function (el, i) {
+        el.className = "h-0.5 rounded-full transition-all duration-500 " +
+          (i <= n ? "bg-linear-to-r from-brand to-brand-2" : "bg-line");
+      });
+      back.hidden = n === 0;
+      next.hidden = n === stepPanels.length - 1;
+      submit.hidden = n !== stepPanels.length - 1;
+    }
+
+    function invalid(el, msg) {
+      var wrap = el.closest("label") || el.parentElement;
+      var old = wrap.querySelector(".preview-error");
+      if (old) old.remove();
+      if (!msg) return false;
+      var p = document.createElement("span");
+      p.className = "preview-error text-xs text-danger";
+      p.setAttribute("role", "alert");
+      p.textContent = msg;
+      wrap.appendChild(p);
+      return true;
+    }
+
+    function validate(n) {
+      var panel = stepPanels[n];
+      var bad = false;
+      panel.querySelectorAll("input, select").forEach(function (el) {
+        if (el.type === "radio" || el.name === "company_website") return;
+        var need = ["business", "name", "email", "country"].indexOf(el.name) !== -1;
+        var v = (el.value || "").trim();
+        if (need && v.length < 2) {
+          bad = invalid(el, "This field is required") || bad;
+        } else if (el.name === "email" && v && !/^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$/.test(v)) {
+          bad = invalid(el, "Please enter a valid email address") || bad;
+        } else {
+          invalid(el, null);
+        }
+      });
+      return !bad;
+    }
+
+    // Rebuild the footer controls: the server rendered only step 1's button.
+    var controls = form.querySelector("button").parentElement;
+    controls.innerHTML = "";
+    var cls = "inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all duration-300 whitespace-nowrap h-11 px-6 text-[0.95rem] ";
+    var primary = cls + "bg-linear-to-r from-brand to-brand-2 text-ink font-semibold flex-1";
+    var back = document.createElement("button");
+    back.type = "button";
+    back.className = cls + "glass text-fg";
+    back.textContent = "Back";
+    var next = document.createElement("button");
+    next.type = "button";
+    next.className = primary;
+    next.textContent = "Continue";
+    var submit = document.createElement("button");
+    submit.type = "button";
+    submit.className = primary;
+    submit.textContent = "Send me the audit";
+    controls.appendChild(back);
+    controls.appendChild(next);
+    controls.appendChild(submit);
+
+    back.addEventListener("click", function () { show(Math.max(0, current - 1)); });
+    next.addEventListener("click", function () {
+      if (validate(current)) show(Math.min(stepPanels.length - 1, current + 1));
+    });
+    submit.addEventListener("click", function () {
+      if (!validate(current)) return;
+      submit.disabled = true;
+      submit.textContent = "Sending\\u2026";
+      setTimeout(function () { location.hash = "#/thank-you"; }, 550);
+    });
+
+    show(0);
+  }
 })();
 </script>`;
 

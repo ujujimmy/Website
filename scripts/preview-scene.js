@@ -341,10 +341,17 @@ export function startScene(canvas) {
   /* --- scroll progress, measured from the real sections (see Narrative) --- */
   let centers = [];
   const measure = () => {
-    centers = Array.from(document.querySelectorAll("[data-beat]")).map((el) => {
-      const r = el.getBoundingClientRect();
-      return r.top + window.scrollY + r.height / 2;
-    });
+    // Only the homepage panel carries beat sections. On any other route it is
+    // hidden, and a hidden element measures as zero — which would read as
+    // "scrolled past the end" and park the scene on the final shape. Filtering
+    // to visible elements leaves centers empty, and the frame loop falls back
+    // to beat 0, so other routes get the ambient hero cloud.
+    centers = Array.from(document.querySelectorAll("[data-beat]"))
+      .filter((el) => el.offsetParent !== null)
+      .map((el) => {
+        const r = el.getBoundingClientRect();
+        return r.top + window.scrollY + r.height / 2;
+      });
   };
   measure();
   window.addEventListener("resize", () => {

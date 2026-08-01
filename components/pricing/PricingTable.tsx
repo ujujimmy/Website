@@ -40,7 +40,7 @@ function CurrencySwitcher({
 }
 
 export function PricingTable({ compact = false }: { compact?: boolean }) {
-  const { currency, setCurrency, ready } = useCurrency();
+  const { currency, setCurrency } = useCurrency();
 
   return (
     <div>
@@ -70,21 +70,42 @@ export function PricingTable({ compact = false }: { compact?: boolean }) {
                 {tier.audience}
               </p>
 
+              {/*
+                The price renders visibly from the server in USD and is never
+                opacity-gated on a client-only "ready" flag. It was, and the
+                result was a pricing table with no prices at all for anyone
+                without JS — on a page whose entire pitch is publishing plain
+                numbers. An Indian visitor briefly seeing USD before it swaps
+                to INR is a far cheaper failure than everyone seeing nothing.
+
+                data-price-* lets the static preview build swap currency
+                without React; harmless in the app itself.
+              */}
               <div className="mt-6 flex items-end gap-2">
                 <span
-                  className={cn(
-                    "text-4xl font-semibold tabular-nums transition-opacity",
-                    !ready && "opacity-0",
-                  )}
+                  className="text-4xl font-semibold tabular-nums"
+                  data-price-usd={formatPrice(tier.price.USD, "USD")}
+                  data-price-inr={formatPrice(tier.price.INR, "INR")}
                 >
                   {formatPrice(tier.price[currency], currency)}
                 </span>
                 <span className="mb-1.5 text-sm text-faint">{tier.cadence}</span>
               </div>
               <p className="mt-2 min-h-[1.25rem] text-xs text-faint">
-                {tier.setup
-                  ? `+ ${formatPrice(tier.setup[currency], currency)} one-time setup`
-                  : "No setup fee"}
+                {tier.setup ? (
+                  <>
+                    +{" "}
+                    <span
+                      data-price-usd={formatPrice(tier.setup.USD, "USD")}
+                      data-price-inr={formatPrice(tier.setup.INR, "INR")}
+                    >
+                      {formatPrice(tier.setup[currency], currency)}
+                    </span>{" "}
+                    one-time setup
+                  </>
+                ) : (
+                  "No setup fee"
+                )}
               </p>
 
               <Button

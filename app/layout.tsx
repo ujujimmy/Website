@@ -1,6 +1,12 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Sora } from "next/font/google";
 import { brand } from "@/content/brand";
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
+import { Scene } from "@/components/three/Scene";
+import { SmoothScroll } from "@/components/providers/SmoothScroll";
+import { JsonLd } from "@/components/JsonLd";
+import { organizationLd, websiteLd } from "@/lib/seo";
 import "./globals.css";
 
 const inter = Inter({
@@ -59,7 +65,22 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${inter.variable} ${sora.variable}`}>
-      <body>{children}</body>
+      <body>
+        <a href="#main" className="sr-only-focusable glass px-4 py-2 text-sm">
+          Skip to content
+        </a>
+
+        {/* One persistent background layer for the whole site. */}
+        <Scene />
+        <SmoothScroll />
+
+        <Header />
+        <div id="main">{children}</div>
+        <Footer />
+
+        <JsonLd data={organizationLd()} />
+        <JsonLd data={websiteLd()} />
+      </body>
     </html>
   );
 }

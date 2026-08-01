@@ -2,7 +2,7 @@
 
 import { tiers, pricingAssurances } from "@/content/pricing";
 import { useCurrency, formatPrice } from "@/lib/currency";
-import { Button } from "@/components/ui/Button";
+import { SubscribeButton } from "@/components/pricing/SubscribeButton";
 import { Reveal } from "@/components/ui/Reveal";
 import { cn } from "@/lib/utils";
 
@@ -108,13 +108,9 @@ export function PricingTable({ compact = false }: { compact?: boolean }) {
                 )}
               </p>
 
-              <Button
-                href={tier.cta.href}
-                variant={tier.featured ? "primary" : "secondary"}
-                className="mt-7 w-full"
-              >
-                {tier.cta.label}
-              </Button>
+              {/* Renders the enquiry CTA until a Razorpay plan is configured
+                  for this tier and currency. */}
+              <SubscribeButton tier={tier} currency={currency} />
 
               <ul className="mt-8 flex flex-col gap-3 border-t border-line pt-7">
                 {tier.features.map((feature) => (

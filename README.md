@@ -63,11 +63,76 @@ convert far better than impressive invented ones.
 
 ### Environment variables
 
+See `.env.example` for the full list. Nothing here is required to run the
+site — every integration degrades to a sensible fallback when unset.
+
 ```bash
-RESEND_API_KEY=re_...          # without this, submissions still save + log, email no-ops
+RESEND_API_KEY=re_...          # without this, leads still save + log; email no-ops
 LEAD_NOTIFY_EMAIL=you@...      # where lead notifications go
-LEAD_FROM_EMAIL=leads@...      # optional, defaults to resend.dev
+NEXT_PUBLIC_CAL_LINK=...       # Cal.com handle; without it, booking shows email fallback
+RAZORPAY_KEY_ID=rzp_test_...   # public, safe in the browser
+RAZORPAY_KEY_SECRET=...        # SERVER ONLY — never prefix with NEXT_PUBLIC_
+RAZORPAY_WEBHOOK_SECRET=...    # SERVER ONLY
 ```
+
+---
+
+## Payments
+
+Razorpay Subscriptions, wired but **switched off** until you add plan IDs.
+With none configured, each pricing card shows the normal enquiry CTA — which
+is usually the right order for work at this price anyway: scope first, card
+second.
+
+### Turning it on
+
+1. Create a Razorpay account and complete KYC (PAN, business proof, bank
+   account). Only you can do this — it is your legal identity.
+2. Dashboard → Subscriptions → Plans. Create one plan **per tier per
+   currency**; a Razorpay plan has its amount and currency baked in.
+3. Paste the plan IDs into `razorpayPlanId` in `content/pricing.ts`.
+4. Set the three env vars above. Use `rzp_test_` keys until you have taken a
+   full test payment end to end.
+5. Dashboard → Settings → Webhooks → add
+   `https://yourdomain.com/api/webhooks/razorpay`, subscribe to
+   `subscription.activated`, `subscription.charged`, `subscription.halted`,
+   `subscription.cancelled`, `payment.failed`, and paste the signing secret
+   into `RAZORPAY_WEBHOOK_SECRET`.
+
+### Security rules — do not relax these
+
+- **The secret is server-only.** `lib/payments/razorpay.ts` imports
+  `server-only`; the API route returns the public key id and nothing else.
+  Verified by test: the secret appears in no HTML or JSON response.
+- **The browser never sends a price or a plan.** It sends a tier id; the
+  server maps tier → plan. Otherwise anyone could edit the request and
+  subscribe to Authority at Starter's price.
+- **A webhook is the only proof of payment.** The browser callback just
+  redirects to a thank-you page — anyone can open that URL. The webhook
+  verifies an HMAC over the *raw* request bytes using a timing-safe compare,
+  and unsigned or wrongly-signed requests are rejected with 401 (tested).
+- **Storage is not production-ready yet.** `lib/payments/store.ts` writes to
+  disk, which is ephemeral on Vercel. Point it at a database before taking
+  real money — you need a durable record of who paid.
+
+### Collecting from US / Canada / UK
+
+Razorpay settles to an Indian bank account and needs international payments
+explicitly enabled; approval and per-currency support vary, and export of
+services paperwork (FIRC / purpose codes) applies. Worth knowing before you
+promise a US client card billing:
+
+| Option | Good for | Watch out for |
+|---|---|---|
+| **Razorpay** | INR subscriptions, Indian clients | International needs separate activation |
+| **PayPal** | Instantly trusted by US/UK buyers | Higher fees, weaker subscription tooling |
+| **Wise Business** | Low-fee invoicing in USD/GBP/EUR | Manual — no automatic recurring billing |
+| **Paddle / Lemon Squeezy** | Selling subscriptions worldwide | They become merchant of record and handle VAT/sales tax for you; higher % but far less compliance work |
+
+A common setup for a small Indian agency selling abroad: **Razorpay for
+Indian clients, and Wise or PayPal invoices for foreign ones** until volume
+justifies a merchant-of-record. The integration here is isolated in
+`lib/payments/`, so adding a second provider does not touch the pricing UI.
 
 ---
 

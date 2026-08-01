@@ -25,6 +25,19 @@ export type Tier = {
   excludes?: string[];
   featured?: boolean;
   cta: { label: string; href: string };
+  /**
+   * Razorpay Plan IDs, created in the Razorpay dashboard under
+   * Subscriptions → Plans. One per currency, because a Razorpay plan has a
+   * fixed currency and amount baked in.
+   *
+   * The server maps tier -> plan ID and never accepts a plan or an amount
+   * from the browser, so a visitor cannot subscribe themselves to a cheaper
+   * plan by editing the request.
+   *
+   * TODO(payments): replace with your real plan IDs. Leave undefined and the
+   * subscribe button falls back to the normal enquiry CTA.
+   */
+  razorpayPlanId?: Partial<Record<Currency, string>>;
 };
 
 export const currencySymbol: Record<Currency, string> = {
@@ -51,6 +64,7 @@ export const tiers: Tier[] = [
     ],
     excludes: ["Website build", "Ongoing SEO content"],
     cta: { label: "Start with Starter", href: "/audit?plan=starter" },
+    // razorpayPlanId: { INR: "plan_XXXXXXXXXXXX", USD: "plan_XXXXXXXXXXXX" },
   },
   {
     id: "growth",
@@ -71,6 +85,7 @@ export const tiers: Tier[] = [
     ],
     featured: true,
     cta: { label: "Start with Growth", href: "/audit?plan=growth" },
+    // razorpayPlanId: { INR: "plan_XXXXXXXXXXXX", USD: "plan_XXXXXXXXXXXX" },
   },
   {
     id: "authority",

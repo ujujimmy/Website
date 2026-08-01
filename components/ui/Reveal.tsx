@@ -69,21 +69,54 @@ export function RevealWords({
   return (
     <span className={cn("inline", className)}>
       {words.map((word, i) => (
-        <span
-          key={i}
-          // Clip vertically only, so descenders are masked but the gradient
-          // text isn't clipped at the sides.
-          className="inline-block overflow-hidden align-bottom [clip-path:inset(-0.3em_-0.3em_0_-0.3em)]"
-        >
-          <span
-            className="inline-block animate-[word-up_0.9s_cubic-bezier(0.16,1,0.3,1)_both]"
-            style={{ animationDelay: `${delay + i * 0.055}s` }}
-          >
-            {word}
-            {i < words.length - 1 ? " " : ""}
+        // The space sits between the wrappers, not inside them. Inside an
+        // inline-block a trailing space is collapsed away, which ran every
+        // word of the headline together.
+        <span key={i}>
+          <span className="inline-block overflow-hidden align-bottom">
+            <span
+              className="inline-block animate-[word-up_0.9s_cubic-bezier(0.16,1,0.3,1)_both]"
+              style={{ animationDelay: `${delay + i * 0.055}s` }}
+            >
+              {word}
+            </span>
           </span>
+          {i < words.length - 1 ? " " : ""}
         </span>
       ))}
+    </span>
+  );
+}
+
+/**
+ * Same reveal, but the phrase moves as one unit.
+ *
+ * Use this instead of RevealWords wherever the text is gradient-filled.
+ * `background-clip: text` cannot paint through a descendant that has a
+ * transform on it, so a per-word animation nested inside a `.text-gradient`
+ * ancestor renders the words completely invisible. Keeping the gradient and
+ * the animation on the *same* element sidesteps that entirely.
+ */
+export function RevealPhrase({
+  text,
+  className,
+  delay = 0,
+}: {
+  text: string;
+  className?: string;
+  delay?: number;
+}) {
+  return (
+    <span className="inline-block overflow-hidden align-bottom">
+      <span
+        className={cn(
+          "inline-block animate-[word-up_0.9s_cubic-bezier(0.16,1,0.3,1)_both]",
+          className,
+        )}
+        style={{ animationDelay: `${delay}s` }}
+      >
+        {text}
+      </span>
     </span>
   );
 }

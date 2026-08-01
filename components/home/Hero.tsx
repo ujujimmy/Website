@@ -5,7 +5,7 @@ import { brand } from "@/content/brand";
 import { homeCopy } from "@/content/site";
 import { Button } from "@/components/ui/Button";
 import { Stars } from "@/components/ui/Stars";
-import { RevealWords } from "@/components/ui/Reveal";
+import { RevealPhrase, RevealWords } from "@/components/ui/Reveal";
 
 export function Hero() {
   const reduced = useReducedMotion();
@@ -21,7 +21,7 @@ export function Hero() {
           initial={reduced ? false : { opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="glass inline-flex items-center gap-2.5 rounded-full px-4 py-1.5 text-xs font-medium tracking-wide text-muted"
+          className="reveal glass inline-flex items-center gap-2.5 rounded-full px-4 py-1.5 text-xs font-medium tracking-wide text-muted"
         >
           <Stars size={13} />
           {hero.eyebrow}
@@ -29,16 +29,19 @@ export function Hero() {
 
         <h1 className="mt-8 max-w-4xl text-[clamp(2.5rem,7vw,4.75rem)] font-semibold leading-[1.04]">
           <RevealWords text="Get chosen before" delay={0.15} />{" "}
-          <span className="text-gradient">
-            <RevealWords text="they ever call you." delay={0.35} />
-          </span>
+          {/* Gradient text must animate as one unit — see RevealPhrase. */}
+          <RevealPhrase
+            text="they ever call you."
+            className="text-gradient"
+            delay={0.38}
+          />
         </h1>
 
         <motion.p
           initial={reduced ? false : { opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-7 max-w-2xl text-lg leading-relaxed text-muted sm:text-xl"
+          className="reveal mt-7 max-w-2xl text-lg leading-relaxed text-muted sm:text-xl"
         >
           {hero.sub}
         </motion.p>
@@ -47,7 +50,7 @@ export function Hero() {
           initial={reduced ? false : { opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.85, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-10 flex flex-col items-center gap-4 sm:flex-row"
+          className="reveal mt-10 flex flex-col items-center gap-4 sm:flex-row"
         >
           <Button href={brand.primaryCta.href} size="lg">
             {brand.primaryCta.label}
@@ -64,7 +67,7 @@ export function Hero() {
           initial={reduced ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 1 }}
-          className="mt-6 text-sm text-faint"
+          className="reveal mt-6 text-sm text-faint"
         >
           {hero.note}
         </motion.p>

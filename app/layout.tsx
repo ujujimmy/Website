@@ -64,7 +64,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${sora.variable}`}>
+    // `no-js` is stripped by the inline script below before first paint. If
+    // scripts are blocked it survives, and globals.css uses it to force the
+    // motion-driven scroll reveals visible instead of leaving the page blank.
+    <html lang="en" className={`no-js ${inter.variable} ${sora.variable}`}>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `document.documentElement.classList.remove('no-js')`,
+          }}
+        />
+      </head>
       <body>
         <a href="#main" className="sr-only-focusable glass px-4 py-2 text-sm">
           Skip to content

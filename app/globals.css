@@ -57,6 +57,17 @@
   }
 }
 
+/* Headline word reveal. CSS rather than JS so the LCP text paints without
+   waiting for hydration — see components/ui/Reveal.tsx. */
+@keyframes word-up {
+  from {
+    transform: translateY(110%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
 @keyframes shimmer {
   from {
     background-position: 200% 0;
@@ -180,6 +191,20 @@
     height: auto;
     clip-path: none;
     z-index: 100;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   No-JS safety net.
+   Scroll reveals are motion-driven, which means their server HTML carries an
+   inline opacity:0. Without this the page renders almost entirely blank when
+   scripts are blocked or fail — an unacceptable failure mode for the pages
+   that have to sell.
+--------------------------------------------------------------------------- */
+@layer utilities {
+  .no-js .reveal {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }
 

@@ -5,8 +5,8 @@ import { cn } from "@/lib/utils";
 
 /**
  * Standard entrance animation. Everything on the site that animates in uses
- * this so the timing feel is consistent, and it collapses to a plain div when
- * the visitor asks for reduced motion.
+ * this so the timing feel is consistent, and it collapses to a plain element
+ * when the visitor asks for reduced motion.
  */
 export function Reveal({
   children,
@@ -31,7 +31,10 @@ export function Reveal({
 
   return (
     <MotionTag
-      className={className}
+      // The `reveal` class lets the <noscript> rule in globals.css force these
+      // visible when JS never runs — motion's server-rendered inline opacity:0
+      // would otherwise leave most of the page blank.
+      className={cn("reveal", className)}
       initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
@@ -42,7 +45,16 @@ export function Reveal({
   );
 }
 
-/** Word-by-word headline reveal, used once per page on the main heading. */
+/**
+ * Word-by-word reveal for a page's main heading.
+ *
+ * Deliberately CSS-only rather than motion-driven. This is the LCP element on
+ * most pages, and the JS version shipped server HTML with every word
+ * translated out of view — leaving the headline invisible until hydration,
+ * delaying LCP, and blanking the page entirely if JS fails. A CSS animation
+ * paints on the first frame, needs no hydration, and is already neutralised by
+ * the global prefers-reduced-motion rule in globals.css.
+ */
 export function RevealWords({
   text,
   className,
@@ -52,26 +64,24 @@ export function RevealWords({
   className?: string;
   delay?: number;
 }) {
-  const reduced = useReducedMotion();
-  if (reduced) return <span className={className}>{text}</span>;
+  const words = text.split(" ");
 
   return (
     <span className={cn("inline", className)}>
-      {text.split(" ").map((word, i) => (
-        <span key={i} className="inline-block overflow-hidden align-bottom">
-          <motion.span
-            className="inline-block"
-            initial={{ y: "110%" }}
-            animate={{ y: 0 }}
-            transition={{
-              duration: 0.9,
-              delay: delay + i * 0.055,
-              ease: [0.16, 1, 0.3, 1],
-            }}
+      {words.map((word, i) => (
+        <span
+          key={i}
+          // Clip vertically only, so descenders are masked but the gradient
+          // text isn't clipped at the sides.
+          className="inline-block overflow-hidden align-bottom [clip-path:inset(-0.3em_-0.3em_0_-0.3em)]"
+        >
+          <span
+            className="inline-block animate-[word-up_0.9s_cubic-bezier(0.16,1,0.3,1)_both]"
+            style={{ animationDelay: `${delay + i * 0.055}s` }}
           >
             {word}
-            {i < text.split(" ").length - 1 ? " " : ""}
-          </motion.span>
+            {i < words.length - 1 ? " " : ""}
+          </span>
         </span>
       ))}
     </span>

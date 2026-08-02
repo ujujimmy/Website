@@ -21,12 +21,14 @@ export const brand = {
   domain: "dechensalon.com",
 
   contact: {
-    /** TODO(salon): confirm the number clients should actually reach you on. */
-    phone: "+91 00000 00000",
-    phoneHref: "tel:+910000000000",
-    /** TODO(salon): confirm. Digits only, country code first — no +, no spaces. */
-    whatsapp: "910000000000",
-    /** TODO(salon): confirm, or delete and the footer drops the email line. */
+    phone: "+91 97736 71272",
+    phoneHref: "tel:+919773671272",
+    /**
+     * Digits only, country code first — no +, no spaces. Every booking link on
+     * the site is built from this, so a wrong format here breaks all of them.
+     */
+    whatsapp: "919773671272",
+    /** TODO(salon): add an email to show one; the footer drops the line when empty. */
     email: "",
   },
 

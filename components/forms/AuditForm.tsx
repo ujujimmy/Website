@@ -68,7 +68,7 @@ const steps = [
   { title: "Where do we send it?", fields: ["name", "email", "phone", "country"] },
 ] as const;
 
-export function AuditForm({ defaultPlan }: { defaultPlan?: string }) {
+export function AuditForm({ defaultNeed }: { defaultNeed?: string }) {
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [serverError, setServerError] = useState<string | null>(null);
@@ -87,7 +87,13 @@ export function AuditForm({ defaultPlan }: { defaultPlan?: string }) {
     resolver: zodResolver(schema),
     mode: "onBlur",
     defaultValues: {
-      service: defaultPlan === "starter" ? "reviews" : "everything",
+      // Deep-linked from the "which one is you?" cards and the pricing CTAs,
+      // so the form opens with the visitor's answer already chosen.
+      service: (["reviews", "website", "seo", "everything"] as const).includes(
+        defaultNeed as never,
+      )
+        ? (defaultNeed as FormValues["service"])
+        : "everything",
       country: "United States",
     },
   });

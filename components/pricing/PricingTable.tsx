@@ -48,7 +48,7 @@ export function PricingTable({ compact = false }: { compact?: boolean }) {
         <CurrencySwitcher currency={currency} onChange={setCurrency} />
       </div>
 
-      <div className="mt-12 grid gap-6 lg:grid-cols-3">
+      <div className="mt-12 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
         {tiers.map((tier, i) => (
           <Reveal key={tier.id} delay={i * 0.08}>
             <div
@@ -112,7 +112,20 @@ export function PricingTable({ compact = false }: { compact?: boolean }) {
                   for this tier and currency. */}
               <SubscribeButton tier={tier} currency={currency} />
 
-              <ul className="mt-8 flex flex-col gap-3 border-t border-line pt-7">
+              {tier.buildsOn && (
+                <p className="mt-8 border-t border-line pt-7 text-sm text-muted">
+                  Everything in{" "}
+                  <span className="font-medium text-fg">{tier.buildsOn}</span>,
+                  plus:
+                </p>
+              )}
+
+              <ul
+                className={cn(
+                  "flex flex-col gap-3",
+                  tier.buildsOn ? "mt-4" : "mt-8 border-t border-line pt-7",
+                )}
+              >
                 {tier.features.map((feature) => (
                   <li key={feature} className="flex gap-3 text-sm text-muted">
                     <svg viewBox="0 0 20 20" className="mt-0.5 h-4 w-4 shrink-0 fill-none stroke-brand-2 stroke-[2.2]" aria-hidden="true">

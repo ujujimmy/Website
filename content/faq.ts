@@ -21,7 +21,7 @@ export const faqs: Faq[] = [
   },
   {
     q: "Am I locked into a contract?",
-    a: "No. Everything is month to month with 30 days notice. There's an initial setup fee on the Starter and Growth plans that covers the profile overhaul or website build, but after that you can stop whenever you want.",
+    a: "No. Every plan is month to month with 30 days notice, and there is no setup fee. If it stops being worth it, you stop paying — we would rather earn the next month than lock you into a year of them."
   },
   {
     q: "Who owns the website and accounts?",

@@ -30,9 +30,9 @@ const included = [
 export default async function AuditPage({
   searchParams,
 }: {
-  searchParams: Promise<{ plan?: string }>;
+  searchParams: Promise<{ need?: string; plan?: string }>;
 }) {
-  const { plan } = await searchParams;
+  const { need } = await searchParams;
   const testimonial = testimonials.at(0);
 
   return (
@@ -106,7 +106,7 @@ export default async function AuditPage({
 
         {/* Form side */}
         <div className="lg:sticky lg:top-28 lg:self-start">
-          <AuditForm defaultPlan={plan} />
+          <AuditForm defaultNeed={need} />
           <p className="mt-5 text-center text-xs text-faint">
             Prefer to talk first?{" "}
             <a

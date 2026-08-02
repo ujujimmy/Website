@@ -8,6 +8,7 @@ import {
   AuditBeat,
 } from "@/components/home/Beats";
 import { Scorecard } from "@/components/home/Scorecard";
+import { PathSelector } from "@/components/home/PathSelector";
 import {
   TrustBar,
   Process,
@@ -43,6 +44,7 @@ export default function HomePage() {
 
       {/* Supporting detail for visitors who need more than the reel. */}
       <TrustBar />
+      <PathSelector />
       <Process />
       <WorkPreview />
       <Scorecard />

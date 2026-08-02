@@ -11,7 +11,7 @@ import { createSubscription } from "@/lib/payments/razorpay";
  */
 
 const schema = z.object({
-  tierId: z.enum(["starter", "growth", "authority"]),
+  tierId: z.enum(["reviews", "website", "seo", "complete"]),
   currency: z.enum(["USD", "INR"]),
   name: z.string().min(2).max(80),
   email: z.email().max(160),

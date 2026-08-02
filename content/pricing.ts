@@ -1,25 +1,37 @@
 /**
- * Pricing is priced by market, not by exchange rate — USD and INR are set
- * independently on purpose. Do not compute one from the other.
+ * Pricing.
  *
- * TODO(pricing): sanity-check these against what you actually want to charge
- * in North America before launch. The USD numbers below are positioned for a
- * US/Canada local business, which is deliberately well above Indian rates.
+ * Four tiers, priced by market rather than by exchange rate — the USD and INR
+ * figures are set independently on purpose. Do not compute one from the other.
+ *
+ * USD is positioned for a US/Canada/UK local business. INR sits well below the
+ * straight conversion because that is what the Indian market pays, not because
+ * the work is any smaller.
+ *
+ * TODO(pricing): confirm the INR column. The USD figures were chosen by the
+ * owner; the rupee ones are a proposal at roughly 60–65% of the converted
+ * price, which is a normal gap for this market. Adjust to taste.
  */
 
 export type Currency = "USD" | "INR";
 
 export type Tier = {
-  id: "starter" | "growth" | "authority";
+  id: "reviews" | "website" | "seo" | "complete";
   name: string;
   /** Who it's for, one line. */
   audience: string;
   /** Monthly price by currency. */
   price: Record<Currency, number>;
-  /** One-time setup fee, if any. */
+  /** One-time setup fee, if any. Null for all tiers today. */
   setup: Record<Currency, number> | null;
   /** Shown under the price. */
   cadence: string;
+  /**
+   * When set, the card leads with "Everything in X, plus:" and lists only the
+   * additions — the same structure that makes a four-tier ladder readable
+   * instead of four near-identical feature lists.
+   */
+  buildsOn?: string;
   features: string[];
   /** Things explicitly NOT included, so the tier boundary is honest. */
   excludes?: string[];
@@ -47,64 +59,83 @@ export const currencySymbol: Record<Currency, string> = {
 
 export const tiers: Tier[] = [
   {
-    id: "starter",
-    name: "Starter",
+    id: "reviews",
+    name: "Review Automation",
     audience:
-      "One location that needs its Google presence fixed and its rating climbing.",
-    price: { USD: 499, INR: 15000 },
-    setup: { USD: 300, INR: 9000 },
-    cadence: "per month",
-    features: [
-      "Google Business Profile overhaul",
-      "Review request automation (SMS + email)",
-      "Review responses within 24 hours",
-      "Negative review alerts",
-      "Monthly rating & competitor report",
-      "Email support",
-    ],
-    excludes: ["Website build", "Ongoing SEO content"],
-    cta: { label: "Start with Starter", href: "/audit?plan=starter" },
-    // razorpayPlanId: { INR: "plan_XXXXXXXXXXXX", USD: "plan_XXXXXXXXXXXX" },
-  },
-  {
-    id: "growth",
-    name: "Growth",
-    audience:
-      "The common case: the reviews need work and the website is holding everything back.",
-    price: { USD: 1499, INR: 45000 },
-    setup: { USD: 1500, INR: 45000 },
-    cadence: "per month",
-    features: [
-      "Everything in Starter",
-      "Custom website, built and launched",
-      "On-page & technical SEO",
-      "Local SEO and citation cleanup",
-      "2 content pages per month",
-      "Conversion tracking & call tracking",
-      "Monthly strategy call",
-    ],
-    featured: true,
-    cta: { label: "Start with Growth", href: "/audit?plan=growth" },
-    // razorpayPlanId: { INR: "plan_XXXXXXXXXXXX", USD: "plan_XXXXXXXXXXXX" },
-  },
-  {
-    id: "authority",
-    name: "Authority",
-    audience:
-      "Multi-location or competitive markets where you intend to own the category.",
-    price: { USD: 3499, INR: 105000 },
+      "Your rating is holding you back and nobody is asking your happy customers to say so.",
+    price: { USD: 149, INR: 7999 },
     setup: null,
     cadence: "per month",
     features: [
-      "Everything in Growth",
-      "Up to 5 locations",
-      "6 content pages per month",
-      "Digital PR & link acquisition",
-      "Landing pages for paid campaigns",
-      "Dedicated account manager",
-      "Bi-weekly strategy calls",
+      "Google Business Profile optimisation",
+      "Automatic review requests by SMS and email",
+      "Review responses within 24 hours",
+      "Negative review alerts",
+      "Win-back campaign to past customers",
+      "In-store QR code and tap-to-review cards",
     ],
-    cta: { label: "Talk to us about Authority", href: "/contact?plan=authority" },
+    excludes: ["Website build", "Ongoing SEO"],
+    cta: { label: "Get more reviews", href: "/audit?need=reviews" },
+    // razorpayPlanId: { INR: "plan_XXXXXXXXXXXX", USD: "plan_XXXXXXXXXXXX" },
+  },
+  {
+    id: "website",
+    name: "Website Package",
+    audience:
+      "You need a site that loads fast and turns the visit into a phone call.",
+    price: { USD: 297, INR: 14999 },
+    setup: null,
+    cadence: "per month",
+    features: [
+      "Custom website, designed and built",
+      "Mobile-first, sub-2-second target",
+      "Built on an SEO-ready foundation",
+      "Structured to capture leads, not just inform",
+      "Hosting included",
+      "Unlimited content updates and maintenance",
+    ],
+    excludes: ["Review generation", "Ongoing SEO content"],
+    cta: { label: "Build my website", href: "/audit?need=website" },
+    // razorpayPlanId: { INR: "plan_XXXXXXXXXXXX", USD: "plan_XXXXXXXXXXXX" },
+  },
+  {
+    id: "seo",
+    name: "Local SEO Growth",
+    audience:
+      "Reviews are handled — now you want to be the business people find first.",
+    price: { USD: 397, INR: 19999 },
+    setup: null,
+    cadence: "per month",
+    buildsOn: "Review Automation",
+    features: [
+      "Deep Google Business Profile optimisation",
+      "Citation building and cleanup",
+      "Local SEO for your service area",
+      "Monthly on-page improvements",
+      "Rank and competitor reporting",
+    ],
+    cta: { label: "Grow my business", href: "/audit?need=seo" },
+    // razorpayPlanId: { INR: "plan_XXXXXXXXXXXX", USD: "plan_XXXXXXXXXXXX" },
+  },
+  {
+    id: "complete",
+    name: "Complete Growth System",
+    audience:
+      "You would rather hand the whole thing over and get one report a month.",
+    price: { USD: 497, INR: 24999 },
+    setup: null,
+    cadence: "per month",
+    buildsOn: "Local SEO Growth",
+    features: [
+      "Custom website, built and hosted",
+      "Mobile-first and SEO-ready",
+      "Unlimited updates and maintenance",
+      "Everything above, managed for you",
+      "Monthly strategy call",
+    ],
+    featured: true,
+    cta: { label: "Get everything", href: "/audit?need=everything" },
+    // razorpayPlanId: { INR: "plan_XXXXXXXXXXXX", USD: "plan_XXXXXXXXXXXX" },
   },
 ];
 

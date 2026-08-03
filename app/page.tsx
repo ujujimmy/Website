@@ -9,6 +9,7 @@ import {
 } from "@/components/home/Beats";
 import { Scorecard } from "@/components/home/Scorecard";
 import { PathSelector } from "@/components/home/PathSelector";
+import { ProofItWorks } from "@/components/home/ProofItWorks";
 import {
   TrustBar,
   Process,
@@ -46,6 +47,7 @@ export default function HomePage() {
       <TrustBar />
       <PathSelector />
       <Process />
+      <ProofItWorks />
       <WorkPreview />
       <Scorecard />
       <Testimonials />

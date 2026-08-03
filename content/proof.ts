@@ -48,6 +48,33 @@ export const stats = [
   { value: "100%", label: "Results verifiable on Google" },
 ];
 
+/**
+ * The headline result — the single strongest piece of evidence, given its own
+ * section rather than a stat tile.
+ *
+ * Only one campaign has recorded before/after numbers, so this shows that one
+ * properly instead of a grid of averages across a client base that does not
+ * exist. The verification line is the point: unlike a software vendor quoting
+ * aggregate data, every figure here sits on a public listing anyone can open.
+ *
+ * TODO(proof): as more campaigns get measured, this can become an array and
+ * the section can rotate between them.
+ */
+export const headlineResult = {
+  client: "Gangnam Korean Restaurant",
+  location: "Delhi, India",
+  industry: "Restaurant",
+  before: { rating: 3.9, label: "Where they started" },
+  after: { rating: 4.4, label: "Where they are now" },
+  reviews: "1,800+",
+  reviewsLabel: "Reviews generated",
+  duration: "Ongoing campaign",
+  summary:
+    "A well-liked restaurant stuck at 3.9 stars — below the line where most diners stop scrolling. The food was never the problem. Nobody was asking the happy customers to say so.",
+  verify:
+    "Search “Gangnam Korean Restaurant, Delhi” on Google Maps right now and check the rating against what we claim here.",
+};
+
 /** Real client names, shown as a simple wordmark row. */
 export const clientLogos = [
   "Gangnam Korean Restaurant",

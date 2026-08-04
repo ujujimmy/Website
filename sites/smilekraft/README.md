@@ -21,6 +21,27 @@ python3 -m http.server 8080     # → http://localhost:8080
 
 ---
 
+## Showing it to the clinic
+
+**One file you can WhatsApp them.** This inlines the CSS and JS into a single
+self-contained HTML file — it opens by double-click on any phone or laptop, no
+server, no network:
+
+```bash
+node sites/smilekraft/build-preview.mjs
+# → sites/smilekraft/smilekraft-preview.html  (~59 KB)
+```
+
+The file is gitignored; regenerate it after any edit. Only the embedded map needs a
+connection — without one it stays blank and everything else still works.
+
+**A link instead.** Drag the `sites/smilekraft/` folder onto
+[app.netlify.com/drop](https://app.netlify.com/drop) for an instant public URL, no
+account needed to start. Cloudflare Pages, Vercel and GitHub Pages all work too — it's
+plain static files, so any of them will serve it as-is.
+
+---
+
 ## What's on the page
 
 Hero with the Google rating → appointment form → trust strip → nine treatments →

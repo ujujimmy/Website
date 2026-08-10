@@ -4,7 +4,6 @@ import { brand } from "@/content/brand";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
-import { SmoothScroll } from "@/components/providers/SmoothScroll";
 import { RevealRoot } from "@/components/providers/RevealRoot";
 import { JsonLd } from "@/components/JsonLd";
 import { salonLd } from "@/lib/seo";
@@ -97,7 +96,6 @@ export default function RootLayout({
           Skip to content
         </a>
 
-        <SmoothScroll />
         <RevealRoot />
         <Header />
         <main id="main">{children}</main>

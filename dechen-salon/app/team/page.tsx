@@ -3,7 +3,6 @@ import Link from "next/link";
 import { tiers } from "@/content/tiers";
 import { founder } from "@/content/founder";
 import { PageHero } from "@/components/layout/PageHero";
-import { BraidScene } from "@/components/three/BraidScene";
 import { Section, SectionHead } from "@/components/ui/Section";
 import { Reveal } from "@/components/ui/Reveal";
 import { Button, Arrow } from "@/components/ui/Button";
@@ -23,16 +22,9 @@ export default function TeamPage() {
     <>
       <PageHero
         eyebrow="The team"
-        title="Three ropes, one plait."
-        sub="Every service is offered at three levels. The difference is experience — the care, the products and the time you get are the same at all three."
+        title="Three levels, one standard."
+        sub="Every service is offered by a Top Artist, a Creative Artist or the Creative Director. The difference is experience — the care, the products and the time you get are the same at all three."
       />
-
-      {/* The braid: three ropes plaiting as the section rises. */}
-      <div className="px-6">
-        <div className="mx-auto max-w-md">
-          <BraidScene />
-        </div>
-      </div>
 
       <Section>
         <ul className="grid gap-5 lg:grid-cols-3">
@@ -100,7 +92,7 @@ export default function TeamPage() {
             </p>
             <Link
               href="/about"
-              className="inline-flex items-center gap-2 self-start border-b border-gold-ink/40 pb-1 text-sm font-medium text-gold-ink transition-colors hover:border-gold-ink"
+              className="link-underline inline-flex items-center gap-2 self-start pb-1 text-sm font-medium text-gold-ink"
             >
               What we stand for
             </Link>

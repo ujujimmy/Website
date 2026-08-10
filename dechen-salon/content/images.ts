@@ -8,10 +8,11 @@
  *
  * PROVENANCE
  * These were extracted from the salon's own printed catalog (see
- * scripts/extract-images.py). Two are genuinely the salon's: `founder` and
- * `extensionsBundles`. The rest are the model and reference shots the catalog
- * uses. They work, but photographs of DECHEN's own clients and interior would
- * be a large upgrade — swap them in here as they arrive.
+ * scripts/extract-images.py) and encoded to WebP by scripts/optimise-images.mjs.
+ * Two are genuinely the salon's: `founder` and `extensionsBundles`. The rest are
+ * the model and reference shots the catalog uses. They work, but photographs of
+ * DECHEN's own clients and interior would be a large upgrade — drop a new file
+ * into public/img/, run the optimise script, and update the entry here.
  */
 
 export type Img = {
@@ -27,7 +28,7 @@ const img = (
   width: number,
   height: number,
   alt: string,
-): Img => ({ src: `/img/${name}.jpg`, width, height, alt });
+): Img => ({ src: `/img/${name}.webp`, width, height, alt });
 
 export const images = {
   /* Portraits and people */

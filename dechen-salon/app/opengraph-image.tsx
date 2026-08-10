@@ -1,6 +1,12 @@
 import { ImageResponse } from "next/og";
 import { brand } from "@/content/brand";
 
+/**
+ * Generated once at build time. `output: "export"` has no server to render
+ * images on demand, so this must be explicitly static.
+ */
+export const dynamic = "force-static";
+
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 export const alt = `${brand.name} — ${brand.tagline}`;

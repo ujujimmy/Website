@@ -1,3 +1,5 @@
+import { Reveal } from "./Reveal";
+
 /** Shared page furniture: section shells, eyebrows and the blossom divider. */
 
 export function Section({
@@ -48,10 +50,18 @@ export function SectionHead({
 }) {
   return (
     <header className={center ? "mx-auto max-w-2xl text-center" : "max-w-2xl"}>
-      {eyebrow ? <Eyebrow>{eyebrow}</Eyebrow> : null}
-      <h2 className="mt-4 text-3xl leading-[1.15] sm:text-4xl">{title}</h2>
+      {eyebrow ? (
+        <Reveal>
+          <Eyebrow>{eyebrow}</Eyebrow>
+        </Reveal>
+      ) : null}
+      <Reveal variant="mask" delay={0.05} className="mt-4">
+        <h2 className="text-3xl leading-[1.15] sm:text-4xl">{title}</h2>
+      </Reveal>
       {sub ? (
-        <p className="mt-5 text-base leading-relaxed text-muted sm:text-lg">{sub}</p>
+        <Reveal delay={0.14}>
+          <p className="mt-5 text-base leading-relaxed text-muted sm:text-lg">{sub}</p>
+        </Reveal>
       ) : null}
     </header>
   );

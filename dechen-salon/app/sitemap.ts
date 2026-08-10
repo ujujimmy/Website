@@ -2,6 +2,10 @@ import type { MetadataRoute } from "next";
 import { brand } from "@/content/brand";
 import { chapters } from "@/content/menu";
 
+/** Written once at build time — `output: "export"` has no server to render it. */
+export const dynamic = "force-static";
+
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
 

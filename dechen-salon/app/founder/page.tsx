@@ -24,14 +24,13 @@ export default function FounderPage() {
 
       <section className="px-6 pb-16">
         <div className="mx-auto grid w-full max-w-5xl items-start gap-10 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-14">
-          <Reveal>
+          <Reveal variant="image">
             <div className="relative mx-auto aspect-[4/5] w-full max-w-sm overflow-hidden rounded-[2rem] bg-petal lg:mx-0 lg:sticky lg:top-28">
               <Image
                 src={images.founder.src}
                 alt={images.founder.alt}
                 fill
                 sizes="(max-width: 1024px) 80vw, 32vw"
-              quality={72}
                 className="object-cover"
                 priority
               />

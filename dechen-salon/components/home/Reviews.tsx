@@ -46,7 +46,7 @@ export function Reviews({ limit }: { limit?: number }) {
           href={googleUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 border-b border-gold-ink/40 pb-1 text-sm font-medium text-gold-ink transition-colors hover:border-gold-ink"
+          className="link-underline inline-flex items-center gap-2 pb-1 text-sm font-medium text-gold-ink"
         >
           Find us on Google
         </a>

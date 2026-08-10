@@ -4,11 +4,81 @@ Website for **DECHEN Salon**, a women-led, Tibetan-owned salon in Majnu-ka-Tilla
 New Delhi, founded by **Dechen Dolkar** — India's first Master Hair Extensions
 Trainer and an All-India Educator for Olaplex, Balmain and BBCOS Italy.
 
-Baby pink, gold and deep plum, taken from the salon's own printed catalog. The
-homepage is a seven-act scroll story told by one continuous 3D strand of hair.
+Baby pink, gold and deep plum, taken from the salon's own printed catalog.
+Thirteen pages, every price published, booking by WhatsApp and phone.
 
-> This directory is self-contained. The `Northbound` app in the repository root
-> is a different business and shares nothing with it.
+It builds to **plain static HTML** — no server, no serverless functions, no cold
+starts. Host it anywhere.
+
+> This directory is self-contained. The app in the repository root is a
+> different business and shares nothing with it.
+
+---
+
+## Deploying to Netlify
+
+The whole config lives in `netlify.toml`. There is one setting you must get
+right, because this repository contains two different websites.
+
+1. **netlify.com → Add new site → Import an existing project → GitHub**, and
+   pick `ujujimmy/Website`.
+2. On the settings screen, open **Base directory** and set it to:
+
+   ```
+   dechen-salon
+   ```
+
+   This is the important one. Leave it blank and Netlify builds the wrong site.
+
+3. Everything else is filled in from `netlify.toml` — build command `pnpm build`,
+   publish directory `out`, Node 22. Don't override them.
+4. **Deploy.** First build takes a couple of minutes; you get a
+   `something.netlify.app` address.
+5. To use the real domain: **Domain management → Add a domain**, enter
+   `dechensalon.com`, and point the domain's nameservers or DNS records where
+   Netlify tells you. HTTPS is issued automatically.
+
+Every push to the branch redeploys. Pull requests get their own preview URL.
+
+### Deploying by hand instead
+
+```bash
+cd dechen-salon
+pnpm install
+pnpm build          # writes ./out
+npx netlify-cli deploy --dir=out --prod
+```
+
+Or drag the `out` folder onto the Netlify dashboard. It is only static files.
+
+---
+
+## ⚠️ Before it goes live
+
+Two things are still placeholders. Search the codebase for `TODO(salon)`.
+
+| What | Where | Currently |
+|---|---|---|
+| **Street address** | `content/brand.ts` → `address` | A guess based on the area |
+| **Opening hours** | `content/brand.ts` → `hours` | "Every day, 10:00 am – 8:00 pm" |
+
+Both appear in the page footer, on `/visit`, and in the Google structured data,
+so a wrong address is a wrong address everywhere.
+
+The phone and WhatsApp number (**+91 97736 71272**) are in and correct. Every
+booking link on the site is built from `brand.contact.whatsapp`, which must stay
+digits-only with the country code first: `919773671272`.
+
+### Photographs
+
+`content/images.ts` is the manifest — swapping a picture is one edit there.
+Everything in `public/img/` was extracted from the salon's catalog PDF. Two are
+genuinely the salon's own (Dechen's portrait, the extension bundles); the rest
+are the model and reference shots the catalog uses. **Real photographs of
+DECHEN's own clients and interior would be a significant upgrade.**
+
+To add one: drop the file into `public/img/`, run `pnpm images` to encode it,
+then add or update its entry in `content/images.ts`.
 
 ---
 
@@ -16,47 +86,40 @@ homepage is a seven-act scroll story told by one continuous 3D strand of hair.
 
 ```bash
 pnpm install
-pnpm dev                       # http://localhost:3000
+pnpm dev                    # http://localhost:3000
 
-pnpm build && pnpm start -p 3200
+pnpm build                  # static export into ./out
+pnpm preview                # serve ./out at http://localhost:3200
 pnpm typecheck
 
-# Verification, all against a running server
-node scripts/screenshots.mjs http://localhost:3200 shots   # every act + route, desktop & mobile
-node scripts/a11y.mjs         http://localhost:3200        # axe, WCAG 2.1 AA, exits non-zero on failure
-node scripts/lighthouse.mjs   http://localhost:3200        # throttled mobile
+# Verification, against a running preview
+pnpm shots       http://localhost:3200 shots   # every route, desktop & mobile
+pnpm a11y        http://localhost:3200         # axe, WCAG 2.1 AA, non-zero exit on failure
+pnpm lighthouse  http://localhost:3200
 
-# Re-extract photographs if the catalog PDF changes
-python3 scripts/extract-images.py path/to/catalog.pdf public/img
+pnpm images                 # re-encode public/img to WebP
+pnpm extract-images <pdf>   # pull photographs out of a new catalog
 ```
 
 Node 22, pnpm 10.
 
 ---
 
-## ⚠️ Before this goes live
+## The pages
 
-Contact details could not be verified — dechensalon.com was unreachable from the
-build environment — so they are placeholders. Search for `TODO(salon)`.
-
-| What | Where |
+| Route | |
 |---|---|
-| **Phone and WhatsApp number** | `content/brand.ts` → `contact` |
-| **Exact street address** | `content/brand.ts` → `address` |
-| **Opening hours and weekly off** | `content/brand.ts` → `hours` |
-| **Google Maps and reviews links** | `content/brand.ts`, `content/reviews.ts` |
-| **Instagram handle** | `content/brand.ts` — currently `@dechensalon` |
+| `/` | Hero, philosophy, services, colour, extensions, founder, tiers, lookbook, reviews, visit |
+| `/services` + 4 chapters | Cuts & styling, colour, extensions, treatments |
+| `/menu` | The complete price list, filterable by stylist tier |
+| `/about` | The philosophy and the eight pillars |
+| `/founder` | Dechen's story and credentials |
+| `/team` | The three stylist tiers |
+| `/gallery` | The lookbook and an Olaplex before/after |
+| `/reviews` | Both client reviews |
+| `/visit` | Address, hours, map, tap-to-call |
 
-The WhatsApp number must be digits only, country code first: `919xxxxxxxxx`.
-Every booking link on the site is built from it.
-
-### Photographs
-
-`content/images.ts` is the manifest — swapping an image is one edit there.
-Everything currently in `public/img/` came out of the salon's catalog PDF. Two
-are genuinely the salon's (Dechen's portrait, the extension bundles); the rest
-are the model and reference shots the catalog uses. **Photographs of DECHEN's own
-clients and interior would be a significant upgrade.**
+Plus a 404 page, `robots.txt`, `sitemap.xml`, a favicon and a social share card.
 
 ---
 
@@ -69,12 +132,11 @@ transcribed from the salon's catalog.
 | File | What it holds |
 |---|---|
 | `content/brand.ts` | Name, tagline, contact, hours, WhatsApp link builders |
-| `content/menu.ts` | **Every service and price.** Also the five shade families |
+| `content/menu.ts` | **Every service and price**, and the five shade families |
 | `content/tiers.ts` | Top Artist / Creative Artist / Creative Director |
 | `content/founder.ts` | Dechen's quote, bio and credentials |
 | `content/philosophy.ts` | The philosophy and the eight pillars |
 | `content/reviews.ts` | The two real reviews |
-| `content/story.ts` | The seven acts of the homepage |
 | `content/images.ts` | Image manifest with dimensions and alt text |
 
 Prices are transcribed exactly. Where the catalog printed a range it is a range,
@@ -86,68 +148,52 @@ links to WhatsApp with that service already named in the message.
 
 ---
 
-## The 3D
+## How the motion works
 
-`lib/strand/` — the salon sells hair, so the animation is hair. One
-`InstancedMesh` of camera-facing ribbons, one draw call, morphing between seven
-shapes as you scroll:
+Three entrances, used sparingly, all CSS. `RevealRoot` is the only JavaScript
+involved: one shared IntersectionObserver for the whole page that stamps
+`data-shown` on elements as they arrive.
 
-| Act | Shape | Ground |
+| | Where | What |
 |---|---|---|
-| Open | Hair falling either side of the name, curling inward | blush |
-| Philosophy | A lotus | blush |
-| The cut | Every strand parallel, ending on one level line | rose |
-| Colour | A fan carrying the five shade families | plum |
-| Length | A curtain growing from 16″ to 30″ | plum |
-| Care | Two helices pinching together — bonds knitting | plum |
-| Visit | A soft ring, like a mirror to sit in front of | blush |
+| `Rise` | Above the fold | Plain CSS animation on first paint. Never waits for hydration. |
+| `Reveal` | Below the fold | Fade and lift as it scrolls into view. |
+| `Reveal variant="mask"` | Section headings | The line rises from behind its own edge. |
+| `Reveal variant="image"` | Feature photographs | A wipe up the frame, the picture settling out of a slight push-in. |
 
-`/team` reuses the same shader for three ropes plaiting into a braid, one per
-stylist tier.
+Two rules this follows, both learned the hard way:
 
-The floor colour eases between those grounds as you scroll, and `--darkness`
-(written by `StoryStage` each frame) cross-fades the copy between ink and petal
-so text is never caught mid-transition at low contrast.
+- **The hero `h1` has no entrance at all.** A transparent element has not been
+  painted, so animating the largest-contentful-paint element pushes the metric
+  out by seconds on a slow phone.
+- **A clip-path reveal clips its own child, never itself.** Clipping an element
+  to zero height also shrinks the rectangle IntersectionObserver measures, so a
+  self-clipping reveal never becomes visible enough to trigger itself and sits
+  there invisible forever.
 
-### Rules the 3D follows
-
-- **The copy is always real DOM.** The canvas renders behind it and carries
-  nothing. With WebGL off the site reads and ranks exactly the same.
-- **Reduced motion and no-WebGL get a poster**, not a blank space — a hand-drawn
-  SVG of the same idea.
-- **three.js loads late and conditionally.** It is ~230KB and it is decoration.
-  Capable machines get it once the browser goes idle; weaker ones only once the
-  visitor scrolls or touches the page. Someone who lands, reads the hero and taps
-  Book never pays for it. Loading it eagerly cost 5.6s of blocked main thread on
-  a throttled mobile profile.
-- **Above the fold never waits for JavaScript.** `Rise` (a server component,
-  pure CSS) is used at the top of a page; `Reveal` (an attribute plus one shared
-  observer in `RevealRoot`) is used below it. The hero `h1` has no entrance at
-  all, because a transparent element has not been painted.
+Everything degrades to its finished state with JavaScript off or
+`prefers-reduced-motion` set — both are asserted in the verification below.
 
 ---
 
 ## Measured
 
 Lighthouse, throttled mobile, real network and CPU throttling
-(`throttlingMethod: "devtools"` — the default Lantern simulation extrapolates
-from observed CPU durations and is wildly pessimistic on a shared build machine).
+(`throttlingMethod: "devtools"` — the default simulation extrapolates from
+observed CPU timings and is wildly pessimistic on a shared build machine).
 
 | Page | Performance | Accessibility | Best practices | SEO | CLS |
 |---|---|---|---|---|---|
-| `/` | 83 | 100 | 100 | 100 | 0 |
-| `/menu` | 93 | 100 | 100 | 100 | 0.004 |
-| `/founder` | 81 | 100 | 100 | 100 | 0.002 |
-| `/services/hair-color` | 73 | 100 | 100 | 100 | 0.023 |
-| `/visit` | 95 | 100 | 100 | 100 | 0.038 |
+| `/` | 94 | 100 | 100 | 100 | 0.016 |
+| `/menu` | 86 | 100 | 100 | 100 | 0.001 |
+| `/services/hair-color` | 95 | 100 | 100 | 100 | 0.019 |
+| `/founder` | 87 | 100 | 100 | 100 | 0.002 |
+| `/visit` | 97 | 100 | 100 | 100 | 0.030 |
 
-Performance varies by several points run to run on this machine; the pages that
-score lowest are the ones whose largest-contentful-paint is a photograph.
+`pnpm a11y` reports **no WCAG 2.1 AA violations** across all 14 routes at 1440px
+and 390px. It scrolls each page with real wheel input first, because content
+that has not been revealed yet is invisible to axe as well as to the eye.
 
-`scripts/a11y.mjs` reports **no WCAG 2.1 AA violations** across all 14 routes at
-1440px and 390px. It scrolls each page with real wheel input first, because
-content that has not been revealed yet is invisible to axe as well as to the eye.
-
-Also verified by hand: JavaScript disabled (all 71 prices and 56 booking links
-still present), `prefers-reduced-motion` (poster, no canvas, nothing hidden),
-and keyboard-only navigation.
+Also verified: JavaScript disabled (every price, every booking link and every
+revealed element still present), `prefers-reduced-motion`, and keyboard-only
+navigation.

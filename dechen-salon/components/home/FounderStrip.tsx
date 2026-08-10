@@ -9,7 +9,7 @@ export function FounderStrip() {
   return (
     <section className="px-6 py-20 sm:py-28" aria-labelledby="founder-heading">
       <div className="mx-auto grid w-full max-w-6xl items-center gap-10 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-16">
-        <Reveal>
+        <Reveal variant="image">
           <div className="relative mx-auto aspect-[4/5] w-full max-w-sm overflow-hidden rounded-[2rem] bg-petal lg:mx-0">
             <Image
               src={images.founder.src}
@@ -54,7 +54,7 @@ export function FounderStrip() {
           <Reveal delay={0.28}>
             <Link
               href="/founder"
-              className="mt-9 inline-flex items-center gap-2 border-b border-gold-ink/40 pb-1 text-sm font-medium text-gold-ink transition-colors hover:border-gold-ink"
+              className="mt-9 link-underline inline-flex items-center gap-2 pb-1 text-sm font-medium text-gold-ink"
             >
               Her full story
             </Link>

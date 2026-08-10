@@ -2,14 +2,26 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+
+  /**
+   * Static export.
+   *
+   * Every route on this site is pre-rendered — there are no API routes, no
+   * server actions, nothing that needs to run per request. Exporting to plain
+   * HTML means the salon can host it anywhere for free, there is no server to
+   * keep alive, no cold start before someone sees the price list, and nothing
+   * to break on a framework upgrade at the host's end.
+   */
+  output: "export",
+
   images: {
-    // Everything is local and pre-sized by scripts/extract-images.mjs, so the
-    // only formats worth negotiating are the modern two.
-    formats: ["image/avif", "image/webp"],
+    /**
+     * Required by `output: "export"` — there is no server to resize on demand.
+     * The images in public/img are already WebP at their final dimensions;
+     * scripts/optimise-images.mjs does that encoding once, at authoring time.
+     */
+    unoptimized: true,
   },
-  // three.js ships both ESM and CJS builds; this keeps the client bundle on the
-  // tree-shakeable one.
-  transpilePackages: ["three"],
 };
 
 export default nextConfig;

@@ -64,7 +64,7 @@ export default function ServicesPage() {
 
                     <Link
                       href={`/services/${chapter.slug}`}
-                      className="mt-7 inline-flex items-center gap-2 border-b border-gold-ink/40 pb-1 text-sm font-medium text-gold-ink transition-colors hover:border-gold-ink"
+                      className="mt-7 link-underline inline-flex items-center gap-2 pb-1 text-sm font-medium text-gold-ink"
                     >
                       See {chapter.name.toLowerCase()} and prices
                       <Arrow />

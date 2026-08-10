@@ -49,14 +49,13 @@ export default async function ChapterPage({ params }: Params) {
       />
 
       <div className="px-6 pb-8">
-        <Reveal>
+        <Reveal variant="image">
           <div className="relative mx-auto aspect-[16/9] w-full max-w-4xl overflow-hidden rounded-[2rem] bg-petal">
             <Image
               src={image.src}
               alt={image.alt}
               fill
               sizes="(max-width: 1024px) 92vw, 56rem"
-              quality={72}
               className="object-cover"
               priority
             />
@@ -144,7 +143,7 @@ export default async function ChapterPage({ params }: Params) {
         <div className="mt-8 text-center">
           <Link
             href="/team"
-            className="inline-flex items-center gap-2 border-b border-gold-ink/40 pb-1 text-sm font-medium text-gold-ink transition-colors hover:border-gold-ink"
+            className="link-underline inline-flex items-center gap-2 pb-1 text-sm font-medium text-gold-ink"
           >
             More about the team
           </Link>

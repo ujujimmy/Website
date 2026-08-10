@@ -42,7 +42,7 @@ export function TierCards() {
       <div className="mt-10">
         <Link
           href="/team"
-          className="inline-flex items-center gap-2 border-b border-gold-ink/40 pb-1 text-sm font-medium text-gold-ink transition-colors hover:border-gold-ink"
+          className="link-underline inline-flex items-center gap-2 pb-1 text-sm font-medium text-gold-ink"
         >
           More about the team
         </Link>

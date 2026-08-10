@@ -27,14 +27,13 @@ export default function AboutPage() {
       />
 
       <div className="px-6 pb-6">
-        <Reveal>
+        <Reveal variant="image">
           <div className="relative mx-auto aspect-[16/10] w-full max-w-4xl overflow-hidden rounded-[2rem] bg-petal">
             <Image
               src={images.treatmentScalp.src}
               alt={images.treatmentScalp.alt}
               fill
               sizes="(max-width: 1024px) 92vw, 56rem"
-              quality={72}
               className="object-cover"
               priority
             />

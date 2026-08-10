@@ -1,12 +1,8 @@
 /**
- * Captures every act of the scroll story and every route, desktop and mobile.
+ * Captures every route, full page, desktop and mobile.
  *
- *   pnpm build && pnpm start -p 3200 &
+ *   pnpm build && pnpm preview &
  *   node scripts/screenshots.mjs http://localhost:3200 shots
- *
- * The story acts are captured by scrolling to a fraction of the stage rather
- * than to an anchor, so what lands in the file is the mid-transition state the
- * strand is actually in — which is the thing worth looking at.
  */
 
 import { mkdir } from "node:fs/promises";
@@ -14,8 +10,6 @@ import { launch } from "./launch.mjs";
 
 const base = process.argv[2] ?? "http://localhost:3200";
 const outDir = process.argv[3] ?? "shots";
-
-const ACTS = ["open", "philosophy", "cut", "color", "length", "care", "visit"];
 
 const ROUTES = [
   ["/", "home"],
@@ -75,33 +69,14 @@ for (const viewport of VIEWPORTS) {
   });
   const page = await context.newPage();
 
-  // The seven acts of the story.
-  await page.goto(`${base}/`, { waitUntil: "load" });
-  // Give the canvas time to pass its idle gate and fade in.
-  await settle(page, 3000);
-
-  for (let i = 0; i < ACTS.length; i++) {
-    const fraction = i / (ACTS.length - 1);
-    await page.evaluate((f) => {
-      const stage = document.querySelector(".story-stage");
-      if (!stage) return;
-      const scrollable = stage.offsetHeight - window.innerHeight;
-      window.scrollTo({ top: stage.offsetTop + scrollable * f, behavior: "instant" });
-    }, fraction);
-    await settle(page, 900);
-    await page.screenshot({
-      path: `${outDir}/${viewport.name}-act-${i}-${ACTS[i]}.png`,
-    });
-  }
-
   // Every route, full page.
   for (const [route, name] of ROUTES) {
     await page.goto(`${base}${route}`, { waitUntil: "load" });
-    await settle(page, route === "/" ? 2500 : 700);
-    if (route !== "/") await primeReveals(page);
+    await settle(page, 700);
+    await primeReveals(page);
     await page.screenshot({
       path: `${outDir}/${viewport.name}-${name}.png`,
-      fullPage: route !== "/",
+      fullPage: true,
     });
   }
 

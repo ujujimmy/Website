@@ -46,10 +46,16 @@ Every push to the branch redeploys. Pull requests get their own preview URL.
 cd dechen-salon
 pnpm install
 pnpm build          # writes ./out
-npx netlify-cli deploy --dir=out --prod
 ```
 
-Or drag the `out` folder onto the Netlify dashboard. It is only static files.
+Then drag `out/` onto <https://app.netlify.com/drop> — it is only static files.
+`_redirects` and `_headers` live in `public/`, so they are copied into `out/` and
+apply to a dragged folder exactly as they do to a git-connected build. That is
+why `netlify.toml` carries build settings only: one set of rules, both routes.
+
+```bash
+npx netlify-cli deploy --dir=out --prod   # or from the command line
+```
 
 ---
 

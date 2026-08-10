@@ -1,0 +1,19 @@
+# Caching and security headers.
+#
+# In public/ rather than netlify.toml so they apply to a drag-and-drop deploy
+# as well as a git-connected build.
+
+# Content-hashed by the build, so it can be cached forever.
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Photographs are not hashed — a replacement reuses its filename — so they get a
+# day, then revalidate in the background.
+/img/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: SAMEORIGIN
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()

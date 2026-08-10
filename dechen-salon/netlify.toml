@@ -45,3 +45,68 @@
     # No third-party scripts, no analytics, no embeds — so the page needs none
     # of these capabilities.
     Permissions-Policy = "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+
+# ---------------------------------------------------------------------------
+# Clean URLs
+#
+# The static export writes `menu.html`, not `menu/index.html`. Netlify serves
+# extensionless paths from those files on its own, but only while the "Pretty
+# URLs" post-processing option is enabled — and it is a setting someone can turn
+# off in the dashboard without realising it takes every page on the site with
+# it. These make it explicit instead. Status 200 rewrites rather than 301s, so
+# the address bar keeps the clean path.
+# ---------------------------------------------------------------------------
+[[redirects]]
+  from = "/services"
+  to = "/services.html"
+  status = 200
+[[redirects]]
+  from = "/services/cuts-and-styling"
+  to = "/services/cuts-and-styling.html"
+  status = 200
+[[redirects]]
+  from = "/services/hair-color"
+  to = "/services/hair-color.html"
+  status = 200
+[[redirects]]
+  from = "/services/hair-extensions"
+  to = "/services/hair-extensions.html"
+  status = 200
+[[redirects]]
+  from = "/services/treatments"
+  to = "/services/treatments.html"
+  status = 200
+[[redirects]]
+  from = "/menu"
+  to = "/menu.html"
+  status = 200
+[[redirects]]
+  from = "/about"
+  to = "/about.html"
+  status = 200
+[[redirects]]
+  from = "/founder"
+  to = "/founder.html"
+  status = 200
+[[redirects]]
+  from = "/team"
+  to = "/team.html"
+  status = 200
+[[redirects]]
+  from = "/gallery"
+  to = "/gallery.html"
+  status = 200
+[[redirects]]
+  from = "/reviews"
+  to = "/reviews.html"
+  status = 200
+[[redirects]]
+  from = "/visit"
+  to = "/visit.html"
+  status = 200
+
+# Anything else falls through to the exported 404 page.
+[[redirects]]
+  from = "/*"
+  to = "/404.html"
+  status = 404

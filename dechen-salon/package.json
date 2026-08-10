@@ -14,7 +14,9 @@
     "extract-images": "python3 scripts/extract-images.py",
     "shots": "node scripts/screenshots.mjs",
     "a11y": "node scripts/a11y.mjs",
-    "lighthouse": "node scripts/lighthouse.mjs"
+    "lighthouse": "node scripts/lighthouse.mjs",
+    "preview-file": "node scripts/single-file.mjs",
+    "preview-check": "node scripts/preview-check.mjs"
   },
   "dependencies": {
     "next": "^16.2.12",

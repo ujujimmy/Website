@@ -92,6 +92,11 @@ pnpm build                  # static export into ./out
 pnpm preview                # serve ./out at http://localhost:3200
 pnpm typecheck
 
+# One shareable HTML file containing the whole site, for sending to someone
+# who just wants to look at it. Navigation works via hash routing.
+pnpm preview-file preview.html
+pnpm preview-check          # asserts all 13 pages render and no link dangles
+
 # Verification, against a running preview
 pnpm shots       http://localhost:3200 shots   # every route, desktop & mobile
 pnpm a11y        http://localhost:3200         # axe, WCAG 2.1 AA, non-zero exit on failure

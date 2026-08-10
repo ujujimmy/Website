@@ -35,6 +35,7 @@ export function TierFocus({ children }: { children: React.ReactNode }) {
               <button
                 key={option.id}
                 type="button"
+                data-tier-button={option.id}
                 onClick={() => setFocus(option.id)}
                 aria-pressed={active}
                 className={`rounded-full px-4 py-2 text-xs font-medium transition-colors sm:text-sm ${

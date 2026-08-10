@@ -21,37 +21,68 @@ export const brand = {
   domain: "dechensalon.com",
 
   contact: {
-    phone: "+91 97736 71272",
-    phoneHref: "tel:+919773671272",
+    /**
+     * One number for both branches. Written in international form: the salon
+     * gave it as 09002460594, where the leading zero is India's trunk prefix
+     * and is dropped once +91 is in front of it.
+     */
+    phone: "+91 90024 60594",
+    phoneHref: "tel:+919002460594",
     /**
      * Digits only, country code first — no +, no spaces. Every booking link on
      * the site is built from this, so a wrong format here breaks all of them.
      */
-    whatsapp: "919773671272",
+    whatsapp: "919002460594",
     /** TODO(salon): add an email to show one; the footer drops the line when empty. */
     email: "",
   },
 
-  address: {
-    /** TODO(salon): confirm the exact shop number and street. */
-    street: "New Aruna Nagar, Majnu-ka-Tilla",
-    locality: "Timarpur",
-    region: "Delhi",
-    postalCode: "110054",
-    country: "IN",
-    /** TODO(salon): paste the salon's own Google Maps share link. */
-    mapsUrl: "https://www.google.com/maps/search/?api=1&query=Dechen+Salon+Majnu+ka+Tilla+Delhi",
-  },
-
   /**
-   * TODO(salon): confirm hours and the weekly off day.
-   * `days` uses schema.org shorthand for the JSON-LD opening-hours spec.
+   * The two branches, both in Majnu-ka-Tilla.
+   *
+   * TODO(salon): the shop number and street for each. What's here is the
+   * neighbourhood — accurate, but not enough to walk to. Neither could be
+   * verified from the build environment, and inventing one would send clients
+   * to the wrong door. The directions links search Maps for each branch by name
+   * until real addresses arrive.
    */
+  locations: [
+    {
+      id: "salon",
+      name: "DECHEN Salon",
+      role: "The salon",
+      street: "New Aruna Nagar, Majnu-ka-Tilla",
+      locality: "Timarpur",
+      region: "Delhi",
+      postalCode: "110054",
+      country: "IN",
+      mapsUrl:
+        "https://www.google.com/maps/search/?api=1&query=Dechen+Salon+Majnu+ka+Tilla+New+Delhi",
+      directionsUrl:
+        "https://www.google.com/maps/dir/?api=1&destination=Dechen+Salon+Majnu+ka+Tilla+New+Delhi",
+    },
+    {
+      id: "academy",
+      name: "DECHEN Salon & Academy",
+      role: "Salon and training academy",
+      street: "New Aruna Nagar, Majnu-ka-Tilla",
+      locality: "Timarpur",
+      region: "Delhi",
+      postalCode: "110054",
+      country: "IN",
+      mapsUrl:
+        "https://www.google.com/maps/search/?api=1&query=Dechen+Salon+%26+Academy+Majnu+ka+Tilla+New+Delhi",
+      directionsUrl:
+        "https://www.google.com/maps/dir/?api=1&destination=Dechen+Salon+%26+Academy+Majnu+ka+Tilla+New+Delhi",
+    },
+  ],
+
+  /** `days` uses schema.org shorthand for the JSON-LD opening-hours spec. */
   hours: {
-    display: "Every day, 10:00 am – 8:00 pm",
+    display: "Every day, 9:00 am – 10:00 pm",
     note: "Walk-ins welcome. Colour and extensions are best booked ahead.",
     schema: [
-      { days: ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"], opens: "10:00", closes: "20:00" },
+      { days: ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"], opens: "09:00", closes: "22:00" },
     ],
   },
 
@@ -63,6 +94,11 @@ export const brand = {
   /** Booking is deliberately call/WhatsApp only — no form, no scheduler. */
   primaryCta: { label: "Book on WhatsApp", href: "/visit" },
 } as const;
+
+/**
+ * The branch used wherever a page needs one address rather than the pair.
+ */
+export const primaryLocation = brand.locations[0];
 
 /**
  * Builds a WhatsApp deep link with the message pre-filled, so a client who taps

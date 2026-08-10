@@ -1,8 +1,14 @@
 import type { Metadata } from "next";
 import { pages } from "@/content/copy";
-import { brand, whatsappLink, bookingMessage } from "@/content/brand";
+import {
+  brand,
+  primaryLocation,
+  whatsappLink,
+  bookingMessage,
+} from "@/content/brand";
 import { images } from "@/content/images";
 import { PageHead } from "@/components/layout/PageHead";
+import { Locations } from "@/components/layout/Locations";
 import { Frame } from "@/components/ui/Frame";
 import { Reveal } from "@/components/ui/Reveal";
 import { Button, Arrow } from "@/components/ui/Button";
@@ -11,28 +17,30 @@ import { breadcrumbLd } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Visit",
-  description: `${brand.name} — ${brand.address.street}, ${brand.address.locality}, ${brand.address.region}. ${brand.hours.display}. Book by phone or WhatsApp.`,
+  description: `${brand.name} — two locations in ${primaryLocation.street}, ${primaryLocation.region}. ${brand.hours.display}. Book by phone or WhatsApp.`,
   alternates: { canonical: "/visit" },
 };
 
 export default function VisitPage() {
   const rows = [
-    {
-      label: "Address",
-      value: (
-        <address className="not-italic">
-          {brand.address.street}
-          <br />
-          {brand.address.locality}, {brand.address.region}{" "}
-          {brand.address.postalCode}
-        </address>
-      ),
-    },
     { label: "Hours", value: brand.hours.display },
     {
       label: "Phone",
       value: (
         <a className="link-rule" href={brand.contact.phoneHref}>
+          {brand.contact.phone}
+        </a>
+      ),
+    },
+    {
+      label: "WhatsApp",
+      value: (
+        <a
+          className="link-rule"
+          href={whatsappLink(bookingMessage)}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           {brand.contact.phone}
         </a>
       ),
@@ -60,9 +68,19 @@ export default function VisitPage() {
         lead={pages.visit.lead}
       />
 
+      {/* Both branches first: it is the question this page exists to answer. */}
+      <section className="gutter pb-16 md:pb-20">
+        <h2 className="micro mb-8 text-lacquer">Two locations</h2>
+        <Locations />
+      </section>
+
       <div className="gutter pb-20 md:pb-28">
         <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_26rem] lg:gap-20">
           <div>
+            <h2 className="micro mb-8 text-lacquer">
+              Same hours, same number, either address
+            </h2>
+
             <dl>
               {rows.map((row) => (
                 <div
@@ -87,17 +105,18 @@ export default function VisitPage() {
               <Button href={brand.contact.phoneHref} variant="line">
                 Call the salon
               </Button>
-              <Button href={brand.address.mapsUrl} variant="line" external>
-                Open in Maps
-              </Button>
             </div>
           </div>
 
           <Reveal variant="wipe">
+            {/* Eager: on a desktop viewport this sits beside the contact list,
+                inside the first screen, so lazy-loading it makes it the
+                largest-contentful-paint element *and* delays it. */}
             <Frame
               img={images.cutsBanner}
               ratio="portrait"
               sizes="(max-width: 64rem) 100vw, 26rem"
+              priority
             />
           </Reveal>
         </div>
@@ -112,8 +131,9 @@ export default function VisitPage() {
               </h2>
               <p className="prose-measure mt-6">
                 Message or call, and a person answers. Tell us roughly what you
-                want and what your hair has had done to it before — that is
-                genuinely all we need to give you a time and a price.
+                want, which of the two you&rsquo;d rather come to, and what your
+                hair has had done to it before — that is genuinely all we need to
+                give you a time and a price.
               </p>
             </div>
 

@@ -65,8 +65,15 @@ export const home = {
   },
 
   lookbook: {
-    title: "Recent work.",
-    lead: "Colour, cuts and length from the chair.",
+    title: "Looks we work from.",
+    lead: "Reference shots, not our own clients — point at one and we'll tell you what it takes on your hair.",
+    /**
+     * Said plainly, because a client who works out for herself that a gallery
+     * is stock photography stops believing the prices too. The real work is on
+     * Instagram, and sending people there is worth more than a gallery
+     * pretending to be something it isn't.
+     */
+    instagram: "Real client work, before-and-afters and reels are on Instagram.",
   },
 
   reviews: {
@@ -74,8 +81,8 @@ export const home = {
   },
 
   visit: {
-    title: "Come and sit down.",
-    lead: "Walk in for a cut. Message ahead for colour or extensions — those start with a conversation about what your hair can take, and that takes a few minutes we would rather not rush.",
+    title: "Two doors, one street.",
+    lead: "DECHEN Salon and DECHEN Salon & Academy are both in Majnu-ka-Tilla. Same hours, same number, same prices — come to whichever is nearer. Walk in for a cut; message ahead for colour or extensions, which start with a conversation we would rather not rush.",
   },
 } as const;
 
@@ -108,8 +115,8 @@ export const pages = {
   },
   gallery: {
     eyebrow: "Lookbook",
-    title: "The work.",
-    lead: "Colour, cuts and length. Ask for any of it by name.",
+    title: "Looks we work from.",
+    lead: "Colour, cuts and length — ask for any of it by name. These are reference shots rather than photographs of our own clients; the real ones are on Instagram, where you'll also find before-and-afters and reels.",
   },
   reviews: {
     eyebrow: "Reviews",
@@ -118,7 +125,7 @@ export const pages = {
   },
   visit: {
     eyebrow: "Visit",
-    title: "Majnu-ka-Tilla.",
-    lead: "Find us in New Aruna Nagar. Walk in for a cut, message ahead for anything longer.",
+    title: "Two doors in Majnu-ka-Tilla.",
+    lead: "DECHEN Salon and DECHEN Salon & Academy are both in New Aruna Nagar, on one number and one set of hours. Come to whichever is nearer — walk in for a cut, message ahead for anything longer.",
   },
 } as const;

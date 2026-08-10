@@ -5,7 +5,7 @@ import { PageHead } from "@/components/layout/PageHead";
 import { Frame } from "@/components/ui/Frame";
 import { Reveal } from "@/components/ui/Reveal";
 import { Button, Arrow } from "@/components/ui/Button";
-import { whatsappLink, bookingMessage } from "@/content/brand";
+import { brand, whatsappLink, bookingMessage } from "@/content/brand";
 import { JsonLd } from "@/components/JsonLd";
 import { breadcrumbLd } from "@/lib/seo";
 
@@ -28,6 +28,16 @@ export default function GalleryPage() {
         eyebrow={pages.gallery.eyebrow}
         title={pages.gallery.title}
         lead={pages.gallery.lead}
+        aside={
+          <a
+            href={brand.socials.instagram}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="micro link-rule text-lacquer"
+          >
+            Our work on Instagram
+          </a>
+        }
       />
 
       <div className="gutter pb-24">
@@ -58,19 +68,43 @@ export default function GalleryPage() {
 
       <section className="on-ink">
         <div className="gutter py-20 md:py-24">
-          <h2 className="t-section max-w-2xl text-cream">
-            Bring us a photograph.
-          </h2>
-          <p className="prose-measure mt-6">
-            Any of these can be a starting point. Send it over and we&rsquo;ll
-            tell you honestly what it takes on your hair, what it costs, and how
-            long it holds.
-          </p>
-          <div className="mt-9">
-            <Button href={whatsappLink(bookingMessage)} external>
-              Send it on WhatsApp
-              <Arrow />
-            </Button>
+          <div className="grid gap-12 lg:grid-cols-2 lg:gap-20">
+            <div>
+              <h2 className="t-section max-w-lg text-cream">
+                Our own work is on Instagram.
+              </h2>
+              <p className="prose-measure mt-6">
+                The photographs above are reference looks — the shots we work
+                from at consultation. Everything we&rsquo;ve actually done sits
+                on {brand.socials.instagramHandle}: before-and-afters, colour
+                transformations, extension fittings and reels from the chair.
+              </p>
+              <div className="mt-9">
+                <Button href={brand.socials.instagram} external>
+                  See it on Instagram
+                  <Arrow />
+                </Button>
+              </div>
+            </div>
+
+            <div className="lg:pt-3">
+              <h2 className="t-sub text-cream">Bring us a photograph.</h2>
+              <p className="prose-measure mt-5 text-sm">
+                Any of these can be a starting point. Send one over and
+                we&rsquo;ll tell you honestly what it takes on your hair, what it
+                costs, and how long it holds.
+              </p>
+              <div className="mt-7">
+                <Button
+                  href={whatsappLink(bookingMessage)}
+                  variant="line"
+                  external
+                >
+                  Send it on WhatsApp
+                  <Arrow />
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       </section>

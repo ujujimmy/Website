@@ -82,20 +82,24 @@ link on the site is built from it.
 
 These are marked `TODO(salon)` in `content/brand.ts` and show on every page:
 
-1. **The exact street address** — shop number and street. The current value is
-   the neighbourhood only.
-2. **Opening hours** and the weekly off day. The site currently claims 10–8
-   every day.
-3. A **Google Maps share link** for the salon's own listing.
-4. A **Google reviews link** (`content/reviews.ts`).
-5. An **email**, if one should be shown. Leave it empty and the footer drops the
+1. **The exact street address for each branch** — shop number and street. Both
+   currently carry the neighbourhood only, which is accurate but not enough to
+   walk to.
+2. A **Google Maps share link** for each branch's own listing. Open it in Maps,
+   tap Share, and paste the link over `mapsUrl` and `directionsUrl`. Until then
+   the directions links search Maps for each branch by name, which lands people
+   in the right place but is a search rather than a pin.
+3. A **Google reviews link** (`content/reviews.ts`).
+4. An **email**, if one should be shown. Leave it empty and the footer drops the
    line by itself.
 
 Photographs of the salon's own work and interior would be the single biggest
 upgrade available. Two of the current images are genuinely the salon's — the
 founder's portrait and the extension bundles — and the rest came from the
-catalog's reference shots. Drop replacements into `public/img/`, run
-`pnpm images`, and update the entry in `content/images.ts`.
+catalog's reference shots. The lookbook says so in as many words and sends
+people to Instagram for real client work, which is the honest arrangement, but
+real photographs would let it stop apologising. Drop replacements into
+`public/img/`, run `pnpm images`, and update the entry in `content/images.ts`.
 
 ---
 

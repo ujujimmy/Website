@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { footerNav } from "@/content/nav";
-import { brand } from "@/content/brand";
+import { brand, primaryLocation } from "@/content/brand";
 import { Blossom } from "@/components/ui/Section";
 
 export function Footer() {
@@ -51,10 +51,10 @@ export function Footer() {
 
         <div className="mt-16 grid gap-8 border-t border-petal/15 pt-8 sm:grid-cols-2">
           <address className="not-italic text-sm leading-relaxed text-petal/70">
-            {brand.address.street}
+            {primaryLocation.street}
             <br />
-            {brand.address.locality}, {brand.address.region}{" "}
-            {brand.address.postalCode}
+            {primaryLocation.locality}, {primaryLocation.region}{" "}
+            {primaryLocation.postalCode}
             <br />
             <a
               href={brand.contact.phoneHref}
@@ -78,10 +78,18 @@ export function Footer() {
           <div className="sm:text-right">
             <p className="text-sm text-petal/70">{brand.hours.display}</p>
             <a
+              href={primaryLocation.directionsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-2 block text-sm text-rose transition-colors hover:text-petal"
+            >
+              Get directions
+            </a>
+            <a
               href={brand.socials.instagram}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-2 inline-block text-sm text-rose transition-colors hover:text-petal"
+              className="mt-1 inline-block text-sm text-rose transition-colors hover:text-petal"
             >
               {brand.socials.instagramHandle}
             </a>

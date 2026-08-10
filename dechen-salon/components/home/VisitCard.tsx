@@ -1,4 +1,4 @@
-import { brand, whatsappLink, bookingMessage } from "@/content/brand";
+import { brand, primaryLocation, whatsappLink, bookingMessage } from "@/content/brand";
 import { Button, Arrow } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 
@@ -29,10 +29,10 @@ export function VisitCard() {
             <div>
               <dt className="text-xs uppercase tracking-widest text-rose">Where</dt>
               <dd className="mt-1.5 text-sm leading-relaxed text-petal/85">
-                {brand.address.street}
+                {primaryLocation.street}
                 <br />
-                {brand.address.locality}, {brand.address.region}{" "}
-                {brand.address.postalCode}
+                {primaryLocation.locality}, {primaryLocation.region}{" "}
+                {primaryLocation.postalCode}
               </dd>
             </div>
             <div>

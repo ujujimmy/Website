@@ -1,7 +1,28 @@
-import { brand } from "@/content/brand";
+import { brand, primaryLocation } from "@/content/brand";
 import { founder } from "@/content/founder";
 import { chapters } from "@/content/menu";
 import { reviews } from "@/content/reviews";
+
+/** The service catalogue, shared by both branches — they offer the same menu. */
+function offerCatalog() {
+  return {
+    "@type": "OfferCatalog",
+    name: "Services",
+    itemListElement: chapters.map((chapter) => ({
+      "@type": "OfferCatalog",
+      name: chapter.name,
+      itemListElement: chapter.groups.flatMap((group) =>
+        group.items.map((item) => ({
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: `${group.title} — ${item.name}`,
+          },
+        })),
+      ),
+    })),
+  };
+}
 
 /**
  * Structured data.
@@ -9,27 +30,33 @@ import { reviews } from "@/content/reviews";
  * `HairSalon` is the specific schema.org type for this business — using the
  * generic `LocalBusiness` would throw away the category signal that matters
  * most for "hair salon near me" searches.
+ *
+ * There are two branches, so this emits **one node per branch**. Google treats
+ * each as its own place, which is what puts both on the map for a local search;
+ * folding them into a single node with two addresses would put neither there
+ * properly. The first branch keeps the `#salon` id that reviews and the founder
+ * point at, and the second is marked as part of it.
  */
 export function salonLd() {
-  return {
+  return brand.locations.map((location, i) => ({
     "@context": "https://schema.org",
     "@type": "HairSalon",
-    "@id": `${brand.url}/#salon`,
-    name: brand.name,
+    "@id": `${brand.url}/#${location.id}`,
+    name: location.name,
     description: brand.description,
     url: brand.url,
     ...(brand.contact.email ? { email: brand.contact.email } : {}),
     telephone: brand.contact.phone,
-    image: `${brand.url}/img/hero.jpg`,
+    image: `${brand.url}/img/founder.webp`,
     address: {
       "@type": "PostalAddress",
-      streetAddress: brand.address.street,
-      addressLocality: brand.address.locality,
-      addressRegion: brand.address.region,
-      postalCode: brand.address.postalCode,
-      addressCountry: brand.address.country,
+      streetAddress: location.street,
+      addressLocality: location.locality,
+      addressRegion: location.region,
+      postalCode: location.postalCode,
+      addressCountry: location.country,
     },
-    hasMap: brand.address.mapsUrl,
+    hasMap: location.mapsUrl,
     sameAs: [brand.socials.instagram],
     openingHoursSpecification: brand.hours.schema.map((slot) => ({
       "@type": "OpeningHoursSpecification",
@@ -44,24 +71,12 @@ export function salonLd() {
     },
     priceRange: "₹₹",
     currenciesAccepted: "INR",
-    hasOfferCatalog: {
-      "@type": "OfferCatalog",
-      name: "Services",
-      itemListElement: chapters.map((chapter) => ({
-        "@type": "OfferCatalog",
-        name: chapter.name,
-        itemListElement: chapter.groups.flatMap((group) =>
-          group.items.map((item) => ({
-            "@type": "Offer",
-            itemOffered: {
-              "@type": "Service",
-              name: `${group.title} — ${item.name}`,
-            },
-          })),
-        ),
-      })),
-    },
-  };
+    hasOfferCatalog: offerCatalog(),
+    // Everything after the first is a branch of the first.
+    ...(i > 0
+      ? { parentOrganization: { "@id": `${brand.url}/#${primaryLocation.id}` } }
+      : {}),
+  }));
 }
 
 export function founderLd() {
@@ -73,8 +88,8 @@ export function founderLd() {
     alternateName: founder.alsoKnownAs,
     jobTitle: founder.role,
     description: founder.short,
-    image: `${brand.url}/img/founder.jpg`,
-    worksFor: { "@id": `${brand.url}/#salon` },
+    image: `${brand.url}/img/founder.webp`,
+    worksFor: { "@id": `${brand.url}/#${primaryLocation.id}` },
     knowsAbout: [
       "Hair extensions",
       "Balayage",
@@ -95,7 +110,7 @@ export function reviewsLd() {
   return reviews.map((review) => ({
     "@context": "https://schema.org",
     "@type": "Review",
-    itemReviewed: { "@id": `${brand.url}/#salon` },
+    itemReviewed: { "@id": `${brand.url}/#${primaryLocation.id}` },
     reviewBody: review.quote,
     author: { "@type": "Person", name: review.author },
     about: review.service,

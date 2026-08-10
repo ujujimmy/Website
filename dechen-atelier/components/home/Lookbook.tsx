@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { home } from "@/content/copy";
+import { brand } from "@/content/brand";
 import { images, lookbook } from "@/content/images";
 import { Reveal } from "@/components/ui/Reveal";
 import { Frame } from "@/components/ui/Frame";
@@ -15,12 +16,25 @@ import { Frame } from "@/components/ui/Frame";
 export function Lookbook() {
   return (
     <section className="overflow-hidden py-20 md:py-28">
-      <div className="gutter flex flex-wrap items-end justify-between gap-6">
-        <div>
+      <div className="gutter flex flex-wrap items-end justify-between gap-x-10 gap-y-6">
+        <div className="max-w-xl">
           <Reveal>
             <p className="micro text-lacquer">06 &nbsp; Lookbook</p>
           </Reveal>
           <h2 className="t-section mt-4">{home.lookbook.title}</h2>
+          <Reveal delay={0.06}>
+            <p className="mt-5 text-sm leading-relaxed text-muted">
+              {home.lookbook.lead}{" "}
+              <a
+                href={brand.socials.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="link-rule text-lacquer"
+              >
+                {home.lookbook.instagram}
+              </a>
+            </p>
+          </Reveal>
         </div>
         <Reveal>
           <Link href="/gallery" className="link-rule text-sm">

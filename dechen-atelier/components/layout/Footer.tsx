@@ -42,20 +42,37 @@ export function Footer() {
       <div className="gutter grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <p className="micro mb-4 text-brass">Find us</p>
-          <address className="text-sm leading-relaxed text-dim not-italic">
-            {brand.address.street}
-            <br />
-            {brand.address.locality}, {brand.address.region}{" "}
-            {brand.address.postalCode}
-          </address>
-          <p className="mt-4 text-sm leading-relaxed text-dim">
+
+          {/* Both branches get their own directions link. They share a street
+              and a phone line, so only the name and the link differ. */}
+          <ul className="flex flex-col gap-4">
+            {brand.locations.map((location) => (
+              <li key={location.id}>
+                <p className="text-sm text-cream">{location.name}</p>
+                <address className="mt-1 text-sm leading-relaxed text-dim not-italic">
+                  {location.street}, {location.region} {location.postalCode}
+                </address>
+                <a
+                  href={location.directionsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="link-rule mt-1.5 inline-block text-sm text-brass"
+                >
+                  Get directions
+                  <span className="sr-only"> to {location.name}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+
+          <p className="mt-5 text-sm leading-relaxed text-dim">
             {brand.hours.display}
           </p>
           <a
             href={brand.socials.instagram}
             target="_blank"
             rel="noopener noreferrer"
-            className="link-rule mt-4 inline-block text-sm text-cream"
+            className="link-rule mt-3 inline-block text-sm text-cream"
           >
             {brand.socials.instagramHandle}
           </a>

@@ -3,7 +3,12 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { brand, whatsappLink, bookingMessage } from "@/content/brand";
+import {
+  brand,
+  primaryLocation,
+  whatsappLink,
+  bookingMessage,
+} from "@/content/brand";
 import { nav } from "@/content/nav";
 import { WordmarkLink } from "./Wordmark";
 
@@ -186,7 +191,7 @@ function Overlay({ open, onClose }: { open: boolean; onClose: () => void }) {
             Instagram
           </a>
           <p className="micro text-dim">
-            {brand.address.street}, {brand.address.region}
+            Two locations &middot; Majnu-ka-Tilla, {primaryLocation.region}
           </p>
         </div>
       </div>

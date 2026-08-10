@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { brand, whatsappLink, bookingMessage } from "@/content/brand";
+import { brand, primaryLocation, whatsappLink, bookingMessage } from "@/content/brand";
 import { chapters } from "@/content/menu";
 import { PageHero } from "@/components/layout/PageHero";
 import { Section, SectionHead } from "@/components/ui/Section";
@@ -10,7 +10,7 @@ import { breadcrumbLd } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Visit us",
-  description: `DECHEN Salon, ${brand.address.street}, ${brand.address.locality}, ${brand.address.region}. ${brand.hours.display}. Book by WhatsApp or phone.`,
+  description: `DECHEN Salon, ${primaryLocation.street}, ${primaryLocation.locality}, ${primaryLocation.region}. ${brand.hours.display}. Book by WhatsApp or phone.`,
   alternates: { canonical: "/visit" },
 };
 
@@ -73,22 +73,43 @@ export default function VisitPage() {
       <Section tone="cream">
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
           <div>
-            <SectionHead eyebrow="Where" title="The salon." />
-            <address className="mt-6 not-italic text-base leading-relaxed text-muted">
-              {brand.address.street}
-              <br />
-              {brand.address.locality}, {brand.address.region}{" "}
-              {brand.address.postalCode}
-              <br />
-              India
-            </address>
-            <div className="mt-7 flex flex-wrap gap-3">
-              <Button href={brand.address.mapsUrl} variant="secondary" external>
-                Open in Google Maps
-                <Arrow />
-              </Button>
+            <SectionHead eyebrow="Where" title="Two locations." />
+            <p className="mt-4 text-sm leading-relaxed text-muted">
+              Both are in Majnu-ka-Tilla, and both take the same number and the
+              same hours. Come to whichever is nearer.
+            </p>
+
+            <ul className="mt-7 flex flex-col gap-6">
+              {brand.locations.map((location) => (
+                <li key={location.id} className="panel">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gold-ink">
+                    {location.role}
+                  </p>
+                  <h3 className="mt-2 text-lg font-semibold text-ink">
+                    {location.name}
+                  </h3>
+                  <address className="mt-2 not-italic text-sm leading-relaxed text-muted">
+                    {location.street}
+                    <br />
+                    {location.locality}, {location.region} {location.postalCode}
+                  </address>
+                  <a
+                    href={location.directionsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="link-underline mt-3 inline-block pb-0.5 text-sm font-medium text-gold-ink"
+                  >
+                    Get directions
+                    <span className="sr-only"> to {location.name}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+
+            <div className="mt-7">
               <Button href={brand.socials.instagram} variant="secondary" external>
                 {brand.socials.instagramHandle}
+                <Arrow />
               </Button>
             </div>
           </div>

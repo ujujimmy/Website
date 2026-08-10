@@ -1,0 +1,22 @@
+# Netlify build settings for DECHEN Salon.
+#
+# In the Netlify UI, set **Base directory** to `dechen-atelier` — this repository
+# also contains a different site at its root, and without that setting Netlify
+# would build the wrong one.
+#
+# Redirects and headers deliberately live in `public/_redirects` and
+# `public/_headers` instead of here. Those files get copied into the publish
+# directory, so they apply to a drag-and-drop deploy of the built folder exactly
+# as they do to a git-connected build. Keeping them in one place means the two
+# deploy routes cannot drift apart.
+#
+# The site is a static export (see next.config.ts): no Next.js runtime, no
+# serverless functions, no cold starts. Netlify just serves files.
+
+[build]
+  command = "pnpm build"
+  publish = "out"
+
+[build.environment]
+  NODE_VERSION = "22"
+  NEXT_TELEMETRY_DISABLED = "1"

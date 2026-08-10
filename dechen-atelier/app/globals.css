@@ -1,0 +1,1005 @@
+@import "tailwindcss";
+
+/* ===========================================================================
+   DECHEN SALON — design system
+
+   The register is a fashion house, not a beauty parlour: paper, ink, hairlines
+   and one lacquer red. Everything decorative has been taken out, so what's left
+   has to be typography, photography and space. That's the whole idea — premium
+   reads as restraint, and restraint is unforgiving about detail.
+
+   Three rules the rest of the file follows:
+   1. No cards. Sections are separated by hairlines and space, never by a box.
+   2. One accent. Lacquer on paper, brass on ink. Nothing else gets a colour.
+   3. Type does the work. Display type is allowed to be very large; body type is
+      never larger than it needs to be.
+=========================================================================== */
+
+@theme {
+  /* ---- grounds ----
+     Paper is a warm bone, not white — white makes photographs look clinical and
+     makes a red accent look like an error message. */
+  --color-paper: #f3eee7;
+  --color-paper-2: #ebe4da;
+  --color-ink: #16120f;
+  --color-ink-2: #221c17;
+
+  /* ---- type colours ----
+     Contrast, measured against the ground each one is used on:
+       ink on paper      16.6:1
+       muted on paper     5.2:1
+       lacquer on paper   8.3:1
+       cream on ink      17.9:1
+       dim on ink         7.4:1
+       brass on ink       9.0:1
+     Nothing in this file may set a colour that isn't in this list. */
+  --color-muted: #6b6158;
+  --color-lacquer: #7e2a1e;
+  --color-cream: #fbf8f3;
+  --color-dim: #a79c8e;
+  --color-brass: #c9a96a;
+
+  /* ---- hairlines ----
+     `line` is the working rule weight. `line-soft` is for the dividers inside a
+     long list, which would otherwise stripe the page. */
+  --color-line: #d4cabb;
+  --color-line-soft: #e0d8cc;
+  --color-line-dark: #3a322a;
+
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, sans-serif;
+  --font-display: var(--font-bodoni), ui-serif, Georgia, "Times New Roman",
+    serif;
+
+  /* Long, late-decelerating ease. Everything on the site uses it, which is most
+     of why the motion reads as one hand rather than several. */
+  --ease-silk: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ===========================================================================
+   Base
+=========================================================================== */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-synthesis-weight: none;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Display type is set tight and large. Bodoni's contrast collapses if you let
+     it breathe the way a text face wants to. */
+  h1,
+  h2,
+  h3,
+  .display {
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+
+  ::selection {
+    background: var(--color-lacquer);
+    color: var(--color-cream);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-lacquer);
+    outline-offset: 3px;
+    border-radius: 1px;
+  }
+
+  /* The dark sections carry their own focus colour, since lacquer on ink is
+     nowhere near visible enough. */
+  .on-ink :focus-visible {
+    outline-color: var(--color-brass);
+  }
+}
+
+/* ===========================================================================
+   Page grain
+
+   A single fixed layer of very fine noise over the whole page. It is the one
+   piece of pure decoration on the site, and it earns its place: flat blocks of
+   bone colour band badly on cheap screens, and the grain hides it. Fixed
+   position means one composited layer that never repaints on scroll.
+=========================================================================== */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.42;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grain {
+    /* Fine noise is a migraine trigger for some people, and it is the first
+       thing that should go when someone has asked for less. */
+    display: none;
+  }
+}
+
+/* ===========================================================================
+   Layout primitives
+=========================================================================== */
+
+/* The page gutter. One value, used everywhere, so nothing is ever *almost*
+   aligned with something else. */
+@utility gutter {
+  padding-inline: 1.5rem;
+}
+
+@media (min-width: 48rem) {
+  .gutter {
+    padding-inline: 3rem;
+  }
+}
+
+@media (min-width: 80rem) {
+  .gutter {
+    padding-inline: 4.5rem;
+  }
+}
+
+/* The asymmetric editorial grid: a narrow index column on the left carrying the
+   section number and label, and everything else on the right. It is the single
+   structural idea the whole site is built on. */
+.index-grid {
+  display: grid;
+  gap: 2rem 3rem;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 64rem) {
+  .index-grid {
+    grid-template-columns: 12rem minmax(0, 1fr);
+    gap: 0 4rem;
+  }
+}
+
+/* Small letterspaced capitals. The site's only "label" voice — used for section
+   numbers, eyebrows, column heads and nothing else. */
+.micro {
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+
+.rule {
+  height: 1px;
+  border: 0;
+  background: var(--color-line);
+}
+
+.on-ink .rule {
+  background: var(--color-line-dark);
+}
+
+/* Body copy at reading width. 62 characters is where a line stops being
+   comfortable, whatever the container allows. */
+.prose-measure {
+  max-width: 38rem;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--color-muted);
+}
+
+.on-ink .prose-measure {
+  color: var(--color-dim);
+}
+
+@media (min-width: 48rem) {
+  .prose-measure {
+    font-size: 1.0625rem;
+  }
+}
+
+/* Lead paragraph — the one under a page title. Set larger, in ink, because it
+   is doing the work a subtitle would do in a lesser layout. */
+.lead {
+  max-width: 34rem;
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: var(--color-ink);
+}
+
+.on-ink .lead {
+  color: var(--color-cream);
+}
+
+@media (min-width: 48rem) {
+  .lead {
+    font-size: 1.25rem;
+  }
+}
+
+/* ===========================================================================
+   Display sizes
+
+   Named for their job rather than their size, so a headline can't quietly
+   become the wrong rank when a page is rearranged.
+=========================================================================== */
+.t-hero {
+  font-size: clamp(3.4rem, 13vw, 11rem);
+  line-height: 0.86;
+  letter-spacing: -0.03em;
+}
+
+.t-page {
+  font-size: clamp(2.75rem, 8vw, 6rem);
+  line-height: 0.92;
+  letter-spacing: -0.025em;
+}
+
+.t-section {
+  font-size: clamp(2rem, 4.6vw, 3.6rem);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+}
+
+.t-sub {
+  font-size: clamp(1.4rem, 2.4vw, 2rem);
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+}
+
+/* Pull quotes and the founder's words. Italic Bodoni is the most expensive
+   thing in the type system; it appears twice on the site, deliberately. */
+.t-quote {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.5rem, 3.4vw, 2.75rem);
+  line-height: 1.22;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+/* ===========================================================================
+   Links and buttons
+
+   There are two: a lacquer rule that draws itself under a text link, and a
+   filled block. No pills, no shadows, no gradients.
+=========================================================================== */
+@utility link-rule {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 0.15em;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-size: 100% 1px;
+  background-position: 0 100%;
+  transition: background-size 0.45s var(--ease-silk);
+}
+
+.link-rule:hover,
+.link-rule:focus-visible {
+  background-size: 0% 1px;
+  background-position: 100% 100%;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  border: 1px solid transparent;
+  padding: 1rem 1.75rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition:
+    background-color 0.4s var(--ease-silk),
+    color 0.4s var(--ease-silk),
+    border-color 0.4s var(--ease-silk);
+}
+
+.btn-solid {
+  background: var(--color-ink);
+  color: var(--color-cream);
+}
+
+.btn-solid:hover {
+  background: var(--color-lacquer);
+}
+
+.btn-line {
+  border-color: var(--color-line);
+  color: var(--color-ink);
+}
+
+.btn-line:hover {
+  border-color: var(--color-ink);
+  background: var(--color-ink);
+  color: var(--color-cream);
+}
+
+.on-ink .btn-solid {
+  background: var(--color-cream);
+  color: var(--color-ink);
+}
+
+.on-ink .btn-solid:hover {
+  background: var(--color-brass);
+}
+
+.on-ink .btn-line {
+  border-color: var(--color-line-dark);
+  color: var(--color-cream);
+}
+
+.on-ink .btn-line:hover {
+  border-color: var(--color-cream);
+  background: var(--color-cream);
+  color: var(--color-ink);
+}
+
+/* The arrow that follows a button label. Slides on hover. */
+.btn svg {
+  transition: transform 0.45s var(--ease-silk);
+}
+
+.btn:hover svg {
+  transform: translateX(0.35rem);
+}
+
+/* ===========================================================================
+   Motion
+
+   Four moves, and no others:
+     wipe   an image uncovers itself from the bottom edge
+     line   a headline's lines rise out of their own overflow
+     rise   everything else, 14px and a fade
+     draw   a hairline draws itself from the left
+
+   `RevealRoot` sets data-shown on each element as it enters the viewport, using
+   one shared IntersectionObserver for the whole page. The initial state lives
+   under `.js` so that with JavaScript off — or before the bundle arrives —
+   every element is simply visible rather than permanently blank.
+=========================================================================== */
+.js [data-reveal] {
+  --delay: 0ms;
+}
+
+/* The clip goes on the children, never on the observed element itself.
+   `clip-path` is applied when the intersection rectangle is computed, so an
+   element clipped to nothing reports zero intersection and never triggers the
+   observer that would have un-clipped it. Every image on the site stayed
+   invisible until this moved one level down. */
+.js [data-reveal="wipe"] > * {
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 1.15s var(--ease-silk) var(--delay);
+}
+
+.js [data-reveal="wipe"][data-shown] > * {
+  clip-path: inset(0 0 0 0);
+}
+
+/* The headline moves, not its wrapper — an element clipped to nothing has no
+   height for the observer to measure, and would never trigger itself. */
+/* The padding/negative-margin pair is not decoration: `overflow: hidden` on a
+   line of Bodoni cuts the descenders off the y, g and p. The padding gives them
+   room and the margin takes the space back out of the layout. */
+.js [data-reveal="line"] {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.16em;
+  margin-bottom: -0.16em;
+}
+
+.js [data-reveal="line"] > * {
+  display: block;
+  transform: translateY(105%);
+  transition: transform 1.05s var(--ease-silk) var(--delay);
+}
+
+.js [data-reveal="line"][data-shown] > * {
+  transform: translateY(0);
+}
+
+.js [data-reveal="rise"] {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.9s var(--ease-silk) var(--delay),
+    transform 0.9s var(--ease-silk) var(--delay);
+}
+
+.js [data-reveal="rise"][data-shown] {
+  opacity: 1;
+  transform: none;
+}
+
+.js [data-reveal="draw"] {
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 1.1s var(--ease-silk) var(--delay);
+}
+
+.js [data-reveal="draw"][data-shown] {
+  transform: scaleX(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js [data-reveal],
+  .js [data-reveal] > * {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+    transition: none !important;
+  }
+}
+
+/* The hero, which is on screen before any observer has run and so animates on a
+   timer instead. */
+@keyframes hero-in {
+  from {
+    transform: translateY(105%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes hero-image-in {
+  from {
+    transform: scale(1.08);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+/* Each line is a window; the span inside it is what moves. The padding gives
+   Bodoni's descenders room inside the window and the margin takes that space
+   back out of the layout. */
+.anim-line > * {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.16em;
+  margin-bottom: -0.16em;
+}
+
+.anim-line > * > * {
+  display: block;
+  animation: hero-in 1.15s var(--ease-silk) both;
+}
+
+.anim-fade {
+  animation: fade-in 1s var(--ease-silk) both;
+}
+
+.anim-image {
+  animation: hero-image-in 2.4s var(--ease-silk) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-line > * > *,
+  .anim-fade,
+  .anim-image {
+    animation: none;
+  }
+}
+
+/* ===========================================================================
+   Marquee
+
+   The credential ticker under the hero and the service names between sections.
+   Two identical tracks side by side, translated by exactly half the pair, so
+   the loop has no seam. Paused on hover and gone entirely under reduced motion,
+   where it becomes an ordinary static line.
+=========================================================================== */
+.marquee {
+  display: flex;
+  overflow: hidden;
+  user-select: none;
+}
+
+.marquee-track {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  min-width: 100%;
+  animation: marquee var(--speed, 42s) linear infinite;
+}
+
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee {
+    overflow-x: auto;
+  }
+
+  .marquee-track {
+    animation: none;
+  }
+
+  .marquee-track + .marquee-track {
+    display: none;
+  }
+}
+
+/* ===========================================================================
+   The services index
+
+   A list of four rows that fills the width of the page. The image is the
+   surprise: it is absent until a row is hovered or focused, then it fades in
+   pinned to the right of the cursor's row. On touch and narrow screens there is
+   no hover to speak of, so the image is simply not rendered and the list stands
+   on its own.
+=========================================================================== */
+.idx-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 3.5rem minmax(0, 1fr);
+  align-items: baseline;
+  gap: 1rem;
+  border-top: 1px solid var(--color-line);
+  padding: 1.6rem 0;
+  text-decoration: none;
+  color: inherit;
+}
+
+.idx-row:last-child {
+  border-bottom: 1px solid var(--color-line);
+}
+
+.idx-title {
+  transition: color 0.4s var(--ease-silk);
+}
+
+.idx-row:hover .idx-title,
+.idx-row:focus-visible .idx-title {
+  color: var(--color-lacquer);
+}
+
+@media (min-width: 64rem) {
+  .idx-row {
+    grid-template-columns: 5rem minmax(0, 1fr) 18rem;
+    align-items: center;
+    padding: 2.1rem 0;
+  }
+
+  /* Sliding the title right on hover is the whole interaction. It reads as the
+     row stepping forward to be chosen. */
+  .idx-title {
+    transition:
+      color 0.4s var(--ease-silk),
+      transform 0.6s var(--ease-silk);
+  }
+
+  .idx-row:hover .idx-title,
+  .idx-row:focus-visible .idx-title {
+    transform: translateX(1.25rem);
+  }
+
+  .idx-figure {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    width: 15rem;
+    height: 10rem;
+    translate: 0 -50%;
+    overflow: hidden;
+    opacity: 0;
+    scale: 0.96;
+    transition:
+      opacity 0.5s var(--ease-silk),
+      scale 0.7s var(--ease-silk);
+    pointer-events: none;
+  }
+
+  .idx-row:hover .idx-figure,
+  .idx-row:focus-visible .idx-figure {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+/* ===========================================================================
+   The price index
+
+   The one rule that makes a price list read like a price list: every number
+   shares the same right-hand grid. A flat price spans all three artist columns
+   and right-aligns; a tiered price fills them. The right edge never moves,
+   whatever kind of row it is.
+
+   `--price-w` is the width of that grid, and it is the only thing the artist
+   filter changes about the layout.
+=========================================================================== */
+.menu-table {
+  --price-w: 24rem;
+}
+
+/* Chapters where every service is one price, whoever does it, don't need a
+   column three figures wide. */
+.menu-table:not([data-tiered]) {
+  --price-w: 9rem;
+}
+
+.menu-colhead,
+.menu-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--price-w);
+  gap: 1.5rem;
+  align-items: baseline;
+}
+
+.menu-colhead {
+  /* "Creative Artist" wraps and "Top Artist" doesn't; bottom alignment keeps
+     all three sitting on one line. */
+  align-items: end;
+  border-bottom: 1px solid var(--color-line);
+  padding-bottom: 0.75rem;
+}
+
+.menu-colhead .tier-cell {
+  font-size: 0.6rem;
+  font-weight: 600;
+  line-height: 1.3;
+  /* 0.06em, not more: at 24rem across three columns, "Creative Director" wraps
+     to two lines above 0.08em and the heads stop sitting on one line. */
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.menu-price {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* A single figure occupies the full width of the price grid. */
+.menu-amount-flat {
+  grid-column: 1 / -1;
+}
+
+.menu-group + .menu-group {
+  margin-top: 3rem;
+}
+
+.menu-group-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.menu-group-intro {
+  margin: 0.5rem 0 0;
+  max-width: 36rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--color-muted);
+}
+
+.menu-group-note {
+  margin: 0.9rem 0 0;
+  max-width: 36rem;
+  border-left: 2px solid var(--color-lacquer);
+  padding: 0.15rem 0 0.15rem 0.9rem;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: var(--color-muted);
+}
+
+.menu-rows {
+  margin: 1.25rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.menu-row {
+  border-top: 1px solid var(--color-line-soft);
+  padding: 1rem 0;
+  text-decoration: none;
+  color: inherit;
+}
+
+.menu-service {
+  display: block;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: color 0.35s var(--ease-silk);
+}
+
+.menu-row:hover .menu-service {
+  color: var(--color-lacquer);
+}
+
+.menu-note {
+  display: block;
+  margin-top: 0.3rem;
+  max-width: 44ch;
+  font-size: 0.8rem;
+  line-height: 1.55;
+  color: var(--color-muted);
+}
+
+.menu-amount {
+  font-size: 0.95rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* ---- the artist filter --------------------------------------------------
+   Choosing one artist level removes the other two columns and narrows the
+   grid, so every row collapses to a single aligned figure. Dimming them
+   instead leaves two ghost columns holding their space, which reads as a
+   rendering fault rather than a filter. */
+[data-tier-focus="top"] .menu-table[data-tiered],
+[data-tier-focus="creative"] .menu-table[data-tiered],
+[data-tier-focus="director"] .menu-table[data-tiered] {
+  --price-w: 9rem;
+}
+
+[data-tier-focus="top"] .menu-price,
+[data-tier-focus="creative"] .menu-price,
+[data-tier-focus="director"] .menu-price {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+[data-tier-focus="top"] .tier-cell:not([data-tier="top"]),
+[data-tier-focus="creative"] .tier-cell:not([data-tier="creative"]),
+[data-tier-focus="director"] .tier-cell:not([data-tier="director"]) {
+  display: none;
+}
+
+/* ---- narrow screens -----------------------------------------------------
+   Three price columns will not fit beside a service name on a phone, so the
+   figures stack and each one names its own artist level. The column headings,
+   which have nothing left to head, are hidden.
+
+   The column stays a fixed width rather than sizing to its contents: an `auto`
+   track is measured per row, which puts a four-digit price and a three-digit
+   one at different right edges. */
+@media (max-width: 46rem) {
+  .menu-table {
+    --price-w: 8rem;
+  }
+
+  .menu-table:not([data-tiered]),
+  [data-tier-focus="top"] .menu-table[data-tiered],
+  [data-tier-focus="creative"] .menu-table[data-tiered],
+  [data-tier-focus="director"] .menu-table[data-tiered] {
+    --price-w: 5.5rem;
+  }
+
+  .menu-colhead {
+    display: none;
+  }
+
+  .menu-row {
+    gap: 0.85rem;
+  }
+
+  .menu-price {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.3rem;
+  }
+
+  /* Artist level left, figure right — so the figures still line up on one
+     edge. */
+  .menu-amount[data-label] {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .menu-amount[data-label]::before {
+    content: attr(data-label);
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  /* With one level chosen there is nothing to distinguish, so the label goes.
+     These are scoped to the surviving cell — a rule matching all three would
+     tie on specificity with the one that hides the other two, and win on
+     source order. */
+  [data-tier-focus="top"] .menu-amount[data-tier="top"],
+  [data-tier-focus="creative"] .menu-amount[data-tier="creative"],
+  [data-tier-focus="director"] .menu-amount[data-tier="director"] {
+    display: block;
+  }
+
+  [data-tier-focus="top"] .menu-amount[data-label]::before,
+  [data-tier-focus="creative"] .menu-amount[data-label]::before,
+  [data-tier-focus="director"] .menu-amount[data-label]::before {
+    content: none;
+  }
+}
+
+/* ===========================================================================
+   The overlay menu
+
+   Full screen, ink ground, display-sized links. It is the only place on the
+   site where navigation is allowed to be loud.
+=========================================================================== */
+.overlay {
+  position: fixed;
+  inset: 0;
+  /* Above the sticky header (80), or the header covers the panel's own bar and
+     takes the Close button with it. */
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-ink);
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 0.75s var(--ease-silk);
+}
+
+.overlay[data-open="true"] {
+  clip-path: inset(0 0 0 0);
+}
+
+.overlay[data-open="false"] {
+  pointer-events: none;
+}
+
+/* Links stagger in behind the panel edge. */
+.overlay-link > span {
+  display: block;
+  transform: translateY(110%);
+  transition: transform 0.8s var(--ease-silk) var(--delay, 0ms);
+}
+
+.overlay[data-open="true"] .overlay-link > span {
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay,
+  .overlay-link > span {
+    transition-duration: 0.001s;
+  }
+}
+
+/* ===========================================================================
+   Photography
+
+   Every photograph on the site sits inside one of these. The ratio is set on
+   the wrapper so the space is reserved before the file arrives, which is what
+   keeps layout shift at zero.
+=========================================================================== */
+.frame {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-paper-2);
+}
+
+.frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* A touch of warmth, so images from different sources sit together. */
+  filter: saturate(0.92) contrast(1.02);
+}
+
+.frame-portrait {
+  aspect-ratio: 4 / 5;
+}
+
+.frame-tall {
+  aspect-ratio: 3 / 4;
+}
+
+.frame-wide {
+  aspect-ratio: 16 / 10;
+}
+
+.frame-square {
+  aspect-ratio: 1 / 1;
+}
+
+/* A slow zoom-out while the image is on screen. Subtle enough that it registers
+   as depth rather than movement. */
+@media (hover: hover) {
+  .frame-zoom img {
+    transition: transform 1.4s var(--ease-silk);
+  }
+
+  .frame-zoom:hover img {
+    transform: scale(1.045);
+  }
+}
+
+/* ===========================================================================
+   The lookbook rail
+
+   A horizontal scroller rather than a grid: a grid of fourteen crops is a
+   contact sheet, and a rail is a portfolio being turned.
+=========================================================================== */
+.rail {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.rail::-webkit-scrollbar {
+  display: none;
+}
+
+.rail > * {
+  flex: 0 0 auto;
+  scroll-snap-align: center;
+  width: 68vw;
+  max-width: 22rem;
+}
+
+@media (min-width: 64rem) {
+  .rail > * {
+    width: 24rem;
+    max-width: none;
+  }
+}
+
+/* ===========================================================================
+   Dark sections
+=========================================================================== */
+.on-ink {
+  background: var(--color-ink);
+  color: var(--color-cream);
+}
+
+.on-ink .micro {
+  color: var(--color-brass);
+}
+
+.on-ink .menu-service,
+.on-ink .menu-amount {
+  color: var(--color-cream);
+}

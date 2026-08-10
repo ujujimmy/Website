@@ -1,0 +1,39 @@
+{
+  "name": "dechen-atelier",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Website for DECHEN Salon, Majnu-ka-Tilla, New Delhi",
+  "license": "UNLICENSED",
+  "packageManager": "pnpm@10.33.0",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "typecheck": "tsc --noEmit",
+    "preview": "npx --yes serve@14 out -l 3300",
+    "images": "node scripts/optimise-images.mjs",
+    "extract-images": "python3 scripts/extract-images.py",
+    "shots": "node scripts/screenshots.mjs",
+    "a11y": "node scripts/a11y.mjs",
+    "lighthouse": "node scripts/lighthouse.mjs",
+    "preview-file": "node scripts/single-file.mjs",
+    "preview-check": "node scripts/preview-check.mjs"
+  },
+  "dependencies": {
+    "next": "^16.2.12",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.12.1",
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/node": "^26.1.2",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "lighthouse": "^13.4.1",
+    "playwright": "^1.62.1",
+    "postcss": "^8.5.25",
+    "sharp": "^0.35.3",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^6.0.3"
+  }
+}

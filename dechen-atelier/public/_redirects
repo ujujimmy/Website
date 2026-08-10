@@ -1,0 +1,28 @@
+# Clean URLs.
+#
+# The static export writes `menu.html`, not `menu/index.html`. Netlify serves
+# extensionless paths from those files by itself, but only while the "Pretty
+# URLs" post-processing option is on — a dashboard toggle that would take every
+# page but the homepage down with it. These make it explicit.
+#
+# This file lives in public/ so it ends up in the publish directory, which means
+# it applies to a drag-and-drop deploy exactly as it does to a git-connected
+# build. netlify.toml only carries build settings.
+#
+# 200 rewrites rather than 301s, so the address bar keeps the clean path.
+
+/services                     /services.html                     200
+/services/cuts-and-styling    /services/cuts-and-styling.html    200
+/services/hair-color          /services/hair-color.html          200
+/services/hair-extensions     /services/hair-extensions.html     200
+/services/treatments          /services/treatments.html          200
+/menu                         /menu.html                         200
+/about                        /about.html                        200
+/founder                      /founder.html                      200
+/team                         /team.html                         200
+/gallery                      /gallery.html                      200
+/reviews                      /reviews.html                      200
+/visit                        /visit.html                        200
+
+# Anything else gets the exported 404 page.
+/*                            /404.html                          404

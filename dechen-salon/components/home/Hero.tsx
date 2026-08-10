@@ -17,9 +17,11 @@ import { Button, Arrow } from "@/components/ui/Button";
  */
 export function Hero() {
   return (
-    <section className="relative overflow-hidden bg-petal">
+    // Offset by the header's height so the photograph starts below it rather
+    // than being clipped by an opaque bar across the model's face.
+    <section className="relative overflow-hidden bg-petal pt-16 sm:pt-20">
       <div className="mx-auto grid w-full max-w-7xl items-stretch lg:grid-cols-[1.05fr_1fr]">
-        <div className="flex items-center px-6 pb-16 pt-28 sm:px-10 sm:pb-24 sm:pt-36 lg:py-32 lg:pl-14 lg:pr-16">
+        <div className="flex items-center px-6 pb-16 pt-12 sm:px-10 sm:pb-24 sm:pt-16 lg:py-28 lg:pl-14 lg:pr-16">
           <div className="max-w-xl">
             <p className="eyebrow">Majnu-ka-Tilla &middot; New Delhi</p>
 

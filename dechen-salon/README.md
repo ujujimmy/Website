@@ -184,11 +184,11 @@ observed CPU timings and is wildly pessimistic on a shared build machine).
 
 | Page | Performance | Accessibility | Best practices | SEO | CLS |
 |---|---|---|---|---|---|
-| `/` | 94 | 100 | 100 | 100 | 0.016 |
-| `/menu` | 86 | 100 | 100 | 100 | 0.001 |
-| `/services/hair-color` | 95 | 100 | 100 | 100 | 0.019 |
-| `/founder` | 87 | 100 | 100 | 100 | 0.002 |
-| `/visit` | 97 | 100 | 100 | 100 | 0.030 |
+| `/` | 92 | 100 | 100 | 100 | 0.016 |
+| `/menu` | 87 | 100 | 100 | 100 | 0.001 |
+| `/services/hair-color` | 96 | 100 | 100 | 100 | 0.019 |
+| `/founder` | 89 | 100 | 100 | 100 | 0.002 |
+| `/visit` | 96 | 100 | 100 | 100 | 0.030 |
 
 `pnpm a11y` reports **no WCAG 2.1 AA violations** across all 14 routes at 1440px
 and 390px. It scrolls each page with real wheel input first, because content

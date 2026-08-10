@@ -11,8 +11,7 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
-  // The header is transparent over the hero and gains a solid ground once
-  // there is content behind it.
+  // Only the shadow is scroll-dependent — see the note on the ground below.
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
     onScroll();
@@ -31,12 +30,16 @@ export function Header() {
   }, [open]);
 
   return (
-    // Opaque rather than translucent once scrolled. A frosted bar looked fine
-    // over the blush acts and turned mauve over the plum ones, which dropped the
-    // nav links and the gold logo suffix below 4.5:1.
+    /*
+      The ground is always painted, never transparent-then-solid on scroll.
+      Ink-coloured nav links floating over the hero photograph were barely
+      legible, and over the plum colour section they disappeared entirely — and
+      because the scroll state comes from JavaScript, a visitor with JS disabled
+      got the transparent version permanently. Only the shadow is stateful now.
+    */
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
-        scrolled || open ? "bg-petal shadow-[0_1px_0_rgb(59_27_51_/_0.06)]" : ""
+      className={`fixed inset-x-0 top-0 z-50 bg-petal transition-shadow duration-500 ${
+        scrolled || open ? "shadow-[0_1px_0_rgb(59_27_51_/_0.06)]" : ""
       }`}
     >
       <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-4 px-6 sm:h-20">

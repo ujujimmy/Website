@@ -7,3 +7,6 @@ next-env.d.ts
 shots/
 .env
 .env.local
+
+# Generated preview bundle — regenerate with `pnpm preview-file`.
+preview.html

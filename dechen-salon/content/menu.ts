@@ -79,9 +79,15 @@ export const chapters: Chapter[] = [
         items: [
           { name: "Male Haircut", price: { kind: "dual", a: 350, b: 500 } },
           { name: "Female Haircut", price: { kind: "flat", amount: 800 } },
-          { name: "Haircut by Top Artist", price: { kind: "flat", amount: 500 } },
-          { name: "Haircut by Creative Artist", price: { kind: "flat", amount: 1000 } },
-          { name: "Haircut by Creative Director", price: { kind: "flat", amount: 2000 } },
+          {
+            // The catalog prints these as three separate lines — "Haircut by
+            // Top Artist ₹500", and so on. They are one service at three
+            // levels, so they belong in one row under the tier columns. Same
+            // three figures, read in a quarter of the time.
+            name: "Haircut by artist level",
+            note: "Choose the artist you'd like. The cut, the wash and the finish are the same at every level.",
+            price: { kind: "tiered", top: 500, creative: 1000, director: 2000 },
+          },
         ],
       },
       {
@@ -355,6 +361,19 @@ export const chapters: Chapter[] = [
 export const chapterBySlug = Object.fromEntries(
   chapters.map((c) => [c.slug, c]),
 ) as Record<Chapter["slug"], Chapter>;
+
+/**
+ * Whether any service in a chapter is priced by artist level.
+ *
+ * Extensions are one price whoever fits them, so their chapter gets neither
+ * tier column headings nor a tier filter. Offering a control that changes
+ * nothing is worse than not offering it.
+ */
+export function chapterHasTiers(chapter: Chapter): boolean {
+  return chapter.groups.some((group) =>
+    group.items.some((item) => item.price.kind === "tiered"),
+  );
+}
 
 /**
  * The five shade families the salon shows on its colour chart. These drive the

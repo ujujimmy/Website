@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { chapters, retail } from "@/content/menu";
 import { PageHero } from "@/components/layout/PageHero";
-import { PriceRows } from "@/components/menu/PriceRows";
+import { PriceTable } from "@/components/menu/PriceTable";
 import { TierFocus } from "@/components/menu/TierFocus";
 import { Section, SectionHead } from "@/components/ui/Section";
 import { Reveal } from "@/components/ui/Reveal";
@@ -24,46 +24,46 @@ export default function MenuPage() {
       <PageHero
         eyebrow="Every price, published"
         title="The full menu."
-        sub="Cuts, colour, extensions and treatments. Colour and cutting are quoted at three levels — the difference is the artist's experience, not the care."
+        sub="Cutting and colour are quoted at three levels. The difference is the artist's experience — the products, the care and the time you get are the same at all three."
       />
-
-      {/* Jump links, because this page is long by design. */}
-      <nav aria-label="Menu sections" className="px-6 pb-10">
-        <ul className="mx-auto flex w-full max-w-4xl flex-wrap justify-center gap-2">
-          {chapters.map((chapter) => (
-            <li key={chapter.slug}>
-              <a
-                href={`#${chapter.slug}`}
-                className="inline-block rounded-full bg-card px-4 py-2 text-sm text-muted shadow-[0_4px_14px_-10px_rgb(59_27_51_/_0.4)] transition-colors hover:text-ink"
-              >
-                {chapter.name}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
 
       <div className="px-6 pb-20">
         <div className="mx-auto w-full max-w-4xl">
           <TierFocus>
+            {/* Jump links, because this page is long by design. */}
+            <nav aria-label="Menu sections" className="mb-10">
+              <ul className="flex flex-wrap justify-center gap-2">
+                {chapters.map((chapter) => (
+                  <li key={chapter.slug}>
+                    <a
+                      href={`#${chapter.slug}`}
+                      className="inline-block rounded-full bg-card px-4 py-2 text-sm text-muted shadow-[0_4px_14px_-10px_rgb(59_27_51_/_0.4)] transition-colors hover:text-ink"
+                    >
+                      {chapter.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+
             <div className="flex flex-col gap-14">
               {chapters.map((chapter) => (
-                <section key={chapter.slug} id={chapter.slug} className="scroll-mt-28">
-                  <div className="mb-6 flex flex-wrap items-baseline justify-between gap-3">
+                <section
+                  key={chapter.slug}
+                  id={chapter.slug}
+                  className="scroll-mt-40"
+                >
+                  <div className="mb-5 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
                     <h2 className="text-3xl sm:text-4xl">{chapter.name}</h2>
                     <Link
                       href={`/services/${chapter.slug}`}
-                      className="text-sm text-gold-ink transition-colors hover:text-ink"
+                      className="link-underline pb-0.5 text-sm font-medium text-gold-ink"
                     >
-                      About {chapter.name.toLowerCase()} →
+                      About {chapter.name.toLowerCase()} &rarr;
                     </Link>
                   </div>
 
-                  <div className="flex flex-col gap-5">
-                    {chapter.groups.map((group) => (
-                      <PriceRows key={group.title} group={group} />
-                    ))}
-                  </div>
+                  <PriceTable chapter={chapter} />
                 </section>
               ))}
             </div>

@@ -133,23 +133,247 @@
 }
 
 /* ---------------------------------------------------------------------------
-   Price menu tier focus
+   The price list
 
-   Choosing a tier dims the other two columns rather than removing them. Every
-   figure stays in the DOM, so the page is complete for search engines, for
-   screen readers, and for anyone with JavaScript off — the filter is a reading
-   aid, not the only way to see a price.
+   One rule does most of the work: every number shares the same right-hand
+   grid. A flat price spans all three tier columns and right-aligns; a tiered
+   price fills them. The right edge never moves, whatever kind of row it is —
+   which is the whole difference between a price list and a pile of numbers.
+
+   `--price-w` is the width of that grid, and it is the only thing the tier
+   filter changes about the layout.
 --------------------------------------------------------------------------- */
-[data-tier-focus] .tier-cell {
-  transition:
-    opacity 0.3s ease,
-    filter 0.3s ease;
+.menu-table {
+  --price-w: 24rem;
+  background: var(--color-card);
+  border-radius: var(--radius-card);
+  box-shadow:
+    0 1px 2px rgb(59 27 51 / 0.04),
+    0 12px 32px -12px rgb(59 27 51 / 0.1);
+  padding: 0.5rem 1.5rem 1.75rem;
+}
+
+@media (min-width: 40rem) {
+  .menu-table {
+    padding: 0.75rem 2.25rem 2rem;
+  }
+}
+
+/* The shared two-column frame: name, then the price grid. */
+/* Chapters where every service is one price, whoever does it, don't need a
+   column three figures wide. */
+.menu-table:not([data-tiered]) {
+  --price-w: 9rem;
+}
+
+.menu-colhead,
+.menu-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--price-w);
+  gap: 1.5rem;
+  align-items: baseline;
+}
+
+.menu-price {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* A single figure occupies the full width of the price grid. */
+.menu-amount-flat {
+  grid-column: 1 / -1;
+}
+
+.menu-colhead {
+  padding: 1.25rem 0 0.5rem;
+  border-bottom: 1px solid var(--color-line);
+  /* "Creative Artist" wraps to two lines and "Top Artist" doesn't; bottom
+     alignment keeps all three sitting on one line. */
+  align-items: end;
+}
+
+.menu-colhead .tier-cell {
+  font-size: 0.6rem;
+  line-height: 1.3;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.menu-group + .menu-group {
+  border-top: 1px solid var(--color-line);
+  margin-top: 1.75rem;
+  padding-top: 1.75rem;
+}
+
+.menu-group-title {
+  margin: 2rem 0 0;
+  font-size: 1.35rem;
+  color: var(--color-gold-ink);
+}
+
+.menu-group + .menu-group .menu-group-title {
+  margin-top: 0;
+}
+
+.menu-group-intro {
+  margin: 0.6rem 0 0;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--color-muted);
+}
+
+.menu-group-note {
+  margin: 0.9rem 0 0;
+  border-radius: 0.9rem;
+  background: var(--color-petal);
+  padding: 0.7rem 1rem;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--color-muted);
+}
+
+.menu-rows {
+  margin: 0.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.menu-row {
+  padding: 0.95rem 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-line) 60%, transparent);
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.2s ease;
+}
+
+.menu-rows li:last-child .menu-row {
+  border-bottom: 0;
+}
+
+.menu-row:hover .menu-service {
+  color: var(--color-gold-ink);
+}
+
+.menu-service {
+  display: block;
+  font-weight: 500;
+  color: var(--color-ink);
+  transition: color 0.2s ease;
+}
+
+.menu-note {
+  display: block;
+  margin-top: 0.35rem;
+  max-width: 46ch;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  color: var(--color-muted);
+}
+
+.menu-amount {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-gold-ink);
+  white-space: nowrap;
+}
+
+/* ---- the filter ----------------------------------------------------------
+   Choosing one tier removes the other two columns and narrows the grid, so
+   every row collapses to a single aligned figure. Dimming them instead left
+   two ghost columns holding their space, which read as a rendering fault
+   rather than a filter. */
+[data-tier-focus="top"] .menu-table[data-tiered],
+[data-tier-focus="creative"] .menu-table[data-tiered],
+[data-tier-focus="director"] .menu-table[data-tiered] {
+  --price-w: 9rem;
+}
+
+[data-tier-focus="top"] .menu-price,
+[data-tier-focus="creative"] .menu-price,
+[data-tier-focus="director"] .menu-price {
+  grid-template-columns: minmax(0, 1fr);
 }
 
 [data-tier-focus="top"] .tier-cell:not([data-tier="top"]),
 [data-tier-focus="creative"] .tier-cell:not([data-tier="creative"]),
 [data-tier-focus="director"] .tier-cell:not([data-tier="director"]) {
-  opacity: 0.28;
+  display: none;
+}
+
+/* ---- narrow screens ------------------------------------------------------
+   Three price columns will not fit beside a service name on a phone, so the
+   figures stack and each one names its own tier. The column headings, which
+   have nothing left to head, are hidden. */
+@media (max-width: 46rem) {
+  /* The column stays a fixed width rather than sizing to its contents: an
+     `auto` track is measured per row, which puts a four-digit price and a
+     three-digit one at different right edges. */
+  .menu-table {
+    --price-w: 8rem;
+  }
+
+  .menu-table:not([data-tiered]),
+  [data-tier-focus="top"] .menu-table[data-tiered],
+  [data-tier-focus="creative"] .menu-table[data-tiered],
+  [data-tier-focus="director"] .menu-table[data-tiered] {
+    --price-w: 5.5rem;
+  }
+
+  .menu-colhead {
+    display: none;
+  }
+
+  .menu-table {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+
+  .menu-row {
+    gap: 0.85rem;
+  }
+
+  .menu-price {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.3rem;
+  }
+
+  /* Tier name left, figure right — so the figures still line up on one edge. */
+  .menu-amount[data-label] {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .menu-amount[data-label]::before {
+    content: attr(data-label);
+    font-size: 0.66rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  /* With one tier chosen there is nothing to distinguish, so the label goes.
+     These are scoped to the surviving cell — a rule matching all three would
+     tie on specificity with the one that hides the other two, and win on
+     source order. */
+  [data-tier-focus="top"] .menu-amount[data-tier="top"],
+  [data-tier-focus="creative"] .menu-amount[data-tier="creative"],
+  [data-tier-focus="director"] .menu-amount[data-tier="director"] {
+    display: block;
+  }
+
+  [data-tier-focus="top"] .menu-amount[data-label]::before,
+  [data-tier-focus="creative"] .menu-amount[data-label]::before,
+  [data-tier-focus="director"] .menu-amount[data-label]::before {
+    content: none;
+  }
 }
 
 /* ---------------------------------------------------------------------------

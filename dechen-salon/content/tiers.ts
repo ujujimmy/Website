@@ -56,9 +56,13 @@ export const tierById = Object.fromEntries(tiers.map((t) => [t.id, t])) as Recor
   Tier
 >;
 
-/** Short labels for the price tables, where column width is tight. */
+/**
+ * Short labels for the price tables on narrow screens, where the column
+ * headings are gone and each figure has to name its own tier in the width of a
+ * phone. The full names live above the columns on wider screens.
+ */
 export const tierShort: Record<TierId, string> = {
-  top: "Top Artist",
-  creative: "Creative Artist",
-  director: "Creative Director",
+  top: "Top",
+  creative: "Creative",
+  director: "Director",
 };

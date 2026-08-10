@@ -2,11 +2,17 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { chapters, chapterBySlug, type Chapter } from "@/content/menu";
+import {
+  chapters,
+  chapterBySlug,
+  chapterHasTiers,
+  type Chapter,
+} from "@/content/menu";
 import { images } from "@/content/images";
 import { chapterImage } from "@/components/home/ServicePreview";
 import { PageHero } from "@/components/layout/PageHero";
-import { PriceRows } from "@/components/menu/PriceRows";
+import { PriceTable } from "@/components/menu/PriceTable";
+import { TierFocus } from "@/components/menu/TierFocus";
 import { Reveal } from "@/components/ui/Reveal";
 import { Button, Arrow } from "@/components/ui/Button";
 import { Section, SectionHead } from "@/components/ui/Section";
@@ -67,13 +73,15 @@ export default async function ChapterPage({ params }: Params) {
       <div className="px-6 py-16">
         <div className="mx-auto w-full max-w-4xl">
           <h2 className="sr-only">{chapter.name} prices</h2>
-          <div className="flex flex-col gap-5">
-            {chapter.groups.map((group, i) => (
-              <Reveal key={group.title} delay={Math.min(i, 4) * 0.05}>
-                <PriceRows group={group} />
-              </Reveal>
-            ))}
-          </div>
+          {/* No artist levels in this chapter means nothing for the filter to
+              do, so it isn't shown. */}
+          {chapterHasTiers(chapter) ? (
+            <TierFocus>
+              <PriceTable chapter={chapter} />
+            </TierFocus>
+          ) : (
+            <PriceTable chapter={chapter} />
+          )}
 
           <p className="mt-6 text-center text-xs text-muted">
             Tap any service to enquire on WhatsApp. Prices are in rupees and

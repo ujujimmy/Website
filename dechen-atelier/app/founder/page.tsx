@@ -31,7 +31,7 @@ export default function FounderPage() {
           <Reveal variant="wipe">
             <Frame
               img={images.founder}
-              ratio="portrait"
+              ratio="figure"
               sizes="(max-width: 64rem) 100vw, 26rem"
               priority
             />

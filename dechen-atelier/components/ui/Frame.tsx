@@ -1,7 +1,7 @@
 import Image from "next/image";
 import type { Img } from "@/content/images";
 
-type Ratio = "portrait" | "tall" | "wide" | "square" | "free";
+type Ratio = "portrait" | "figure" | "tall" | "wide" | "square" | "free";
 
 /**
  * Every photograph on the site goes through here.

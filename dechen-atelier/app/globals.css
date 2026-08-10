@@ -930,6 +930,14 @@
   aspect-ratio: 4 / 5;
 }
 
+/* The founder's own ratio. Her portrait is the one photograph on the site that
+   should not be cropped — the backdrop she is standing in front of is half of
+   what it says — so it gets a frame cut to the file rather than the other way
+   round. */
+.frame-figure {
+  aspect-ratio: 2 / 3;
+}
+
 .frame-tall {
   aspect-ratio: 3 / 4;
 }

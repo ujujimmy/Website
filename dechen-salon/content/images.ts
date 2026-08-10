@@ -40,9 +40,9 @@ export const images = {
   ),
   founder: img(
     "founder",
-    596,
-    640,
-    "Dechen Dolkar, founder and Creative Director of DECHEN Salon, standing in the salon in a red jacket",
+    900,
+    1352,
+    "Dechen Dolkar speaking from a podium at an event on empowering young women, wearing a cream blazer, with an audience seated behind her",
   ),
 
   /* Cuts */

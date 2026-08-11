@@ -22,13 +22,31 @@ export const brand = {
   url: "https://northbound.agency",
   domain: "northbound.agency",
 
+  /**
+   * Contact routes.
+   *
+   * `phone` is deliberately null rather than placeholder digits. A site whose
+   * entire argument is "every number here is checkable" cannot ship a number
+   * from the reserved 555-01XX fictional block — one visitor who recognises
+   * it discounts every other figure on the page. Every consumer treats null
+   * as "this route does not exist yet" and omits the link; fill it in and the
+   * footer link, the contact card, the footer nav entry and the JSON-LD
+   * `telephone` all come back on their own.
+   *
+   * WhatsApp is real and carries the load in the meantime. It works from any
+   * country without the visitor paying for an international call, which makes
+   * it the better primary channel here regardless.
+   *
+   * TODO(brand): a local US line (even a forwarding one) materially lifts
+   * foreign trust. Add it here when there is one.
+   */
   contact: {
     email: "hello@northbound.agency",
-    /** TODO(brand): a local US number (even a forwarding one) materially lifts foreign trust. */
-    phone: "+1 (555) 019-4420",
-    phoneHref: "tel:+15550194420",
-    /** WhatsApp still matters for the India book of business. */
-    whatsapp: "+919000000000",
+    phone: null as string | null,
+    phoneHref: null as string | null,
+    whatsapp: "+91 97736 71272",
+    /** wa.me wants the number bare — country code, no +, no spaces. */
+    whatsappHref: "https://wa.me/919773671272",
   },
 
   /** Honesty beats hiding it — stated plainly in the footer and About page. */

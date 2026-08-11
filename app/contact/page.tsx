@@ -8,6 +8,7 @@ import { FaqSection } from "@/components/home/Supporting";
 import { BookingEmbed } from "@/components/contact/BookingEmbed";
 import { JsonLd } from "@/components/JsonLd";
 import { breadcrumbLd } from "@/lib/seo";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -16,6 +17,8 @@ export const metadata: Metadata = {
 };
 
 export default function ContactPage() {
+  const hasPhone = Boolean(brand.contact.phone && brand.contact.phoneHref);
+
   return (
     <main>
       <PageHero
@@ -29,7 +32,14 @@ export default function ContactPage() {
       />
 
       <Section className="pt-4">
-        <div className="container-page grid gap-6 lg:grid-cols-3">
+        {/* Three cards today, four once a phone line exists — the column
+            count follows so neither case leaves an orphan on its own row. */}
+        <div
+          className={cn(
+            "container-page grid gap-6 sm:grid-cols-2",
+            hasPhone ? "lg:grid-cols-4" : "lg:grid-cols-3",
+          )}
+        >
           <Reveal>
             <div className="glass flex h-full flex-col rounded-[var(--radius-card)] p-7">
               <h2 className="text-lg font-semibold">Get the free audit</h2>
@@ -63,21 +73,43 @@ export default function ContactPage() {
 
           <Reveal delay={0.16}>
             <div className="glass flex h-full flex-col rounded-[var(--radius-card)] p-7">
-              <h2 className="text-lg font-semibold">Call us</h2>
+              <h2 className="text-lg font-semibold">WhatsApp us</h2>
               <p className="mt-3 grow text-sm leading-relaxed text-muted">
-                We keep {brand.hours}. If you call outside that, leave a message
-                and we&apos;ll come back to you at the start of your next
-                business day.
+                The quickest route for a short question. It costs you nothing
+                from abroad, and you can see we&apos;ve read it.
               </p>
               <Button
-                href={brand.contact.phoneHref}
+                href={brand.contact.whatsappHref}
                 variant="secondary"
                 className="mt-6 w-full"
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                {brand.contact.phone}
+                {brand.contact.whatsapp}
               </Button>
             </div>
           </Reveal>
+
+          {/* Restored automatically once brand.contact.phone is real. */}
+          {hasPhone && (
+            <Reveal delay={0.24}>
+              <div className="glass flex h-full flex-col rounded-[var(--radius-card)] p-7">
+                <h2 className="text-lg font-semibold">Call us</h2>
+                <p className="mt-3 grow text-sm leading-relaxed text-muted">
+                  We keep {brand.hours}. If you call outside that, leave a
+                  message and we&apos;ll come back to you at the start of your
+                  next business day.
+                </p>
+                <Button
+                  href={brand.contact.phoneHref!}
+                  variant="secondary"
+                  className="mt-6 w-full"
+                >
+                  {brand.contact.phone}
+                </Button>
+              </div>
+            </Reveal>
+          )}
         </div>
 
         {/* Below the audit CTA on purpose — the audit converts colder

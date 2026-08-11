@@ -42,7 +42,12 @@ export const footerNav = [
       { label: "Free audit", href: "/audit" },
       { label: "Sample audit", href: "/audit/sample" },
       { label: `Email us`, href: `mailto:${brand.contact.email}` },
-      { label: "Call us", href: brand.contact.phoneHref },
+      { label: "WhatsApp us", href: brand.contact.whatsappHref },
+      // "Call us" reappears here automatically once brand.contact.phoneHref
+      // is set. Until then it would be a link to a fictional number.
+      ...(brand.contact.phoneHref
+        ? [{ label: "Call us", href: brand.contact.phoneHref }]
+        : []),
     ],
   },
 ];

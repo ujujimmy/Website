@@ -24,11 +24,22 @@ export function Footer() {
                 {brand.contact.email}
               </a>
               <a
-                href={brand.contact.phoneHref}
+                href={brand.contact.whatsappHref}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-muted transition-colors hover:text-fg"
               >
-                {brand.contact.phone}
+                WhatsApp {brand.contact.whatsapp}
               </a>
+              {/* Omitted until a real line exists — see content/brand.ts. */}
+              {brand.contact.phoneHref && brand.contact.phone && (
+                <a
+                  href={brand.contact.phoneHref}
+                  className="text-muted transition-colors hover:text-fg"
+                >
+                  {brand.contact.phone}
+                </a>
+              )}
               {/* Stating the hours plainly beats letting a US buyer wonder. */}
               <p className="text-faint">{brand.hours}</p>
             </div>

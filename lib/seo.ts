@@ -18,7 +18,10 @@ export function organizationLd() {
     url: brand.url,
     description: brand.description,
     email: brand.contact.email,
-    telephone: brand.contact.phone,
+    // Spread so the key is absent rather than null when there's no line yet.
+    // Publishing a fictional number as structured data feeds it straight to
+    // Google as machine-readable business data.
+    ...(brand.contact.phone ? { telephone: brand.contact.phone } : {}),
     priceRange: "$$",
     areaServed: [
       { "@type": "Country", name: "United States" },

@@ -1,4 +1,5 @@
-import { headlineResult } from "@/content/proof";
+import Link from "next/link";
+import { headlineResult, caseStudies } from "@/content/proof";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { Reveal } from "@/components/ui/Reveal";
 import { StatCounter } from "@/components/ui/StatCounter";
@@ -82,16 +83,24 @@ function RatingBlock({
 }
 
 /**
- * "Proof it works."
+ * "Proof it works" — the homepage's single proof section.
  *
  * Software vendors in this space lean on aggregate stats across thousands of
  * accounts. We have one campaign with recorded before/after numbers, so this
  * shows that one at full size rather than averaging a client base we don't
  * have — and leans on the thing aggregate data can't offer: the visitor can
  * open the listing and check it in ten seconds.
+ *
+ * This absorbed the old "Selected work" grid. That grid re-printed Gangnam's
+ * 3.9 → 4.4 and 1,800+ a second time, a few hundred pixels below the panel
+ * that already showed them at full size — which reads as padding rather than
+ * evidence. The headline campaign now appears once, and the other two clients
+ * sit under it as what they actually are: real names you can look up, with no
+ * recorded numbers to show.
  */
 export function ProofItWorks() {
   const r = headlineResult;
+  const others = caseStudies.filter((c) => c.client !== r.client);
 
   return (
     <Section id="proof" className="border-t border-line">
@@ -161,28 +170,58 @@ export function ProofItWorks() {
               </div>
 
               {/* The part a software vendor's aggregate stats can't offer. */}
-              <div className="mt-12 flex flex-col gap-4 border-t border-line pt-8 sm:flex-row sm:items-center sm:justify-between">
-                <p className="max-w-xl text-sm leading-relaxed text-muted">
+              <div className="mt-12 border-t border-line pt-8">
+                <p className="max-w-xl text-base leading-relaxed text-muted">
                   <span className="font-medium text-fg">
                     Don&apos;t take our word for it.
                   </span>{" "}
                   {r.verify}
                 </p>
-                <Button href="/work" variant="secondary" size="sm">
-                  See the other clients
-                </Button>
               </div>
             </div>
           </div>
         </Reveal>
 
+        {/*
+          The other two clients. No invented metrics — where a campaign's
+          numbers weren't recorded, the services are shown instead, and the
+          copy says plainly that's why.
+        */}
+        <div className="mt-6 grid gap-6 sm:grid-cols-2">
+          {others.map((study, i) => (
+            <Reveal key={study.slug} delay={i * 0.08}>
+              <Link
+                href={`/work#${study.slug}`}
+                className="glass group flex h-full flex-col rounded-[var(--radius-card)] p-7 transition-all duration-300 hover:-translate-y-1 hover:border-brand-soft/40"
+              >
+                <p className="text-xs uppercase tracking-[0.14em] text-faint">
+                  {study.industry} · {study.location}
+                </p>
+                <h3 className="mt-3 text-lg font-semibold transition-colors group-hover:text-brand-2">
+                  {study.client}
+                </h3>
+                <p className="mt-3 grow text-base leading-relaxed text-muted">
+                  {study.challenge}
+                </p>
+                <p className="mt-6 border-t border-line pt-5 text-xs uppercase tracking-[0.14em] text-faint">
+                  {study.services.join(" · ")}
+                </p>
+              </Link>
+            </Reveal>
+          ))}
+        </div>
+
         <Reveal>
-          <p className="mx-auto mt-8 max-w-2xl text-center text-xs leading-relaxed text-faint">
-            We work with two other businesses in Delhi whose campaigns we
-            didn&apos;t record before-and-after numbers for. Rather than
-            estimate them, we&apos;ve left them off this section — their
-            listings are public too.
-          </p>
+          <div className="mt-8 flex flex-col items-center gap-4 text-center">
+            <p className="max-w-2xl text-sm leading-relaxed text-faint">
+              We didn&apos;t record before-and-after numbers on these two.
+              Rather than estimate them, we&apos;ve left them blank — the
+              listings are public either way.
+            </p>
+            <Button href="/work" variant="secondary" size="sm">
+              All case studies
+            </Button>
+          </div>
         </Reveal>
       </div>
     </Section>

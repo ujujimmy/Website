@@ -11,9 +11,7 @@ import { Scorecard } from "@/components/home/Scorecard";
 import { PathSelector } from "@/components/home/PathSelector";
 import { ProofItWorks } from "@/components/home/ProofItWorks";
 import {
-  TrustBar,
   Process,
-  WorkPreview,
   Testimonials,
   PricingPreview,
   FaqSection,
@@ -36,6 +34,17 @@ export default function HomePage() {
       <Narrative>
         <Hero />
         <ProblemBeat />
+        {/*
+          The self-select cards sit inside the narrative, immediately after
+          the problem, rather than eight screens further down. A visitor who
+          has just read why they're losing customers is at their most
+          motivated to say which one they are — and on mobile this was the
+          single biggest thing standing between arriving and reaching an
+          answer. Narrative only measures [data-beat] sections, so a non-beat
+          section between two beats simply holds the particle field on the
+          "scattered" state while these are read.
+        */}
+        <PathSelector />
         <ServiceBeat slug="google-reviews" side="left" />
         <ServiceBeat slug="web-design" side="right" />
         <ServiceBeat slug="seo" side="left" />
@@ -44,14 +53,11 @@ export default function HomePage() {
       </Narrative>
 
       {/* Supporting detail for visitors who need more than the reel. */}
-      <TrustBar />
-      <PathSelector />
-      <Process />
       <ProofItWorks />
-      <WorkPreview />
       <Scorecard />
-      <Testimonials />
       <PricingPreview />
+      <Process />
+      <Testimonials />
       <FaqSection limit={6} />
       <ClosingCta />
 

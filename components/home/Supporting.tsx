@@ -1,71 +1,45 @@
 import Link from "next/link";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { Reveal } from "@/components/ui/Reveal";
-import { StatCounter } from "@/components/ui/StatCounter";
 import { Stars } from "@/components/ui/Stars";
 import { Button } from "@/components/ui/Button";
 import { PricingTable } from "@/components/pricing/PricingTable";
-import { stats, clientLogos, testimonials, caseStudies } from "@/content/proof";
+import { testimonials } from "@/content/proof";
 import { processSteps } from "@/content/site";
 import { faqs } from "@/content/faq";
 import { brand } from "@/content/brand";
 
-/** Trust bar — placeholder figures until real ones exist. See content/proof.ts. */
-export function TrustBar() {
-  return (
-    <section className="relative border-y border-line bg-ink-2/60 py-10 backdrop-blur-sm">
-      <div className="container-page">
-        <dl className="grid grid-cols-2 gap-8 lg:grid-cols-4">
-          {/*
-            Reveal's own <div> is the direct child of <dl>. An extra wrapper
-            here puts two levels between <dl> and its <dt>/<dd>, which is
-            invalid — a definition list allows at most one <div> grouping.
-          */}
-          {stats.map((stat, i) => (
-            <Reveal
-              key={stat.label}
-              delay={i * 0.06}
-              className="text-center lg:text-left"
-            >
-              <dt className="sr-only">{stat.label}</dt>
-              <dd>
-                <StatCounter
-                  value={stat.value}
-                  className="block text-3xl font-semibold text-gradient sm:text-4xl"
-                />
-                <span className="mt-1 block text-xs text-faint">
-                  {stat.label}
-                </span>
-              </dd>
-            </Reveal>
-          ))}
-        </dl>
-
-        <div className="mt-10 overflow-hidden border-t border-line pt-8">
-          <div className="flex w-max animate-[marquee_38s_linear_infinite] gap-12">
-            {[...clientLogos, ...clientLogos].map((logo, i) => (
-              <span
-                key={`${logo}-${i}`}
-                className="whitespace-nowrap text-sm font-medium tracking-wide text-faint"
-              >
-                {logo}
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
+/*
+ * TrustBar and WorkPreview used to live here and have been removed from the
+ * homepage. Both were pure duplication:
+ *
+ * - TrustBar's four figures each already appear elsewhere at full size —
+ *   1,800+ and 3.9 → 4.4 in the case study, 92/100 in the Lighthouse
+ *   section, and "100% verifiable on Google" restates the case study's own
+ *   verification line. Its client-name marquee listed the same three
+ *   businesses named directly below it.
+ * - WorkPreview re-printed Gangnam's numbers a third time. Its two other
+ *   clients now sit inside ProofItWorks, which is where the evidence lives.
+ *
+ * `stats` and `clientLogos` in content/proof.ts are still exported and still
+ * accurate — nothing was deleted from the content layer, so either section
+ * can be restored by pasting it back and re-adding it to app/page.tsx.
+ */
 
 export function Process() {
   return (
     <Section id="process">
       <div className="container-page">
+        {/*
+          The sub used to re-pitch the audit ("free and useful on its own…"),
+          which the beat above and the closing CTA below both already make.
+          Three pitches for one offer inside two screens reads as insecurity,
+          so this one now does the job the section is actually for: setting
+          expectations about the engagement.
+        */}
         <SectionHeading
           eyebrow="How it works"
           title="Four steps, and you can stop after the first."
-          sub="The audit is free and useful on its own. If you decide the rest isn't for you, you still walk away with something you can act on."
           align="center"
           className="mx-auto items-center"
         />
@@ -122,68 +96,6 @@ export function Testimonials() {
                   </span>
                 </figcaption>
               </figure>
-            </Reveal>
-          ))}
-        </div>
-      </div>
-    </Section>
-  );
-}
-
-export function WorkPreview() {
-  return (
-    <Section id="work">
-      <div className="container-page">
-        <div className="flex flex-wrap items-end justify-between gap-6">
-          <SectionHeading
-            eyebrow="Selected work"
-            title="What changed, and by how much."
-          />
-          <Button href="/work" variant="secondary" size="sm">
-            All case studies
-          </Button>
-        </div>
-
-        <div className="mt-14 grid gap-6 lg:grid-cols-3">
-          {caseStudies.map((study, i) => (
-            <Reveal key={study.slug} delay={i * 0.08}>
-              <Link
-                href={`/work#${study.slug}`}
-                className="glass group flex h-full flex-col rounded-[var(--radius-card)] p-7 transition-all duration-300 hover:-translate-y-1 hover:border-brand-soft/40"
-              >
-                <p className="text-xs uppercase tracking-[0.14em] text-faint">
-                  {study.industry} · {study.location}
-                </p>
-                <h3 className="mt-3 text-lg font-semibold transition-colors group-hover:text-brand-2">
-                  {study.client}
-                </h3>
-                <p className="mt-3 grow text-sm leading-relaxed text-muted">
-                  {study.challenge}
-                </p>
-                {/* Where a campaign's numbers weren't recorded we show the
-                    services instead of inventing metrics to fill the space. */}
-                {study.results.length > 0 ? (
-                  <dl className="mt-6 grid grid-cols-2 gap-3 border-t border-line pt-5">
-                    {study.results.map((result) => (
-                      <div key={result.label}>
-                        <dt className="sr-only">{result.label}</dt>
-                        <dd>
-                          <span className="block text-base font-semibold text-brand-2">
-                            {result.value}
-                          </span>
-                          <span className="mt-1 block text-[0.7rem] leading-tight text-faint">
-                            {result.label}
-                          </span>
-                        </dd>
-                      </div>
-                    ))}
-                  </dl>
-                ) : (
-                  <p className="mt-6 border-t border-line pt-5 text-[0.7rem] uppercase tracking-[0.14em] text-faint">
-                    {study.services.join(" · ")}
-                  </p>
-                )}
-              </Link>
             </Reveal>
           ))}
         </div>
@@ -261,7 +173,10 @@ export function FaqSection({ limit }: { limit?: number }) {
 /** Closing conversion band, used at the bottom of most pages. */
 export function ClosingCta({
   title = "Find out what's costing you customers.",
-  sub = "A free, written audit of your Google profile, your website and your search visibility. No call required, and it's yours to keep.",
+  // The "no call required / yours to keep" pair is made once, in the audit
+  // beat above. Repeating it in the closing band added a third instance of
+  // the same three phrases within one page.
+  sub = "A free, written audit of your Google profile, your website and your search visibility.",
 }: {
   title?: string;
   sub?: string;

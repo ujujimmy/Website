@@ -82,15 +82,8 @@ export function Scorecard() {
             <SectionHeading
               eyebrow="Proof you can check yourself"
               title="Google scores this page 92 out of 100."
-              sub="Every other number on this site you'd have to take our word for. This one you don't — it's Google's own test, it's free, and it takes about ten seconds."
+              sub="Every other number here you'd have to take our word for; this one you don't — it's Google's own test and it takes ten seconds. Run it on this page, then run it on yours."
             />
-
-            <p className="mt-6 max-w-xl text-sm leading-relaxed text-muted">
-              We sell speed and search visibility, so it would be a poor look if
-              our own site failed at either. Run the test on this page, then run
-              it on yours. If yours comes back in the red, that gap is costing
-              you customers right now — and it's the first thing we'd fix.
-            </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Button
@@ -127,10 +120,12 @@ export function Scorecard() {
                   </div>
                 ))}
               </dl>
+              {/* Provenance stays — a score without its test conditions is
+                  not a checkable claim. The old trailing "run it yourself and
+                  see" was the third invitation to do so on one screen. */}
               <p className="mt-8 border-t border-line pt-5 text-xs leading-relaxed text-faint">
                 Google Lighthouse, {lighthouse.context}. Measured{" "}
-                {lighthouse.measuredOn}. Scores move with network and device —
-                run it yourself and see.
+                {lighthouse.measuredOn}.
               </p>
             </div>
           </Reveal>

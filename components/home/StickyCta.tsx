@@ -42,15 +42,41 @@ export function StickyCta() {
       observers.push(io);
     }
 
-    if (stop) {
+    /*
+     * The end zone is the closing CTA plus the footer, watched as two
+     * independent flags and OR'd together.
+     *
+     * Both are needed, and plain `isIntersecting` is the only predicate
+     * that behaves. Watching the closing CTA alone left the bar up over the
+     * footer once you scrolled past it. The obvious patch — also treating
+     * "its top is above the viewport" as the end — is worse than the bug:
+     * IntersectionObserver only reports state *changes*, so a fast scroll
+     * can cross the element without ever firing, and the flag then latches
+     * on with no callback to clear it. Scrolling back up left the bar
+     * permanently hidden.
+     *
+     * The two elements are adjacent and run to the end of the document, so
+     * between them they cover every scroll position in the end zone, and
+     * each one's enter/exit is a genuine state change that always fires.
+     */
+    const seen = { cta: false, footer: false };
+
+    const watchEnd = (el: Element, key: "cta" | "footer", margin: string) => {
       const io = new IntersectionObserver(
-        ([entry]) => setAtEnd(entry.isIntersecting),
-        // Start hiding before the closing CTA reaches the bar's own height.
-        { rootMargin: "0px 0px -10% 0px" },
+        ([entry]) => {
+          seen[key] = entry.isIntersecting;
+          setAtEnd(seen.cta || seen.footer);
+        },
+        { rootMargin: margin },
       );
-      io.observe(stop);
+      io.observe(el);
       observers.push(io);
-    }
+    };
+
+    // Start hiding before the closing CTA reaches the bar's own height.
+    if (stop) watchEnd(stop, "cta", "0px 0px -10% 0px");
+    const footer = document.querySelector("footer");
+    if (footer) watchEnd(footer, "footer", "0px");
 
     return () => observers.forEach((io) => io.disconnect());
   }, []);

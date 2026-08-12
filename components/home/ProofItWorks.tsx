@@ -26,7 +26,10 @@ function RatingStars({
   const Row = ({ filled }: { filled: boolean }) => (
     <svg
       viewBox="0 0 132 24"
-      className="block h-6 w-[8.25rem]"
+      // Narrower on mobile so the before and after rows fit on one line at
+      // 320px. At the full 8.25rem the pair overflowed by a few pixels and
+      // wrapped, which put the two numbers a scroll apart again.
+      className="block h-auto w-24 sm:w-[8.25rem]"
       aria-hidden="true"
     >
       {[0, 1, 2, 3, 4].map((i) => (
@@ -65,13 +68,13 @@ function RatingBlock({
   tone: "before" | "after";
 }) {
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-2 sm:gap-3">
       <span className="text-xs uppercase tracking-[0.16em] text-faint">
         {label}
       </span>
       <span
         className={cn(
-          "text-5xl font-semibold tabular-nums sm:text-6xl",
+          "text-4xl font-semibold tabular-nums sm:text-6xl",
           tone === "after" ? "text-gold" : "text-faint",
         )}
       >
@@ -114,7 +117,7 @@ export function ProofItWorks() {
         />
 
         <Reveal>
-          <div className="relative mt-14 overflow-hidden rounded-[2rem] border border-line bg-linear-to-br from-gold/[0.07] via-surface/60 to-transparent p-8 sm:p-12">
+          <div className="relative mt-8 overflow-hidden rounded-[2rem] border border-line bg-linear-to-br from-gold/[0.07] via-surface/60 to-transparent p-6 sm:mt-14 sm:p-12">
             <div
               aria-hidden="true"
               className="pointer-events-none absolute inset-0"
@@ -131,12 +134,16 @@ export function ProofItWorks() {
               <h3 className="mt-3 text-2xl font-semibold sm:text-3xl">
                 {r.client}
               </h3>
-              <p className="mt-4 max-w-2xl leading-relaxed text-muted">
+              <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted">
                 {r.summary}
               </p>
 
-              {/* Before → after */}
-              <div className="mt-12 flex flex-col items-start gap-8 sm:flex-row sm:items-end sm:gap-14">
+              {/*
+                Before and after sit side by side at every width. Stacked, the
+                two numbers this section exists to contrast were a scroll
+                apart, which is the one arrangement that defeats the point.
+              */}
+              <div className="mt-8 flex flex-row flex-wrap items-end gap-x-5 gap-y-8 sm:mt-12 sm:gap-14">
                 <RatingBlock
                   rating={r.before.rating}
                   label={r.before.label}
@@ -187,23 +194,29 @@ export function ProofItWorks() {
           numbers weren't recorded, the services are shown instead, and the
           copy says plainly that's why.
         */}
-        <div className="mt-6 grid gap-6 sm:grid-cols-2">
+        {/*
+          Two tiles on mobile, full cards from `sm` up. The challenge
+          paragraph is desktop-only: on a phone these two are a "who else"
+          check, not a read, and the full write-up is one tap away on /work.
+        */}
+        <div className="mt-6 grid grid-cols-2 gap-3 sm:gap-6">
           {others.map((study, i) => (
             <Reveal key={study.slug} delay={i * 0.08}>
               <Link
                 href={`/work#${study.slug}`}
-                className="glass group flex h-full flex-col rounded-[var(--radius-card)] p-7 transition-all duration-300 hover:-translate-y-1 hover:border-brand-soft/40"
+                className="glass group flex h-full flex-col rounded-[var(--radius-card)] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-brand-soft/40 sm:p-7"
               >
                 <p className="text-xs uppercase tracking-[0.14em] text-faint">
-                  {study.industry} · {study.location}
+                  {study.industry}
+                  <span className="hidden sm:inline"> · {study.location}</span>
                 </p>
-                <h3 className="mt-3 text-lg font-semibold transition-colors group-hover:text-brand-2">
+                <h3 className="mt-2 text-lg font-semibold transition-colors group-hover:text-brand-2 sm:mt-3">
                   {study.client}
                 </h3>
-                <p className="mt-3 grow text-base leading-relaxed text-muted">
+                <p className="mt-3 hidden grow text-base leading-relaxed text-muted sm:block">
                   {study.challenge}
                 </p>
-                <p className="mt-6 border-t border-line pt-5 text-xs uppercase tracking-[0.14em] text-faint">
+                <p className="mt-4 border-t border-line pt-4 text-xs uppercase tracking-[0.14em] text-faint sm:mt-6 sm:pt-5">
                   {study.services.join(" · ")}
                 </p>
               </Link>
@@ -213,7 +226,7 @@ export function ProofItWorks() {
 
         <Reveal>
           <div className="mt-8 flex flex-col items-center gap-4 text-center">
-            <p className="max-w-2xl text-sm leading-relaxed text-faint">
+            <p className="max-w-2xl text-base leading-relaxed text-faint">
               We didn&apos;t record before-and-after numbers on these two.
               Rather than estimate them, we&apos;ve left them blank — the
               listings are public either way.

@@ -76,13 +76,18 @@ export function Section({
   children,
   className,
   id,
+  ...rest
 }: {
   children: React.ReactNode;
   className?: string;
   id?: string;
-}) {
+} & React.HTMLAttributes<HTMLElement>) {
   return (
-    <section id={id} className={cn("relative py-24 sm:py-32", className)}>
+    <section
+      id={id}
+      className={cn("relative py-20 sm:py-32", className)}
+      {...rest}
+    >
       {children}
     </section>
   );

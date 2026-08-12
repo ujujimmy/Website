@@ -21,9 +21,11 @@ const variants: Record<Variant, string> = {
 };
 
 const sizes: Record<Size, string> = {
-  sm: "h-9 px-4 text-sm",
+  // 44px on mobile regardless of size — below that a button is a coin toss
+  // for a thumb. `sm` shrinks back to 36px only once there's a pointer.
+  sm: "h-11 px-4 text-sm sm:h-9",
   md: "h-11 px-6 text-[0.95rem]",
-  lg: "h-14 px-8 text-base",
+  lg: "h-12 px-6 text-base sm:h-14 sm:px-8",
 };
 
 type Props = {

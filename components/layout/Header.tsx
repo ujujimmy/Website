@@ -12,7 +12,7 @@ function Logo() {
   return (
     <Link
       href="/"
-      className="group flex items-center gap-2.5 text-[1.05rem] font-semibold tracking-tight"
+      className="group flex min-h-11 items-center gap-2.5 text-[1.05rem] font-semibold tracking-tight"
       aria-label={`${brand.name} home`}
     >
       <span className="relative grid h-8 w-8 place-items-center rounded-lg bg-linear-to-br from-brand to-brand-2">
@@ -121,13 +121,21 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <Button
-            href={brand.primaryCta.href}
-            size="sm"
-            className="hidden sm:inline-flex"
-          >
-            {brand.primaryCta.label}
-          </Button>
+          {/*
+            The `hidden` has to live on a wrapper, not on the Button.
+            `cn` is a plain string joiner rather than tailwind-merge, so
+            passing "hidden" as className left Button's own `inline-flex` in
+            the class list too — same specificity, both unlayered, and
+            `inline-flex` won on stylesheet order. The result was this CTA
+            showing on every phone next to the menu button, which is what
+            pushed the header past 320px. A wrapper has no competing display
+            utility, so it simply works.
+          */}
+          <span className="hidden sm:contents">
+            <Button href={brand.primaryCta.href} size="sm">
+              {brand.primaryCta.label}
+            </Button>
+          </span>
 
           <button
             type="button"
@@ -135,7 +143,7 @@ export function Header() {
             aria-expanded={menuOpen}
             aria-controls="mobile-menu"
             aria-label={menuOpen ? "Close menu" : "Open menu"}
-            className="grid h-10 w-10 place-items-center rounded-lg border border-line text-fg lg:hidden"
+            className="grid h-11 w-11 place-items-center rounded-lg border border-line text-fg lg:hidden"
           >
             <svg viewBox="0 0 24 24" className="h-5 w-5 stroke-current stroke-[1.8]" aria-hidden="true">
               {menuOpen ? (
@@ -170,7 +178,7 @@ export function Header() {
                       <li key={child.href}>
                         <Link
                           href={child.href}
-                          className="block py-2 text-sm text-muted"
+                          className="flex min-h-11 items-center text-base text-muted"
                         >
                           {child.label}
                         </Link>

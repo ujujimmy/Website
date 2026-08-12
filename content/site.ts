@@ -76,7 +76,11 @@ export const homeCopy = {
   hero: {
     eyebrow: "Google Reviews · Websites · SEO",
     headline: "Get chosen before they ever call you.",
-    sub: "Your next customer compares you to three competitors in about eleven seconds — stars, then website, then whoever shows up first. We make sure that comparison ends with you.",
+    // Condensed, not changed: the dropped clause ("stars, then website, then
+    // whoever shows up first") is spelled out by the three service beats
+    // anyway. This is the LCP element, and on a 390px screen the longer
+    // version ran to four lines and pushed the buttons below the fold.
+    sub: "Your next customer compares you to three competitors in about eleven seconds. We make sure that comparison ends with you.",
     note: "Free audit. No call required. You keep it either way.",
   },
   problem: {

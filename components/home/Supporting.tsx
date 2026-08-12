@@ -52,7 +52,7 @@ export function Process() {
                   {step.step}
                 </span>
                 <h3 className="mt-4 text-lg font-semibold">{step.title}</h3>
-                <p className="mt-2.5 text-sm leading-relaxed text-muted">
+                <p className="mt-2.5 text-base leading-relaxed text-muted">
                   {step.body}
                 </p>
               </div>
@@ -131,11 +131,11 @@ export function FaqSection({ limit }: { limit?: number }) {
       <div className="container-page grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
         <div>
           <SectionHeading eyebrow="Questions" title="Answered honestly." />
-          <p className="mt-6 text-sm leading-relaxed text-muted">
+          <p className="mt-6 text-base leading-relaxed text-muted">
             Something not covered here?{" "}
             <Link
               href="/contact"
-              className="text-brand-2 underline underline-offset-4"
+              className="inline-block min-h-11 py-2 text-brand-2 underline underline-offset-4"
             >
               Ask us directly
             </Link>{" "}
@@ -146,8 +146,8 @@ export function FaqSection({ limit }: { limit?: number }) {
         <div className="flex flex-col">
           {items.map((faq, i) => (
             <Reveal key={faq.q} delay={i * 0.04}>
-              <details className="group border-b border-line py-5">
-                <summary className="flex cursor-pointer list-none items-start justify-between gap-6 text-left text-[0.975rem] font-medium marker:hidden">
+              <details className="group border-b border-line py-2">
+                <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-6 py-3 text-left text-base font-medium marker:hidden">
                   {faq.q}
                   <span
                     aria-hidden="true"
@@ -158,7 +158,7 @@ export function FaqSection({ limit }: { limit?: number }) {
                     </svg>
                   </span>
                 </summary>
-                <p className="mt-3.5 max-w-2xl text-sm leading-relaxed text-muted">
+                <p className="mb-4 mt-1 max-w-2xl text-base leading-relaxed text-muted">
                   {faq.a}
                 </p>
               </details>
@@ -182,7 +182,9 @@ export function ClosingCta({
   sub?: string;
 }) {
   return (
-    <Section className="pb-32">
+    // data-sticky-stop tells the mobile sticky bar to get out of the way —
+    // covering the real CTA with a shortcut to the same page helps nobody.
+    <Section className="pb-32" data-sticky-stop>
       <div className="container-page">
         <Reveal>
           <div className="relative overflow-hidden rounded-[2rem] border border-line bg-linear-to-br from-brand/[0.16] via-surface to-brand-2/[0.1] px-8 py-16 text-center sm:px-16">

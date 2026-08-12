@@ -54,7 +54,13 @@ export function PathSelector() {
           className="mx-auto items-center"
         />
 
-        <div className="mt-14 grid gap-6 md:grid-cols-2">
+        {/*
+          All four cards, all their copy — only the spacing is tightened on
+          mobile. At p-9 with a 2rem heading these ran to 2 screens, which is
+          self-defeating for a section whose job is to let someone identify
+          themselves quickly and move on.
+        */}
+        <div className="mt-8 grid gap-4 sm:mt-14 sm:gap-6 md:grid-cols-2">
           {paths.map((path, i) => {
             const accent = accents[path.accent];
             return (
@@ -63,7 +69,7 @@ export function PathSelector() {
                   href={`/audit?need=${path.need}`}
                   className={cn(
                     "group relative flex h-full flex-col overflow-hidden rounded-[var(--radius-card)]",
-                    "bg-linear-to-br to-transparent p-8 ring-1 transition-all duration-300",
+                    "bg-linear-to-br to-transparent p-6 ring-1 transition-all duration-300",
                     "hover:-translate-y-1 sm:p-9",
                     accent.card,
                   )}
@@ -77,16 +83,16 @@ export function PathSelector() {
                     )}
                   />
 
-                  <h3 className="relative text-2xl font-semibold leading-tight sm:text-[1.75rem]">
+                  <h3 className="relative text-xl font-semibold leading-tight sm:text-[1.75rem]">
                     &ldquo;{path.title}&rdquo;
                   </h3>
-                  <p className="relative mt-4 grow text-[0.975rem] leading-relaxed text-muted">
+                  <p className="relative mt-3 grow text-base leading-relaxed text-muted sm:mt-4">
                     {path.body}
                   </p>
 
                   <span
                     className={cn(
-                      "relative mt-8 inline-flex items-center gap-2 text-sm font-semibold",
+                      "relative mt-5 inline-flex min-h-11 items-center gap-2 text-base font-semibold sm:mt-8",
                       accent.arrow,
                     )}
                   >

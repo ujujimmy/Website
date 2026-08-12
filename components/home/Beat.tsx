@@ -13,6 +13,7 @@ export function Beat({
   className,
   id,
   beat,
+  compact = false,
 }: {
   children: React.ReactNode;
   side?: "left" | "right" | "center";
@@ -20,6 +21,14 @@ export function Beat({
   id?: string;
   /** Index in the narrative. Narrative measures these to drive the 3D scene. */
   beat: number;
+  /**
+   * Drop the full-viewport height below `md`, for beats whose mobile form is
+   * a collapsed accordion or a single line. The section still carries its
+   * `data-beat`, so the 3D scene stays in sync — Narrative measures real
+   * element centres rather than assuming a screen per beat, so a short beat
+   * simply means its shape arrives sooner.
+   */
+  compact?: boolean;
 }) {
   return (
     <section
@@ -27,7 +36,10 @@ export function Beat({
       data-beat={beat}
       className={cn(
         // Extra top padding clears the fixed header when copy fills the beat.
-        "relative flex min-h-screen items-center pb-24 pt-36",
+        "relative flex items-center",
+        compact
+          ? "py-8 md:min-h-screen md:pb-24 md:pt-36"
+          : "min-h-screen pb-24 pt-36",
         className,
       )}
     >

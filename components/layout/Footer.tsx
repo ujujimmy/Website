@@ -12,14 +12,14 @@ export function Footer() {
         <div className="grid gap-12 lg:grid-cols-[1.4fr_2fr]">
           <div>
             <p className="text-xl font-semibold tracking-tight">{brand.name}</p>
-            <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted">
+            <p className="mt-4 max-w-sm text-base leading-relaxed text-muted">
               {brand.description}
             </p>
 
-            <div className="mt-6 flex flex-col gap-1.5 text-sm">
+            <div className="mt-4 flex flex-col text-base">
               <a
                 href={`mailto:${brand.contact.email}`}
-                className="text-muted transition-colors hover:text-fg"
+                className="inline-flex min-h-11 items-center text-muted transition-colors hover:text-fg"
               >
                 {brand.contact.email}
               </a>
@@ -27,7 +27,7 @@ export function Footer() {
                 href={brand.contact.whatsappHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-muted transition-colors hover:text-fg"
+                className="inline-flex min-h-11 items-center text-muted transition-colors hover:text-fg"
               >
                 WhatsApp {brand.contact.whatsapp}
               </a>
@@ -35,7 +35,7 @@ export function Footer() {
               {brand.contact.phoneHref && brand.contact.phone && (
                 <a
                   href={brand.contact.phoneHref}
-                  className="text-muted transition-colors hover:text-fg"
+                  className="inline-flex min-h-11 items-center text-muted transition-colors hover:text-fg"
                 >
                   {brand.contact.phone}
                 </a>
@@ -55,12 +55,12 @@ export function Footer() {
                 <h2 className="text-xs font-semibold uppercase tracking-[0.16em] text-faint">
                   {group.title}
                 </h2>
-                <ul className="mt-4 flex flex-col gap-2.5">
+                <ul className="mt-2 flex flex-col">
                   {group.links.map((link) => (
                     <li key={link.href}>
                       <Link
                         href={link.href}
-                        className="text-sm text-muted transition-colors hover:text-fg"
+                        className="inline-flex min-h-11 min-w-11 items-center text-base text-muted transition-colors hover:text-fg"
                       >
                         {link.label}
                       </Link>
@@ -83,7 +83,7 @@ export function Footer() {
                 href={href}
                 rel="noopener noreferrer"
                 target="_blank"
-                className="capitalize transition-colors hover:text-fg"
+                className="inline-flex min-h-11 min-w-11 items-center justify-center capitalize transition-colors hover:text-fg"
               >
                 {key}
               </a>

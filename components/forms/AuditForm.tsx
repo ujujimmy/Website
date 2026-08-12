@@ -229,6 +229,7 @@ export function AuditForm({ defaultNeed }: { defaultNeed?: string }) {
           >
             <input
               type="text"
+              autoCapitalize="words"
               autoComplete="organization"
               placeholder="Rivera Dental"
               {...register("business")}
@@ -268,6 +269,7 @@ export function AuditForm({ defaultNeed }: { defaultNeed?: string }) {
           <Field label="Your name" error={errors.name?.message} required>
             <input
               type="text"
+              autoCapitalize="words"
               autoComplete="name"
               {...register("name")}
               className={inputClass}
@@ -287,6 +289,7 @@ export function AuditForm({ defaultNeed }: { defaultNeed?: string }) {
           <Field label="Phone" hint="Optional" error={errors.phone?.message}>
             <input
               type="tel"
+              inputMode="tel"
               autoComplete="tel"
               {...register("phone")}
               className={inputClass}
@@ -354,8 +357,16 @@ export function AuditForm({ defaultNeed }: { defaultNeed?: string }) {
   );
 }
 
+/*
+ * text-base is load-bearing on mobile, not a style choice: iOS Safari zooms
+ * the viewport whenever a focused input's font-size is below 16px, and this
+ * was 15.2px. Every tap into a field on an iPhone re-scaled the page and
+ * left it scaled — on the form the entire site funnels to.
+ *
+ * min-h-11 holds the 44px tap-target floor even if the padding changes.
+ */
 const inputClass =
-  "w-full rounded-xl border border-line bg-ink-2/80 px-4 py-3 text-[0.95rem] " +
+  "w-full min-h-11 rounded-xl border border-line bg-ink-2/80 px-4 py-3 text-base " +
   "text-fg placeholder:text-faint transition-colors focus:border-brand-2 " +
   "focus:outline-none";
 

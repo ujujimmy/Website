@@ -10,6 +10,7 @@ import {
 import { Scorecard } from "@/components/home/Scorecard";
 import { PathSelector } from "@/components/home/PathSelector";
 import { ProofItWorks } from "@/components/home/ProofItWorks";
+import { StickyCta } from "@/components/home/StickyCta";
 import {
   Process,
   Testimonials,
@@ -60,6 +61,8 @@ export default function HomePage() {
       <Testimonials />
       <FaqSection limit={6} />
       <ClosingCta />
+
+      <StickyCta />
 
       <JsonLd data={faqLd()} />
     </main>

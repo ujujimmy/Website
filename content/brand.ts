@@ -51,13 +51,28 @@ export const brand = {
 
   /** Honesty beats hiding it — stated plainly in the footer and About page. */
   hours: "Mon–Fri, 9am–6pm ET / 6am–3pm PT",
-  locations: ["Remote-first", "Serving US · Canada · UK · India"],
+  /**
+   * This read "Remote-first · Serving US · Canada · UK · India", which
+   * implies a client base in four countries. There are three clients and
+   * all of them are in Delhi. The rest of the site already says this
+   * plainly — "Based in Delhi. Set up for your timezone." — so the footer
+   * now matches instead of quietly contradicting it.
+   */
+  locations: ["Delhi, India", "Working US, Canada & UK hours"],
 
-  socials: {
-    linkedin: "https://www.linkedin.com/company/northbound-agency",
-    instagram: "https://www.instagram.com/northbound.agency",
-    x: "https://x.com/northboundhq",
-  },
+  /**
+   * Empty until real accounts exist.
+   *
+   * These were three invented handles — linkedin.com/company/northbound-agency
+   * and friends. Every one was a dead link in the footer, and they were also
+   * being published as JSON-LD `sameAs`, which is Google's "these profiles
+   * are the same entity" signal. Pointing it at profiles that don't exist is
+   * worse than omitting it.
+   *
+   * TODO(brand): add the real profile URLs. The footer row and the `sameAs`
+   * array both come back on their own once this has entries.
+   */
+  socials: {} as Record<string, string>,
 
   /** Primary conversion target. Every major CTA points here. */
   primaryCta: {

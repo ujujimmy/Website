@@ -82,9 +82,14 @@ export function Intro() {
           </span>
         </span>
         <span className="intro-sweep" />
-        <p className="intro-rating">
-          <b>4.9</b> average client rating
-        </p>
+        {/*
+          This said "4.9 average client rating". Nothing measured it — there
+          is no client-rating average anywhere in the data, and it was the
+          first thing a visitor saw on a site whose entire argument is that
+          its numbers are checkable. Replaced with what we do, which needs
+          no evidence because it isn't a claim.
+        */}
+        <p className="intro-rating">{brand.tagline}</p>
       </div>
     </div>
   );

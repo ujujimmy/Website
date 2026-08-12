@@ -1,8 +1,8 @@
 import { lighthouse } from "@/content/proof";
-import { brand } from "@/content/brand";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { Reveal } from "@/components/ui/Reveal";
 import { Button } from "@/components/ui/Button";
+import { TestThisPage } from "@/components/home/TestThisPage";
 
 /** Google's own banding: 90+ green, 50–89 amber, below 50 red. */
 function band(value: number) {
@@ -71,9 +71,6 @@ function Dial({
  * local businesses that number comes back poor, and the gap does the selling.
  */
 export function Scorecard() {
-  const pagespeed = (url: string) =>
-    `https://pagespeed.web.dev/analysis?url=${encodeURIComponent(url)}`;
-
   return (
     <Section id="scorecard" className="border-t border-line">
       <div className="container-page">
@@ -86,14 +83,7 @@ export function Scorecard() {
             />
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Button
-                href={pagespeed(brand.url)}
-                variant="secondary"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Test this page
-              </Button>
+              <TestThisPage />
               <Button
                 href="https://pagespeed.web.dev/"
                 target="_blank"

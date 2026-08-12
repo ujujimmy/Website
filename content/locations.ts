@@ -58,8 +58,12 @@ export const locations: Location[] = [
     industryShort: "dentists",
     targetSearch: "Google review management for dentists in Austin",
     service: "google-reviews",
+    // Was: "Austin has one of the densest concentrations of dental practices
+    // in Texas… practices with three hundred reviews each." Both were stated
+    // as local fact and neither was sourced. What's left is the argument,
+    // which stands on its own without pretending to be market data.
     localContext:
-      "Austin has one of the densest concentrations of dental practices in Texas, and the map pack for a search like “dentist near me” is fought over by practices with three hundred reviews each. Rating and review count are the deciding factor long before anyone reads your website.",
+      "Dentistry is one of the most contested local searches there is. The map pack for something like “dentist near me” gets decided on rating and review count long before anyone reads your website — which means the comparison is usually over before a patient ever reaches you.",
     painPoints: [
       "Patients compare four practices on stars before they call any of them",
       "A single unanswered complaint sits at the top of your profile for years",
@@ -157,8 +161,10 @@ export const locations: Location[] = [
     industryShort: "med spas",
     targetSearch: "SEO for med spas and aesthetic clinics in Manchester",
     service: "seo",
+    // Reframed from an asserted fact about the Manchester market to what it
+    // actually is: how we'd approach it. Same guidance, no invented data.
     localContext:
-      "Aesthetic treatments are researched heavily before anyone books, and in Manchester the searches that matter are treatment-specific rather than generic. Clinics that publish a proper page per treatment quietly take the traffic from those that don't.",
+      "Aesthetic treatments get researched heavily before anyone books, and the searches that convert tend to name the treatment rather than the category. A clinic with a proper page per treatment can take that traffic from one that only ranks for “med spa”.",
     painPoints: [
       "Ranking for “med spa Manchester” but not for the treatments people search",
       "Competitors with a page per treatment capture the buying-intent searches",

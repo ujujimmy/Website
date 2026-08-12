@@ -29,7 +29,11 @@ export function organizationLd() {
       { "@type": "Country", name: "United Kingdom" },
       { "@type": "Country", name: "India" },
     ],
-    sameAs: Object.values(brand.socials),
+    // Omit the key entirely rather than publishing an empty array — or, as
+    // it used to, three profile URLs that don't resolve.
+    ...(Object.keys(brand.socials).length
+      ? { sameAs: Object.values(brand.socials) }
+      : {}),
     makesOffer: services.map((s) => ({
       "@type": "Offer",
       itemOffered: {

@@ -101,7 +101,14 @@ async function notify(lead: Lead) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: process.env.LEAD_FROM_EMAIL ?? "leads@resend.dev",
+        // onboarding@resend.dev is Resend's documented shared test sender and
+        // the only address that works before you've verified a domain of your
+        // own. The previous default, leads@resend.dev, is not a real mailbox
+        // there — it would have been rejected, and because a failed send only
+        // logs, the lead would have vanished with the visitor still seeing a
+        // success screen. Set LEAD_FROM_EMAIL to your own domain once you
+        // have one verified; deliverability is much better from it.
+        from: process.env.LEAD_FROM_EMAIL ?? "onboarding@resend.dev",
         to: [to],
         reply_to: lead.email,
         subject: `New audit request — ${lead.business} (${lead.country})`,

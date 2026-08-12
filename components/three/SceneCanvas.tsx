@@ -53,24 +53,50 @@ function CameraRig({ parallax }: { parallax: boolean }) {
 }
 
 /**
- * Stops the render loop whenever the canvas is scrolled out of view or the
- * tab is hidden. Without this the GPU keeps working through the footer, the
- * pricing table and every other page section for no visual benefit.
+ * Stops the render loop whenever the scene has nothing left to say, or the
+ * tab is hidden.
+ *
+ * This used to observe the canvas wrapper itself — which is `fixed inset-0`,
+ * and a fixed element never scrolls out of the viewport. `isIntersecting` was
+ * therefore true for the entire life of the page, so the gate only ever
+ * caught tab-switching and the GPU kept working through the pricing table,
+ * the FAQ and the footer exactly as the old comment promised it wouldn't. On
+ * a phone that is a continuous WebGL loop competing with every scroll and
+ * swipe the visitor makes.
+ *
+ * It now watches `[data-scene-scope]` — the scroll narrative, the only thing
+ * the particle field is driven by. Once that is behind you the loop stops.
+ * Pages without a narrative have no such element and keep the old
+ * always-on behaviour, which is correct for them: the field is a static
+ * backdrop there and never leaves the screen.
  */
 function useRenderGate(ref: React.RefObject<HTMLDivElement | null>) {
   const [active, setActive] = useState(true);
 
   useEffect(() => {
-    const el = ref.current;
+    // Falls back to the wrapper only when there's no narrative on the page.
+    const el = document.querySelector("[data-scene-scope]") ?? ref.current;
     if (!el) return;
 
+    let onScreen = true;
+    let visible = !document.hidden;
+    const sync = () => setActive(onScreen && visible);
+
     const io = new IntersectionObserver(
-      ([entry]) => setActive(entry.isIntersecting),
-      { rootMargin: "10% 0px" },
+      ([entry]) => {
+        onScreen = entry.isIntersecting;
+        sync();
+      },
+      // A little slack so the field is already running by the time any of it
+      // can be seen, rather than starting mid-morph.
+      { rootMargin: "20% 0px" },
     );
     io.observe(el);
 
-    const onVisibility = () => setActive(!document.hidden);
+    const onVisibility = () => {
+      visible = !document.hidden;
+      sync();
+    };
     document.addEventListener("visibilitychange", onVisibility);
 
     return () => {

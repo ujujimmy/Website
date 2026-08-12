@@ -118,35 +118,43 @@ export function PricingTable({ compact = false }: { compact?: boolean }) {
     scrollTo(featuredIndex, false);
   }, [featuredIndex, scrollTo]);
 
-  /** Track which card is centred, for the dots. */
+  /**
+   * Track which card is centred, for the dots.
+   *
+   * This ran on every scroll frame and read `offsetLeft` / `offsetWidth` /
+   * `clientWidth` off all four cards to find the nearest one. Reading those
+   * forces the browser to flush layout synchronously — during a swipe, on
+   * the one interaction that has to stay at 60fps. That is textbook scroll
+   * jank and it was self-inflicted.
+   *
+   * IntersectionObserver against the track gives the same answer for free:
+   * it fires only when a card actually crosses a visibility threshold, does
+   * its work off the main thread, and reads no layout at all.
+   */
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
 
-    let frame = 0;
-    const onScroll = () => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        const centre = track.scrollLeft + track.clientWidth / 2;
+    const ratios = new Map<Element, number>();
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) ratios.set(e.target, e.intersectionRatio);
         let best = 0;
-        let bestDist = Infinity;
-        for (let i = 0; i < track.children.length; i++) {
-          const card = track.children[i] as HTMLElement;
-          const dist = Math.abs(card.offsetLeft + card.offsetWidth / 2 - centre);
-          if (dist < bestDist) {
-            bestDist = dist;
+        let bestRatio = -1;
+        [...track.children].forEach((card, i) => {
+          const r = ratios.get(card) ?? 0;
+          if (r > bestRatio) {
+            bestRatio = r;
             best = i;
           }
-        }
+        });
         setActive(best);
-      });
-    };
+      },
+      { root: track, threshold: [0.25, 0.5, 0.75, 0.95] },
+    );
 
-    track.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      cancelAnimationFrame(frame);
-      track.removeEventListener("scroll", onScroll);
-    };
+    for (const card of track.children) io.observe(card);
+    return () => io.disconnect();
   }, []);
 
   return (
@@ -179,10 +187,21 @@ export function PricingTable({ compact = false }: { compact?: boolean }) {
           "sm:overflow-visible sm:px-0 sm:pb-0 sm:pt-0 xl:grid-cols-4",
         )}
       >
-        {tiers.map((tier, i) => (
-          <Reveal
+        {/*
+          No Reveal wrapper on these.
+
+          Each card was a motion component with a whileInView entrance. Inside
+          a horizontal scroller that means every swipe drags four cards
+          through a 0.7s opacity-and-transform animation as they cross the
+          edge — animating the thing the visitor is actively dragging, on the
+          slowest device class, while they're trying to compare prices. It
+          also read badly: the card you swiped to faded in under your thumb.
+
+          Prices are what people came for. They appear immediately now.
+        */}
+        {tiers.map((tier) => (
+          <div
             key={tier.id}
-            delay={i * 0.08}
             className="w-[82%] shrink-0 snap-center sm:w-auto sm:shrink"
           >
             <div
@@ -282,7 +301,7 @@ export function PricingTable({ compact = false }: { compact?: boolean }) {
                   ))}
               </ul>
             </div>
-          </Reveal>
+          </div>
         ))}
       </div>
 

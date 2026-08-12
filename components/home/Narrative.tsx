@@ -93,7 +93,10 @@ export function Narrative({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <div ref={ref} className="relative">
+    // data-scene-scope marks the region the particle field exists to serve.
+    // SceneCanvas gates its render loop on this element being on screen —
+    // it cannot gate on its own wrapper, which is fixed and so never leaves.
+    <div ref={ref} data-scene-scope className="relative">
       {children}
     </div>
   );

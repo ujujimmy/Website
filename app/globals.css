@@ -343,7 +343,9 @@
 .intro-stars {
   position: relative;
   display: block;
-  width: min(19rem, 74vw);
+  /* Narrower than the old level row: the climbing lockup is 100x52 rather
+     than 188x34, so the same width would make it three times as tall. */
+  width: min(15rem, 62vw);
 }
 .intro-stars svg {
   display: block;
@@ -377,13 +379,29 @@
 }
 .intro-mark {
   font-family: var(--font-display);
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.34em;
-  text-transform: uppercase;
-  color: var(--color-faint);
+  /* The lockup, not a tracked-out caps label. Weights match the identity
+     sheet: lets 500 / grow 700 / big 800 / .com 600. */
+  font-size: 1.5rem;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--color-fg);
   opacity: 0;
   animation: intro-mark 440ms var(--ease-out-expo) 200ms forwards;
+}
+.intro-mark-lets {
+  font-weight: 500;
+  color: var(--color-muted);
+}
+.intro-mark-grow {
+  font-weight: 700;
+}
+.intro-mark-big {
+  font-weight: 800;
+}
+.intro-mark-tld {
+  font-size: 0.66em;
+  font-weight: 600;
+  color: var(--color-muted);
 }
 /* The site's section marker, used once more as a progress hairline. */
 .intro-sweep {

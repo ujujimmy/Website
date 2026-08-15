@@ -2,26 +2,33 @@
 
 import { useEffect } from "react";
 import { brand } from "@/content/brand";
+import { STARS } from "@/components/brand/Logo";
 
 /** Key for the once-per-session guard. Also referenced by the inline head script. */
 export const INTRO_KEY = "nb:intro";
 /** Must match the CSS: 1020ms delay + 650ms lift, plus a little slack. */
 const INTRO_MS = 1750;
 
+/**
+ * The logo's five climbing stars, drawn twice and stacked: an outline row and
+ * a gold row that a left-to-right clip reveals.
+ *
+ * Geometry is imported rather than re-typed so the loader and the logo are
+ * the same shape by construction. The gold row keeps the identity's opacity
+ * ramp (0.45 at the small end, 1.0 at the large) so what lands at the end of
+ * the sweep is exactly the mark in the header.
+ */
 function StarRow({ fill }: { fill: boolean }) {
   return (
-    <svg
-      viewBox="0 0 188 34"
-      aria-hidden="true"
-    >
-      {[0, 1, 2, 3, 4].map((i) => (
-        <path
-          key={i}
-          transform={`translate(${i * 38}, 0) scale(1.35)`}
-          d="M12 2.5l2.9 5.9 6.5.95-4.7 4.58 1.11 6.47L12 17.35 6.19 20.4l1.11-6.47L2.6 9.35l6.5-.95L12 2.5z"
+    <svg viewBox="0 0 100 52" aria-hidden="true">
+      {STARS.map((star) => (
+        <polygon
+          key={star.points}
+          points={star.points}
           fill={fill ? "var(--color-gold)" : "none"}
+          opacity={fill ? star.opacity : 1}
           stroke={fill ? "none" : "var(--color-line)"}
-          strokeWidth={fill ? 0 : 1.5}
+          strokeWidth={fill ? 0 : 0.7}
         />
       ))}
     </svg>
@@ -73,7 +80,15 @@ export function Intro() {
   return (
     <div className="intro" aria-hidden="true">
       <div className="intro-inner">
-        <p className="intro-mark">{brand.name}</p>
+        {/* The lockup's weight ramp, not brand.name uppercased — the
+            logotype is lowercase and grows across the word, and setting it
+            in tracked-out caps threw away the one thing it does. */}
+        <p className="intro-mark">
+          <span className="intro-mark-lets">lets</span>
+          <span className="intro-mark-grow">grow</span>
+          <span className="intro-mark-big">big</span>
+          <span className="intro-mark-tld">.com</span>
+        </p>
         <span className="intro-stars">
           <StarRow fill={false} />
           {/* Wrapper carries the clip; the glow lives on the SVG inside it. */}

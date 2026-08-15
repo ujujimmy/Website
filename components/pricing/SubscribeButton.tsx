@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button, ButtonEl } from "@/components/ui/Button";
+import { brand } from "@/content/brand";
 import type { Tier, Currency } from "@/content/pricing";
 
 /**
@@ -87,7 +88,7 @@ export function SubscribeButton({
       const checkout = new window.Razorpay({
         key: data.keyId,
         subscription_id: data.subscriptionId,
-        name: "Northbound",
+        name: brand.name,
         description: `${tier.name} — ${tier.cadence}`,
         prefill: { name, email },
         theme: { color: "#6d5cf6" },

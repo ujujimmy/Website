@@ -4,28 +4,19 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { brand } from "@/content/brand";
+import { Logo } from "@/components/brand/Logo";
 import { nav } from "@/content/site";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 
-function Logo() {
+function HeaderLogo() {
   return (
     <Link
       href="/"
-      className="group flex min-h-11 items-center gap-2.5 text-[1.05rem] font-semibold tracking-tight"
+      className="group flex min-h-11 items-center text-[1.05rem]"
       aria-label={`${brand.name} home`}
     >
-      <span className="relative grid h-8 w-8 place-items-center rounded-lg bg-linear-to-br from-brand to-brand-2">
-        <span className="absolute inset-px rounded-[7px] bg-ink" />
-        <svg
-          viewBox="0 0 24 24"
-          className="relative h-4 w-4 fill-none stroke-brand-2 stroke-[2.5]"
-          aria-hidden="true"
-        >
-          <path d="M5 19V7l7 6 7-6v12" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </span>
-      {brand.name}
+      <Logo />
     </Link>
   );
 }
@@ -63,7 +54,7 @@ export function Header() {
       )}
     >
       <div className="container-page flex h-[4.5rem] items-center justify-between gap-6">
-        <Logo />
+        <HeaderLogo />
 
         <nav aria-label="Main" className="hidden lg:block">
           <ul className="flex items-center gap-1">

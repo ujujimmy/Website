@@ -24,12 +24,12 @@ export default function NotFound() {
           </Button>
         </div>
 
-        <ul className="mt-14 flex flex-wrap items-center justify-center gap-x-7 gap-y-3 border-t border-line pt-8 text-sm">
+        <ul className="mt-14 flex flex-wrap items-center justify-center gap-x-7 border-t border-line pt-6 text-base">
           {nav.map((item) => (
             <li key={item.href}>
               <Link
                 href={item.href}
-                className="text-muted transition-colors hover:text-fg"
+                className="inline-flex min-h-11 items-center text-muted transition-colors hover:text-fg"
               >
                 {item.label}
               </Link>

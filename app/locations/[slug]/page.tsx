@@ -124,7 +124,11 @@ export default async function LocationPage({
           </div>
 
           <Reveal>
-            <p className="mt-10 text-sm text-faint">
+            {/* Inline links inside a sentence: WCAG 2.5.8 exempts these from the
+                44px target rule, since padding them would wreck the line
+                spacing of the prose they sit in. The sentence was 14px
+                though, which is a readability problem of its own. */}
+            <p className="mt-10 text-base text-faint">
               Full detail on{" "}
               <Link
                 href={`/services/${service.slug}`}
@@ -186,8 +190,8 @@ export default async function LocationPage({
           <div className="flex flex-col">
             {location.faqs.map((faq, i) => (
               <Reveal key={faq.q} delay={i * 0.04}>
-                <details className="group border-b border-line py-5">
-                  <summary className="flex cursor-pointer list-none items-start justify-between gap-6 text-left text-[0.975rem] font-medium marker:hidden">
+                <details className="group border-b border-line py-2">
+                  <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-6 py-3 text-left text-base font-medium marker:hidden">
                     {faq.q}
                     <span
                       aria-hidden="true"

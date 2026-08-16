@@ -2,11 +2,14 @@ import { brand } from "@/content/brand";
 import { cn } from "@/lib/utils";
 
 /**
- * The letsgrowbig.com identity.
+ * The jigme.io identity.
  *
  * Five stars climbing left to right, each larger and higher than the last —
- * the rating we manage and the growth we sell in one shape. The brand rules
- * are load-bearing, not decoration:
+ * the rating we manage and the growth we sell in one shape. The mark carried
+ * over from the previous name unchanged: it says something about the work
+ * rather than about the word, so a rename doesn't invalidate it. The brand
+ * rules from the original identity sheet still hold and are load-bearing,
+ * not decoration:
  *
  *   - the stars only ever climb left to right; never mirrored, never
  *     levelled out, never re-ordered by size
@@ -48,13 +51,8 @@ export function LogoMark({ className }: { className?: string }) {
   return (
     <svg
       viewBox="0 0 100 52"
-      /*
-       * No default width here. `cn` is a plain string joiner, not
-       * tailwind-merge, so a base "w-full" would survive alongside any width
-       * the caller passes and win on stylesheet order — which is exactly
-       * what happened: the header mark expanded to fill the bar and shoved
-       * the nav out of the way. Callers own the sizing.
-       */
+      /* Callers own the sizing — the mark appears at very different scales
+         (header lockup, favicon, OG card) and there is no sensible default. */
       className={className}
       fill="currentColor"
       aria-hidden="true"
@@ -69,9 +67,8 @@ export function LogoMark({ className }: { className?: string }) {
 /**
  * The full lockup: mark plus wordmark.
  *
- * The weight ramp — lets 500 / grow 700 / big 800 / .com 600 — is the whole
- * point of the wordmark. It grows across the word in the same way the stars
- * climb, so the two halves say the same thing.
+ * The name carries the weight and the TLD sits back, so "jigme" is what
+ * reads at a glance and ".io" is context rather than a competing word.
  */
 export function Logo({
   className,
@@ -84,16 +81,14 @@ export function Logo({
     <span className={cn("inline-flex items-center gap-2.5", className)}>
       <LogoMark className={markClassName ?? "h-5 w-10 shrink-0 text-gold"} />
       {/* aria-hidden: the accessible name comes from the link that wraps
-          this, so screen readers hear "letsgrowbig.com home" once rather
+          this, so screen readers hear "jigme.io home" once rather
           than the wordmark and the label back to back. */}
       <span
         aria-hidden="true"
         className="whitespace-nowrap leading-none tracking-tight"
       >
-        <span className="font-medium text-muted">lets</span>
-        <span className="font-bold">grow</span>
-        <span className="font-extrabold">big</span>
-        <span className="text-[0.7em] font-semibold text-muted">.com</span>
+        <span className="font-extrabold">jigme</span>
+        <span className="text-[0.7em] font-semibold text-muted">.io</span>
       </span>
     </span>
   );

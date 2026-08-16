@@ -9,13 +9,13 @@
  */
 
 export const brand = {
-  name: "letsgrowbig.com",
+  name: "jigme.io",
   /**
    * TODO(brand): set this to the registered entity name once the business is
    * formally registered. It appears in the footer copyright and in JSON-LD
    * `legalName`, so it should match whatever is on the paperwork.
    */
-  legalName: "Lets Grow Big",
+  legalName: "Jigme",
   /** Used in <title> as "Page — {tagline}" and in OG cards. */
   tagline: "Reviews, Websites & SEO for Local Businesses",
   /** One-sentence positioning. Appears in metadata and JSON-LD. */
@@ -25,20 +25,20 @@ export const brand = {
   /**
    * The canonical origin. No trailing slash.
    *
-   * This is deliberately the live Vercel address and NOT letsgrowbig.com.
-   * As of this change letsgrowbig.com is still unregistered — it came back
+   * This is deliberately the live Vercel address and NOT jigme.io.
+   * As of this change jigme.io is still unregistered — it came back
    * available at every registrar checked — and this value feeds the canonical
    * tags, the sitemap, the OG image URLs and the JSON-LD `url`. Pointing all
    * of those at a domain that does not resolve is the exact problem that was
    * just cleaned up: Google is told the site lives somewhere it cannot fetch.
    *
-   * TODO(brand): the day letsgrowbig.com is registered and pointed at this
-   * Vercel project, change this one line to "https://letsgrowbig.com".
+   * TODO(brand): the day jigme.io is registered and pointed at this
+   * Vercel project, change this one line to "https://jigme.io".
    * Nothing else needs touching.
    */
   url: "https://website-mu-five-40.vercel.app",
   /** Shown as text on the OG card. The brand reads as a domain by design. */
-  domain: "letsgrowbig.com",
+  domain: "jigme.io",
 
   /**
    * Contact routes.
@@ -62,7 +62,7 @@ export const brand = {
     /**
      * ⚠️ THIS ADDRESS DOES NOT WORK YET AND WILL BOUNCE.
      *
-     * letsgrowbig.com is not registered, so there is no mailbox behind this.
+     * jigme.io is not registered, so there is no mailbox behind this.
      * It is written in its final form so that registering the domain and
      * creating the inbox is the only work left — no code change needed.
      *
@@ -71,7 +71,7 @@ export const brand = {
      * and this can be made nullable like `phone` above, so the site omits
      * every mailto rather than inviting messages into a void.
      */
-    email: "hello@letsgrowbig.com",
+    email: "hello@jigme.io",
     phone: null as string | null,
     phoneHref: null as string | null,
     whatsapp: "+91 97736 71272",

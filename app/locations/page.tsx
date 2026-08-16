@@ -77,7 +77,7 @@ export default function LocationsPage() {
           ))}
 
           <Reveal>
-            <p className="rounded-[var(--radius-card)] border border-line bg-ink-2/60 p-7 text-sm leading-relaxed text-muted">
+            <p className="rounded-[var(--radius-card)] border border-line bg-ink-2/60 p-7 text-base leading-relaxed text-muted">
               Don&apos;t see your city? These pages exist for the markets we
               know well enough to say something useful about. If yours
               isn&apos;t here we can still help —{" "}

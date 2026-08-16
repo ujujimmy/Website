@@ -69,7 +69,7 @@ export default function ThankYouPage() {
           </Button>
         </div>
 
-        <p className="mt-10 text-center text-sm text-faint">
+        <p className="mt-10 text-center text-base text-faint">
           Something urgent?{" "}
           <a
             href={`mailto:${brand.contact.email}`}

@@ -112,21 +112,14 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-3">
-          {/*
-            The `hidden` has to live on a wrapper, not on the Button.
-            `cn` is a plain string joiner rather than tailwind-merge, so
-            passing "hidden" as className left Button's own `inline-flex` in
-            the class list too — same specificity, both unlayered, and
-            `inline-flex` won on stylesheet order. The result was this CTA
-            showing on every phone next to the menu button, which is what
-            pushed the header past 320px. A wrapper has no competing display
-            utility, so it simply works.
-          */}
-          <span className="hidden sm:contents">
-            <Button href={brand.primaryCta.href} size="sm">
-              {brand.primaryCta.label}
-            </Button>
-          </span>
+          {/* Desktop only — the mobile menu carries this CTA instead. */}
+          <Button
+            href={brand.primaryCta.href}
+            size="sm"
+            className="hidden sm:inline-flex"
+          >
+            {brand.primaryCta.label}
+          </Button>
 
           <button
             type="button"

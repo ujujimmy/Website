@@ -162,7 +162,7 @@ export default async function ServicePage({
           </ol>
 
           <Reveal>
-            <p className="mt-12 text-sm text-faint">
+            <p className="mt-12 text-base text-faint">
               Included in:{" "}
               <span className="text-muted">{service.includedIn.join(", ")}</span>{" "}
               ·{" "}

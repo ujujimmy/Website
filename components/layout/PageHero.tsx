@@ -24,7 +24,7 @@ export function PageHero({
       <div className="container-page">
         {breadcrumb && (
           <nav aria-label="Breadcrumb" className="mb-8">
-            <ol className="flex flex-wrap items-center gap-2 text-xs text-faint">
+            <ol className="flex flex-wrap items-center gap-2 text-sm text-faint">
               {breadcrumb.map((crumb, i) => (
                 <li key={crumb.href} className="flex items-center gap-2">
                   {i > 0 && <span aria-hidden="true">/</span>}
@@ -33,7 +33,10 @@ export function PageHero({
                   ) : (
                     <Link
                       href={crumb.href}
-                      className="transition-colors hover:text-fg"
+                      // Breadcrumbs are standalone navigation, not inline prose, so
+                      // they need a real tap target. The text stays the same
+                      // size; the hit area grows around it.
+                      className="inline-flex min-h-11 min-w-11 items-center transition-colors hover:text-fg"
                     >
                       {crumb.name}
                     </Link>

@@ -74,7 +74,7 @@ export default async function AuditPage({
           <div className="mt-8">
             <a
               href="/audit/sample"
-              className="inline-flex items-center gap-2 text-sm font-medium text-brand-2 underline underline-offset-4"
+              className="inline-flex min-h-11 items-center gap-2 text-base font-medium text-brand-2 underline underline-offset-4"
             >
               See a filled-in example first
               <svg viewBox="0 0 20 20" className="h-4 w-4 fill-none stroke-current stroke-[2]" aria-hidden="true">
@@ -107,7 +107,7 @@ export default async function AuditPage({
         {/* Form side */}
         <div className="lg:sticky lg:top-28 lg:self-start">
           <AuditForm defaultNeed={need} />
-          <p className="mt-5 text-center text-xs text-faint">
+          <p className="mt-5 text-center text-sm text-faint">
             Prefer to talk first?{" "}
             <a
               href={`mailto:${brand.contact.email}`}

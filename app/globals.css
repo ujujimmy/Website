@@ -379,8 +379,8 @@
 }
 .intro-mark {
   font-family: var(--font-display);
-  /* The lockup, not a tracked-out caps label. Weights match the identity
-     sheet: lets 500 / grow 700 / big 800 / .com 600. */
+  /* The lockup, not a tracked-out caps label. The name carries the weight,
+     the TLD sits back — same relationship as in the header. */
   font-size: 1.5rem;
   letter-spacing: -0.02em;
   line-height: 1;
@@ -388,14 +388,7 @@
   opacity: 0;
   animation: intro-mark 440ms var(--ease-out-expo) 200ms forwards;
 }
-.intro-mark-lets {
-  font-weight: 500;
-  color: var(--color-muted);
-}
-.intro-mark-grow {
-  font-weight: 700;
-}
-.intro-mark-big {
+.intro-mark-name {
   font-weight: 800;
 }
 .intro-mark-tld {

@@ -84,10 +84,8 @@ export function Intro() {
             logotype is lowercase and grows across the word, and setting it
             in tracked-out caps threw away the one thing it does. */}
         <p className="intro-mark">
-          <span className="intro-mark-lets">lets</span>
-          <span className="intro-mark-grow">grow</span>
-          <span className="intro-mark-big">big</span>
-          <span className="intro-mark-tld">.com</span>
+          <span className="intro-mark-name">jigme</span>
+          <span className="intro-mark-tld">.io</span>
         </p>
         <span className="intro-stars">
           <StarRow fill={false} />

@@ -103,7 +103,17 @@ export default function SampleAuditPage() {
                   Your Google profile vs. your competitors
                 </h2>
 
-                <div className="mt-7 overflow-x-auto">
+                <div
+                  // A horizontally scrollable region must be reachable
+                  // by keyboard, or its off-screen columns are simply
+                  // unreadable without a mouse or a touchscreen.
+                  // tabIndex makes it focusable; role+label tell a
+                  // screen reader what it has landed in.
+                  tabIndex={0}
+                  role="region"
+                  aria-label="Comparison table, scrolls horizontally"
+                  className="mt-7 overflow-x-auto focus-visible:outline-2 focus-visible:outline-offset-2"
+                >
                   <table className="w-full min-w-[34rem] border-collapse text-left text-sm">
                     <thead>
                       <tr className="border-b border-line text-xs uppercase tracking-[0.12em] text-faint">
@@ -196,7 +206,17 @@ export default function SampleAuditPage() {
                   The searches you&apos;re missing
                 </h2>
 
-                <div className="mt-7 overflow-x-auto">
+                <div
+                  // A horizontally scrollable region must be reachable
+                  // by keyboard, or its off-screen columns are simply
+                  // unreadable without a mouse or a touchscreen.
+                  // tabIndex makes it focusable; role+label tell a
+                  // screen reader what it has landed in.
+                  tabIndex={0}
+                  role="region"
+                  aria-label="Comparison table, scrolls horizontally"
+                  className="mt-7 overflow-x-auto focus-visible:outline-2 focus-visible:outline-offset-2"
+                >
                   <table className="w-full min-w-[34rem] border-collapse text-left text-sm">
                     <thead>
                       <tr className="border-b border-line text-xs uppercase tracking-[0.12em] text-faint">

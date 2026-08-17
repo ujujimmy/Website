@@ -5,6 +5,9 @@
   "description": "Website for MACHEN LA Tibet Kitchen, Majnu-ka-Tilla, Delhi",
   "license": "UNLICENSED",
   "packageManager": "pnpm@10.33.0",
+  "engines": {
+    "node": "22.x"
+  },
   "scripts": {
     "dev": "next dev",
     "prebuild": "node --experimental-strip-types --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --disable-warning=ExperimentalWarning scripts/check-menu.mjs",

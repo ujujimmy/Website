@@ -1,0 +1,276 @@
+@import "tailwindcss";
+
+/* ===========================================================================
+   MACHEN LA — design tokens
+
+   A warm dark site. The ground is soot-darkened beam, the text is lime-
+   plastered monastery wall, and maroon and butter-gold carry everything else.
+   Indigo and jade appear only as small markers on the menu.
+
+   Every text pair below was measured, not assumed.
+=========================================================================== */
+@theme {
+  /* ---- the six brief colours ------------------------------------------ */
+  --color-ink: #1a1614; /* soot-darkened beam — page ground              */
+  --color-wall: #ede6d8; /* monastery wall — primary text, 14.5:1 on ink */
+  --color-dzong: #7a1e22; /* Nyingma maroon — STRUCTURE ONLY, see below    */
+  --color-butter: #e8a33d; /* butter-lamp flame — prices, CTA, 8.3:1 on ink*/
+  --color-indigo: #2c3a5c; /* thangka sky — marker only: cold drinks       */
+  --color-jade: #4f7a63; /* thangka green — marker only: vegetarian      */
+
+  /* ---- two derived values, no new hues --------------------------------
+     --dzong measures 1.74:1 on --ink. That is not a near miss, it is
+     unreadable, so maroon in this build is structural: frames, the pecha
+     rules, the footer field. It never carries text on the dark ground.
+     Where a maroon MUST carry text, use --dzong-lit: the same hue raised in
+     lightness until it clears AA, exactly as the brief asks.
+  --------------------------------------------------------------------- */
+  --color-dzong-lit: #c4636a; /* 4.6:1 on ink ✓ AA — the only text maroon */
+  --color-rule: #9e3a3e; /* dzong lifted until a 1px rule is actually
+                                  visible on the dark ground — 2.7:1. True
+                                  --dzong hairlines measure 1.74:1 and simply
+                                  vanish, which reads as a rendering bug
+                                  rather than as restraint. */
+
+  /* wall at reduced strength, for secondary prose and absent prices */
+  --color-wall-dim: #a89f92; /* 6.9:1 on ink ✓ AA (just short of AAA)     */
+
+  /* The quietest text on the site — captions, figure labels, section eyebrows.
+     This is a real token rather than `text-wall/40`, which was the first thing
+     an audit caught: wall at 40% opacity over ink computes to #6E6962 and
+     measures 3.3:1, which fails AA for 13px text. Anything that must whisper
+     uses this instead. */
+  --color-wall-faint: #8a8177; /* 4.7:1 on ink ✓ AA                       */
+
+  /* ---- type ------------------------------------------------------------ */
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-body: var(--font-karla), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, "SF Mono", monospace;
+
+  /* Fluid throughout. No fixed pixel font sizes anywhere in the build. */
+  --text-display-xl: clamp(2.75rem, 11vw, 6.5rem);
+  --text-display-xl--line-height: 0.94;
+  --text-display-xl--letter-spacing: -0.02em;
+
+  --text-display-l: clamp(2rem, 7vw, 3.75rem);
+  --text-display-l--line-height: 1.02;
+  --text-display-l--letter-spacing: -0.015em;
+
+  --text-display-m: clamp(1.375rem, 4.5vw, 1.875rem);
+  --text-display-m--line-height: 1.15;
+  --text-display-m--letter-spacing: -0.01em;
+
+  --text-lede: clamp(1.0625rem, 2.6vw, 1.25rem);
+  --text-lede--line-height: 1.6;
+
+  --text-body: clamp(1rem, 1.6vw, 1.0625rem); /* floors at 16px */
+  --text-body--line-height: 1.65;
+
+  --text-price: clamp(1rem, 3vw, 1.125rem);
+  --text-price--line-height: 1.2;
+
+  --text-meta: 0.8125rem; /* tracked uppercase label, not reading copy */
+  --text-meta--line-height: 1.4;
+  --text-meta--letter-spacing: 0.14em;
+}
+
+/* ===========================================================================
+   Base
+=========================================================================== */
+html {
+  background-color: var(--color-ink);
+  /* Sticky category tabs on /menu are 3.25rem; anchor jumps must clear them. */
+  scroll-padding-top: 5.5rem;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--color-ink);
+  color: var(--color-wall);
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: 1.65;
+  /* The sticky action bar is mobile-only and 4.25rem tall; keep the footer
+     clear of it. Removed at md, where the bar is not rendered. */
+  padding-bottom: calc(4.25rem + env(safe-area-inset-bottom, 0px));
+}
+
+@media (min-width: 768px) {
+  body {
+    padding-bottom: 0;
+  }
+}
+
+/* Long unbroken strings (an address, a URL) must never widen the page. */
+body,
+h1,
+h2,
+h3,
+p,
+li,
+a {
+  overflow-wrap: break-word;
+}
+
+.font-display {
+  font-family: var(--font-display);
+  /* Fraunces is variable: drive the optical size axis rather than letting the
+     browser pick one. Only `opsz` is loaded — see the note in layout.tsx. */
+  font-variation-settings: "opsz" 36;
+}
+
+/* Display-size type takes the high-contrast optical cut with tighter fitting;
+   the axis is the reason this face was chosen, so it is actually used rather
+   than left at a single default. */
+h1.font-display,
+.font-display.text-display-xl,
+.font-display.text-display-l {
+  font-variation-settings: "opsz" 120;
+}
+
+/* ===========================================================================
+   Focus — the brief asks for this to be checked, not assumed.
+   Butter on ink is 8.3:1, which is unmistakable against the dark ground.
+=========================================================================== */
+:focus-visible {
+  outline: 2px solid var(--color-butter);
+  outline-offset: 3px;
+  border-radius: 1px;
+}
+
+/* ===========================================================================
+   The pecha rule — the signature element's spine.
+
+   A Tibetan pecha carries a pair of red rules down the inner margin of the
+   folio. Ours is a real 1px pair, drawn with a gradient rather than two
+   elements so a menu of forty rows stays at forty DOM nodes.
+=========================================================================== */
+.pecha-spine {
+  background-image: linear-gradient(
+    to right,
+    var(--color-rule) 0 1px,
+    transparent 1px 4px,
+    var(--color-rule) 4px 5px,
+    transparent 5px
+  );
+  background-repeat: no-repeat;
+  background-size: 5px 100%;
+}
+
+/* A single hairline. --rule rather than --dzong: at 1.74:1 a true maroon
+   hairline is invisible on ink, which reads as a rendering bug, not restraint. */
+.hairline {
+  border-color: var(--color-rule);
+}
+
+/* ===========================================================================
+   Image treatment
+
+   The sources are mixed Instagram output with mismatched filters. One grade
+   over all of them makes the set read as a single shoot:
+     · contrast(0.97) + brightness(1.03) lifts the shadows toward the page
+       ground so images sit in the dark field instead of punching holes in it
+     · a butter soft-light pass warms the highlights toward the lamp colour
+     · fine grain at 5% hides the compression blocking and unifies grain
+       structure between files shot on different phones
+   Kept deliberately light. This is a grade, not a duotone.
+=========================================================================== */
+.plate {
+  position: relative;
+  overflow: hidden;
+  background-color: #241d1a; /* what shows while the image decodes */
+}
+
+.plate img {
+  filter: saturate(0.94) contrast(0.97) brightness(1.03);
+}
+
+.plate::before,
+.plate::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.plate::before {
+  background-color: var(--color-butter);
+  mix-blend-mode: soft-light;
+  opacity: 0.1;
+}
+
+.plate::after {
+  mix-blend-mode: overlay;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 120px 120px;
+}
+
+/* ===========================================================================
+   Motion — exactly two moments in the whole site.
+
+   1. The hero rule draws its width once, on load.
+   2. The menu's category tab underline slides between tabs.
+
+   Nothing else moves. No fade-up-on-scroll, no parallax, no ken-burns —
+   panning a compressed image makes its artefacts crawl.
+=========================================================================== */
+@keyframes rule-draw {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.rule-draw {
+  transform-origin: left center;
+  animation: rule-draw 900ms cubic-bezier(0.16, 1, 0.3, 1) 200ms both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rule-draw {
+    animation: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ===========================================================================
+   Utilities
+=========================================================================== */
+
+/* ---------------------------------------------------------------------------
+   Menu filters.
+
+   Filtering is done in CSS off a single data attribute rather than in React, so
+   every dish stays in the server-rendered HTML whatever the visitor selects —
+   a crawler, and a visitor with JS blocked, always sees the whole menu.
+--------------------------------------------------------------------------- */
+[data-filter="veg"] li[data-veg]:not([data-veg="true"]),
+[data-filter="not-hot"] li[data-spice="HOT"] {
+  display: none;
+}
+
+/* Drop a category heading once everything under it has been filtered out. */
+[data-filter="veg"] section:not(:has(li[data-veg="true"])),
+[data-filter="not-hot"] section:not(:has(li:not([data-spice="HOT"]))) {
+  display: none;
+}
+
+/* Hide the horizontal scrollbar on the category tab strip without hiding the
+   scrolling itself — the tabs must stay swipeable on a phone. */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

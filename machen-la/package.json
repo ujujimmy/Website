@@ -1,0 +1,36 @@
+{
+  "name": "machen-la",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Website for MACHEN LA Tibet Kitchen, Majnu-ka-Tilla, Delhi",
+  "license": "UNLICENSED",
+  "packageManager": "pnpm@10.33.0",
+  "scripts": {
+    "dev": "next dev",
+    "prebuild": "node --experimental-strip-types --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --disable-warning=ExperimentalWarning scripts/check-menu.mjs",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "placeholders": "node scripts/make-placeholders.mjs",
+    "shots": "node scripts/screenshots.mjs",
+    "audit:mobile": "node scripts/lighthouse.mjs"
+  },
+  "dependencies": {
+    "next": "^15.5.4",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "sharp": "^0.34.4"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.14",
+    "@types/node": "^24.6.2",
+    "@types/react": "^19.1.16",
+    "@types/react-dom": "^19.1.9",
+    "chrome-launcher": "^1.2.1",
+    "lighthouse": "^12.8.2",
+    "playwright": "^1.55.1",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.14",
+    "typescript": "^5.9.3"
+  }
+}

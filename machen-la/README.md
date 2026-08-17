@@ -58,10 +58,18 @@ Lighthouse, mobile preset — 4× CPU throttle, simulated slow 4G — against
 
 | Page | Perf | A11y | Best practices | SEO | LCP | CLS | TBT |
 |---|---|---|---|---|---|---|---|
-| `/` | 99 | 100 | 100 | 100 | 2.2 s | 0 | 40 ms |
-| `/menu` | 97–98 | 100 | 100 | 100 | 2.3–2.6 s | 0 | 70–80 ms |
+| `/` | 97–99 | 100 | 100 | 100 | 2.2–2.6 s | 0 | 40 ms |
+| `/menu` | 97–98 | 100 | 100 | 100 | 2.3–2.6 s | 0 | 70–120 ms |
+| `/visit` | 99 | 100 | 100 | 100 | 2.0 s | 0 | 40 ms |
 
-Two honest caveats on those numbers:
+Three honest caveats on those numbers:
+
+- **`/visit` was measured without the map ever loading.** The container this was
+  built in has no outbound route to `google.com`, so the iframe request failed
+  on every run. The aspect-ratio box means CLS stays 0 either way, but the
+  network and CPU cost of the embed itself is unmeasured. Re-run
+  `node scripts/lighthouse.mjs /visit` against the deployed site before trusting
+  that 99.
 
 - **LCP is 2.2 s against a 2.0 s target.** 457 ms of it is TTFB from a local
   Node server; a prerendered page off Vercel's edge answers in a fraction of
@@ -127,9 +135,14 @@ type carries the page and one image sits under it in a contained frame.
 load, and the menu category underline. Nothing fades up on scroll. Both are
 removed under `prefers-reduced-motion`.
 
-**No embedded map.** `/visit` links out to Google Maps instead. An iframe is a
-third-party script and a layout-shift risk on a 4G handset, and nobody navigates
-a Delhi lane from an embed — they tap through to the app holding their GPS.
+**The map is embedded, and the action links still come first.** `/visit` carries
+a Google Maps iframe (`src/components/MapEmbed.tsx`), placed below the address,
+the hours and the three action links. It is lazy-loaded and sits in an
+aspect-ratio box that reserves its space, so it neither competes for first paint
+nor shifts the page — CLS on the route is 0 with it in. Call, Directions and
+WhatsApp stay above it, because an embed shows you where a place is but
+turn-by-turn happens in the app holding your GPS. The embed is keyless, so
+there is no API key or billing account to maintain.
 
 **Filtering is CSS, not React.** The menu filters set one data attribute and CSS
 hides rows, so every dish stays in the server-rendered HTML whatever is

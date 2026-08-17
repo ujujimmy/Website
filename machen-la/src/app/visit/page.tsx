@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Plate } from "@/components/Plate";
 import { JsonLd } from "@/components/JsonLd";
+import { MapEmbed } from "@/components/MapEmbed";
 import { OpenNow } from "@/components/OpenNow";
 import { IMAGES } from "@/data/images";
 import { FAQS } from "@/data/faq";
@@ -44,10 +45,9 @@ export default function VisitPage() {
             </div>
 
             {/* Three big targets, in the thumb zone on a phone and unmissable on
-                a desktop. No embedded map iframe: it is a third-party script and
-                a layout-shift risk on a 4G handset, and nobody navigates a Delhi
-                lane from an iframe — they tap through to the app that has their
-                GPS. */}
+                a desktop. These stay the primary route even with the map
+                embedded below — an iframe shows you where the place is, but
+                turn-by-turn happens in the app holding your GPS. */}
             <div className="mt-10 grid gap-3 sm:max-w-md">
               <a
                 href={RESTAURANT.links.directions}
@@ -92,6 +92,11 @@ export default function VisitPage() {
             </p>
           </div>
         </div>
+      </section>
+
+      {/* ═══ THE MAP ══════════════════════════════════════════════════════ */}
+      <section className="mx-auto max-w-[76rem] px-5 pt-20 sm:px-8 sm:pt-24">
+        <MapEmbed />
       </section>
 
       {/* ═══ THE WALK IN ══════════════════════════════════════════════════ */}

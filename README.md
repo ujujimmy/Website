@@ -214,9 +214,18 @@ Verified working, not assumed:
 
 ## Deploying
 
-Built for Vercel: push the repo, import it, set the environment variables
-above. Set `brand.url` in `content/brand.ts` to the real domain first — it
-feeds canonical URLs, the sitemap, OG tags and JSON-LD.
+Built for Vercel. The project is already linked to this repo, so a push is
+the whole deploy step.
 
-After the first deploy, run the homepage and one service page through Google's
-Rich Results Test to confirm the structured data.
+- **Production branch is `main`.** Pushing there deploys to jigme.agency.
+  Every other branch builds a preview URL and leaves production alone — worth
+  knowing, because this repo also carries unrelated client sites on their own
+  branches (`dechen-salon/`, `machen-la/`, `sites/smilekraft/`), and none of
+  them can reach production from where they sit.
+- **`brand.url` in `content/brand.ts` is the canonical origin** and feeds the
+  canonical tags, the sitemap, the OG image URLs and the JSON-LD `url`. It is
+  set to `https://jigme.agency`. If the domain ever moves, that one line is
+  the change; nothing else references the origin directly.
+
+After a deploy that changes metadata, run the homepage and one service page
+through Google's Rich Results Test to confirm the structured data.

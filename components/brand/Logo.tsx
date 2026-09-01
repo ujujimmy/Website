@@ -2,7 +2,7 @@ import { brand } from "@/content/brand";
 import { cn } from "@/lib/utils";
 
 /**
- * The jigme.io identity.
+ * The jigme.agency identity.
  *
  * Five stars climbing left to right, each larger and higher than the last —
  * the rating we manage and the growth we sell in one shape. The mark carried
@@ -68,7 +68,9 @@ export function LogoMark({ className }: { className?: string }) {
  * The full lockup: mark plus wordmark.
  *
  * The name carries the weight and the TLD sits back, so "jigme" is what
- * reads at a glance and ".io" is context rather than a competing word.
+ * reads at a glance and ".agency" is context rather than a competing word.
+ * The longer TLD makes that contrast matter more than it did on ".io":
+ * at equal weight the suffix would out-measure the name it qualifies.
  */
 export function Logo({
   className,
@@ -81,14 +83,14 @@ export function Logo({
     <span className={cn("inline-flex items-center gap-2.5", className)}>
       <LogoMark className={markClassName ?? "h-5 w-10 shrink-0 text-gold"} />
       {/* aria-hidden: the accessible name comes from the link that wraps
-          this, so screen readers hear "jigme.io home" once rather
+          this, so screen readers hear "jigme.agency home" once rather
           than the wordmark and the label back to back. */}
       <span
         aria-hidden="true"
         className="whitespace-nowrap leading-none tracking-tight"
       >
         <span className="font-extrabold">jigme</span>
-        <span className="text-[0.7em] font-semibold text-muted">.io</span>
+        <span className="text-[0.7em] font-semibold text-muted">.agency</span>
       </span>
     </span>
   );

@@ -85,7 +85,7 @@ export function Intro() {
             in tracked-out caps threw away the one thing it does. */}
         <p className="intro-mark">
           <span className="intro-mark-name">jigme</span>
-          <span className="intro-mark-tld">.io</span>
+          <span className="intro-mark-tld">.agency</span>
         </p>
         <span className="intro-stars">
           <StarRow fill={false} />

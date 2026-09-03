@@ -71,32 +71,41 @@ export const beats = [
 
 export type BeatKey = (typeof beats)[number]["key"];
 
-/** Homepage copy, keyed to the beats above. */
+/**
+ * Homepage copy, keyed to the beats above.
+ *
+ * Written for a business owner reading on a phone between jobs, not for
+ * someone studying the page. Every sub is one idea in one or two sentences:
+ * the beats each hold a full screen of 3D, so copy that runs long pushes the
+ * next beat — and the button — further away without adding an argument the
+ * reader had not already accepted by the second line.
+ */
 export const homeCopy = {
   hero: {
     eyebrow: "Google Reviews · Websites · SEO",
     headline: "Get chosen before they ever call you.",
-    // Condensed, not changed: the dropped clause ("stars, then website, then
-    // whoever shows up first") is spelled out by the three service beats
-    // anyway. This is the LCP element, and on a 390px screen the longer
-    // version ran to four lines and pushed the buttons below the fold.
+    // The LCP element. On a 390px screen anything longer than two lines
+    // pushes the buttons below the fold, which is the one thing this
+    // section exists to avoid.
     sub: "Your next customer compares you to three competitors in about eleven seconds. We make sure that comparison ends with you.",
-    note: "Free audit. No call required. You keep it either way.",
+    // Says what the call costs and what it commits you to, because that is
+    // the objection standing between reading the button and pressing it.
+    note: "Free 15-minute call. No pitch, no obligation.",
   },
   problem: {
     eyebrow: "The quiet leak",
     headline: "You never hear from the customers you lose.",
-    sub: "There's no notification when someone picks the competitor with 300 reviews, or leaves a site that took five seconds to load. The loss is invisible, which is exactly why it goes unfixed for years.",
+    sub: "Nobody tells you they picked the competitor with 300 reviews, or gave up on a page that took five seconds to load. That's why it goes unfixed for years.",
     points: [
       "A 3.9 rating filters you out before anyone reads a word about you",
-      "A slow site loses over half its mobile visitors before it finishes loading",
-      "Page-two rankings get a rounding error's worth of clicks",
+      "A slow site loses over half its mobile visitors before it loads",
+      "Page-two rankings get almost none of the clicks",
     ],
   },
   global: {
     eyebrow: "Where we work",
     headline: "Based in Delhi. Set up for your timezone.",
-    sub: "Our clients today are here in India, and their results are public — you can verify every claim on this site in about a minute. We keep US Eastern and Pacific hours, and we would rather show you checkable work from Delhi than a client list we do not have.",
+    sub: "We keep US, Canadian and UK hours. Our clients are in Delhi today, and their results are public — you can check every claim on this site in about a minute.",
     markers: [
       { label: "Delhi, India", detail: "Where we are, and where our clients are today" },
       { label: "United States", detail: "ET & PT hours covered" },
@@ -107,9 +116,9 @@ export const homeCopy = {
   cta: {
     eyebrow: "Free, no strings",
     headline: "See exactly what's costing you customers.",
-    sub: "Send us your business name and website. You'll get back a real audit written by a person: your Google profile against your three closest competitors, your site's speed and technical issues, and the searches you're missing.",
+    sub: "Tell us your business name and website. You get back a real audit written by a person — your Google profile against your three closest competitors, your site's speed, and the searches you're missing.",
     bullets: [
-      "Delivered within 2 business days",
+      "Back within 2 business days",
       "No call required to receive it",
       "Yours to keep, and to act on without us",
     ],

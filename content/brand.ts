@@ -105,12 +105,21 @@ export const brand = {
 
   /** Primary conversion target. Every major CTA points here. */
   primaryCta: {
-    label: "Get my free audit",
-    href: "/audit",
+    label: "Book a free call",
+    href: "/contact",
   },
+  /**
+   * The low-commitment path, kept one click from every primary CTA.
+   *
+   * A booking asks for a slot in someone's calendar; the audit asks for a
+   * business name. Those are very different sizes of yes, and a visitor who
+   * is not ready for the first will leave rather than downgrade themselves.
+   * Pricing used to sit here, but pricing is a page people go looking for —
+   * it does not need to compete with the offer for the second button.
+   */
   secondaryCta: {
-    label: "See pricing",
-    href: "/pricing",
+    label: "Get a free audit instead",
+    href: "/audit",
   },
 } as const;
 

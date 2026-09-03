@@ -7,13 +7,10 @@ import {
   GlobalBeat,
   AuditBeat,
 } from "@/components/home/Beats";
-import { Scorecard } from "@/components/home/Scorecard";
 import { PathSelector } from "@/components/home/PathSelector";
 import { ProofItWorks } from "@/components/home/ProofItWorks";
 import { StickyCta } from "@/components/home/StickyCta";
 import {
-  Process,
-  Testimonials,
   PricingPreview,
   FaqSection,
   ClosingCta,
@@ -21,6 +18,23 @@ import {
 import { JsonLd } from "@/components/JsonLd";
 import { faqLd } from "@/lib/seo";
 
+/**
+ * The homepage, read as a funnel.
+ *
+ * Every section below answers the one question a visitor is asking at that
+ * point, in the order they ask it: what is this, does it apply to me, which
+ * one am I, how does it get fixed, can I believe you, what does it cost,
+ * what about my objection, how do I start. A section that answers no live
+ * question is a section the visitor scrolls past on the way to the answer
+ * they came for, so there aren't any.
+ *
+ * This used to carry three more: a Lighthouse scorecard, a four-step process
+ * breakdown and a testimonials block. Each was defensible on its own and all
+ * three sat between the proof and the price, which is exactly where someone
+ * who is nearly convinced decides whether to keep scrolling. They still exist
+ * — Scorecard on the location pages, Process on the service pages, where a
+ * reader has already opted into that level of detail.
+ */
 export default function HomePage() {
   return (
     <main>
@@ -30,7 +44,10 @@ export default function HomePage() {
         The scroll narrative. These seven sections map 1:1 onto the beats in
         content/site.ts and the position buffers in lib/three/shapes.ts —
         Narrative converts scroll position across this wrapper into the 0–1
-        progress that morphs the particle field.
+        progress that morphs the particle field. Seven in, seven out: the
+        shortening happened inside each beat's copy, never by dropping one,
+        because removing a beat would silently drop a shape from the morph
+        sequence and leave the particle field jumping between states.
       */}
       <Narrative>
         <Hero />
@@ -53,13 +70,11 @@ export default function HomePage() {
         <AuditBeat />
       </Narrative>
 
-      {/* Supporting detail for visitors who need more than the reel. */}
+      {/* Proof, then price, then the objections that survive both, then the
+          booking. Nothing between the price and the way to act on it. */}
       <ProofItWorks />
-      <Scorecard />
       <PricingPreview />
-      <Process />
-      <Testimonials />
-      <FaqSection limit={6} />
+      <FaqSection limit={4} />
       <ClosingCta />
 
       <StickyCta />

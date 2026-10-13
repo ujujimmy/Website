@@ -56,6 +56,7 @@ await write("/index.html", root(all));
 await writeFile(join(out, "app.js"), appJs);
 await copyFile(join(here, "src/assets/favicon.svg"), join(out, "favicon.svg"));
 await cp(join(here, "src/assets/fonts"), join(out, "fonts"), { recursive: true });
+await cp(join(here, "src/assets/og"), join(out, "og"), { recursive: true }).catch(() => console.warn("⚠️  No link-preview images yet: run scripts/og.mjs"));
 await writeFile(join(out, "robots.txt"), `User-agent: *\nAllow: /\nSitemap: ${config.siteUrl}/sitemap.xml\n`);
 await writeFile(
   join(out, "sitemap.xml"),

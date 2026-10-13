@@ -8,10 +8,10 @@ export default {
   slugs: { thanks: "merci", privacy: "confidentialite" },
 
   trades: {
-    electrician: { slug: "electricien", label: "Électricien", plural: "électriciens", search: "électricien près de chez moi" },
-    roofer: { slug: "couvreur", label: "Couvreur", plural: "couvreurs", search: "couvreur près de chez moi" },
-    plumber: { slug: "plombier", label: "Plombier", plural: "plombiers", search: "plombier près de chez moi" },
-    heating: { slug: "chauffagiste", label: "Chauffage / pompes à chaleur", plural: "chauffagistes", search: "installateur pompe à chaleur" },
+    electrician: { slug: "electricien", label: "Électricien", plural: "électriciens", adPlural: "Électriciens", search: "électricien près de chez moi" },
+    roofer: { slug: "couvreur", label: "Couvreur", plural: "couvreurs", adPlural: "Couvreurs", search: "couvreur près de chez moi" },
+    plumber: { slug: "plombier", label: "Plombier", plural: "plombiers", adPlural: "Plombiers", search: "plombier près de chez moi" },
+    heating: { slug: "chauffagiste", label: "Chauffage / pompes à chaleur", plural: "chauffagistes", adPlural: "Chauffagistes", search: "installateur pompe à chaleur" },
     other: { label: "Autre service à domicile", plural: "artisans" },
   },
 
@@ -23,6 +23,12 @@ export default {
     description: (tr) =>
       `PinRank optimise chaque semaine votre fiche Google Business pour que les ${tr ? tr.plural : "électriciens, couvreurs et entreprises de services à domicile"} en Belgique montent dans Google Maps. Pas mieux classé après 3 mois ? Remboursé.`,
   },
+
+  /** Text on the link-preview image (scripts/og.mjs). */
+  og: { eyebrow: "Pour les électriciens, couvreurs et artisans en Belgique", title: "En tête de Google Maps.", sub: "Pas mieux classé après 3 mois ? Remboursé." },
+
+  /** Headline on the ad videos (scripts/ad-video.mjs). */
+  adVideo: { headline: (tr) => (tr ? `${tr.adPlural} : êtes-vous dans le top 3 de Google Maps ?` : "Êtes-vous dans le top 3 de Google Maps ?") },
 
   nav: { cta: "Test gratuit", langLabel: "Langue" },
 

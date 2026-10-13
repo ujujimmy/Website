@@ -8,10 +8,10 @@ export default {
   slugs: { thanks: "bedankt", privacy: "privacy" },
 
   trades: {
-    electrician: { slug: "elektricien", label: "Elektricien", plural: "elektriciens", search: "elektricien in de buurt" },
-    roofer: { slug: "dakwerker", label: "Dakwerker", plural: "dakwerkers", search: "dakwerker in de buurt" },
-    plumber: { slug: "loodgieter", label: "Loodgieter", plural: "loodgieters", search: "loodgieter in de buurt" },
-    heating: { slug: "verwarming", label: "Verwarming / warmtepompen", plural: "installateurs", search: "warmtepomp installateur" },
+    electrician: { slug: "elektricien", label: "Elektricien", plural: "elektriciens", adPlural: "Elektriciens", search: "elektricien in de buurt" },
+    roofer: { slug: "dakwerker", label: "Dakwerker", plural: "dakwerkers", adPlural: "Dakwerkers", search: "dakwerker in de buurt" },
+    plumber: { slug: "loodgieter", label: "Loodgieter", plural: "loodgieters", adPlural: "Loodgieters", search: "loodgieter in de buurt" },
+    heating: { slug: "verwarming", label: "Verwarming / warmtepompen", plural: "installateurs", adPlural: "Installateurs", search: "warmtepomp installateur" },
     other: { label: "Ander thuisservicebedrijf", plural: "vakmensen" },
   },
 
@@ -23,6 +23,12 @@ export default {
     description: (tr) =>
       `PinRank optimaliseert elke week je Google-bedrijfsprofiel zodat ${tr ? tr.plural : "elektriciens, dakwerkers en thuisservicebedrijven"} in België hoger staan in Google Maps. Niet hoger na 3 maanden? Geld terug.`,
   },
+
+  /** Text on the link-preview image (scripts/og.mjs). */
+  og: { eyebrow: "Voor elektriciens, dakwerkers en vakmensen in België", title: "Bovenaan in Google Maps.", sub: "Niet hoger na 3 maanden? Geld terug." },
+
+  /** Headline on the ad videos (scripts/ad-video.mjs). */
+  adVideo: { headline: (tr) => (tr ? `${tr.adPlural}: sta jij in de top 3 op Google Maps?` : "Sta jij in de top 3 op Google Maps?") },
 
   nav: { cta: "Gratis check", langLabel: "Taal" },
 

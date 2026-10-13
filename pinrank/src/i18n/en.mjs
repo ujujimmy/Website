@@ -8,10 +8,10 @@ export default {
   slugs: { thanks: "thank-you", privacy: "privacy" },
 
   trades: {
-    electrician: { slug: "electrician", label: "Electrician", plural: "electricians", search: "electrician near me" },
-    roofer: { slug: "roofer", label: "Roofer", plural: "roofers", search: "roofer near me" },
-    plumber: { slug: "plumber", label: "Plumber", plural: "plumbers", search: "plumber near me" },
-    heating: { slug: "heating", label: "Heating / heat pumps", plural: "heating installers", search: "heat pump installer" },
+    electrician: { slug: "electrician", label: "Electrician", plural: "electricians", adPlural: "Electricians", search: "electrician near me" },
+    roofer: { slug: "roofer", label: "Roofer", plural: "roofers", adPlural: "Roofers", search: "roofer near me" },
+    plumber: { slug: "plumber", label: "Plumber", plural: "plumbers", adPlural: "Plumbers", search: "plumber near me" },
+    heating: { slug: "heating", label: "Heating / heat pumps", plural: "heating installers", adPlural: "Heating installers", search: "heat pump installer" },
     other: { label: "Other home service business", plural: "trades businesses" },
   },
 
@@ -23,6 +23,12 @@ export default {
     description: (tr) =>
       `PinRank works on your Google Business Profile every week so ${tr ? tr.plural : "electricians, roofers and home service businesses"} in Belgium rank higher on Google Maps. Not higher after 3 months? Money back.`,
   },
+
+  /** Text on the link-preview image (scripts/og.mjs). */
+  og: { eyebrow: "For electricians, roofers and trades in Belgium", title: "Top of Google Maps.", sub: "Not higher after 3 months? Money back." },
+
+  /** Headline on the ad videos (scripts/ad-video.mjs). */
+  adVideo: { headline: (tr) => (tr ? `${tr.adPlural}: are you in the top 3 on Google Maps?` : "Are you in the top 3 on Google Maps?") },
 
   nav: { cta: "Free check", langLabel: "Language" },
 

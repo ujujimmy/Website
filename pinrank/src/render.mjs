@@ -82,6 +82,11 @@ ${noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonical" hr
 <meta property="og:url" content="${config.siteUrl}${path}">
 <meta property="og:locale" content="${t.ogLocale}">
 <meta property="og:site_name" content="${esc(config.brand)}">
+<meta property="og:image" content="${config.siteUrl}/og/${t.code}.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="${esc(t.og.title + " " + t.og.sub)}">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#fbfbf9">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="/fonts/newsreader-500.woff2" as="font" type="font/woff2" crossorigin>

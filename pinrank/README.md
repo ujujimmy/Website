@@ -42,19 +42,20 @@ Meta ad ──► trade landing page ──► 4-step qualifier ──► Cal.co
 All of it is in `src/config.mjs`. The build lists every remaining `TODO(`.
 
 1. **Domain**: set `siteUrl`.
-2. **Cal.com**: create a 15-min event and set `calLink` (e.g. `pinrank/gratis-gesprek`). The EU
+2. **Re-run the media scripts** (below) after setting the domain: the ad videos show it.
+3. **Cal.com**: create a 15-min event and set `calLink` (e.g. `pinrank/gratis-gesprek`). The EU
    instance (cal.eu) is better for GDPR; see the comment in config. Until it's set, the funnel
    ends in WhatsApp only.
-3. **WhatsApp**: set `whatsapp`. Currently the jigme.agency (+91) number; a Belgian +32 number
+4. **WhatsApp**: set `whatsapp`. Currently the jigme.agency (+91) number; a Belgian +32 number
    will convert better with this audience.
-4. **Meta Pixel**: set `metaPixelId`. It loads **only after cookie consent**, which is required in the EU.
+5. **Meta Pixel**: set `metaPixelId`. It loads **only after cookie consent**, which is required in the EU.
    The cookie banner appears automatically once an ID is set.
-5. **Price**: confirm the €800 period (`month` or `once`) or set `show: false`.
-6. **Company details**: legal name, address, KBO/BCE number. Belgian law requires these on the site.
-7. **Guarantee terms**: write down how "ranking improved" is measured (keywords, grid, average
+6. **Price**: confirm the €800 period (`month` or `once`) or set `show: false`.
+7. **Company details**: legal name, address, KBO/BCE number. Belgian law requires these on the site.
+8. **Guarantee terms**: write down how "ranking improved" is measured (keywords, grid, average
    position) before the first sale. The page promises the terms are agreed in writing.
-8. **Testimonials**: add real ones to `testimonials` and the section appears.
-9. Optional: `leadWebhook` (Make/Zapier/n8n → Google Sheet) to capture everyone who answers the
+9. **Testimonials**: add real ones to `testimonials` and the section appears.
+10. Optional: `leadWebhook` (Make/Zapier/n8n → Google Sheet) to capture everyone who answers the
    questions, so you can follow up those who don't book.
 
 ## Meta events
@@ -68,6 +69,23 @@ All of it is in `src/config.mjs`. The build lists every remaining `TODO(`.
 | `Schedule` | calendar booking done | switch optimisation here once you have ~50/week |
 
 UTM parameters and `fbclid` are kept for the visit and sent with every webhook event.
+
+## Meta ads pack
+
+`ads/README.md` has ready-to-paste ad copy (NL + FR, every trade, three angles each), campaign
+setup, and tracking links. `ads/video/` holds the matching 14-second ad videos of the 3D demo:
+4:5 for Feed (general + one per trade) and 9:16 for Stories/Reels.
+
+## Regenerating media
+
+Both scripts need a browser (Playwright); the videos also need ffmpeg with libx264. Run them
+after changing the domain or the copy:
+
+```bash
+node build.mjs
+npx -y -p playwright@1.56.1 node scripts/og.mjs          # link-preview images → src/assets/og/
+npx -y -p playwright@1.56.1 node scripts/ad-video.mjs     # ad videos → ads/video/ (~2 min each)
+```
 
 ## Deploy (Vercel)
 

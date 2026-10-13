@@ -137,6 +137,8 @@
     var B = PR.demo.before, A = PR.demo.after, CAPS = PR.demo.captions;
     var N = 5, DUR = 14000, T_IN = 1600, T_GROW = 10400; // ms: intro, growth ends, then hold
     var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // ?capture: scripts/ad-video.mjs steps the demo frame by frame to record the ad videos
+    var capture = /[?&]capture\b/.test(location.search);
     var playing = false, visible = true, t = reduce ? T_GROW : 0, clock = 0, last = 0, raf = 0;
     var W = 0, H = 0, S = 1, cx = 0, cy = 0, trackW = 0, lastSec = -1;
     // Fixed camera: 45° yaw, ~36° elevation. Fixed means the ground and every
@@ -294,7 +296,8 @@
         track.setAttribute("aria-valuenow", week);
         var cap = CAPS[0].t;
         CAPS.forEach(function (c) { if (week >= c.w) cap = c.t; });
-        if (cap !== lastCap) {
+        if (cap !== lastCap && capture) { lastCap = cap; elCap.textContent = cap; }
+        else if (cap !== lastCap) {
           lastCap = cap;
           elCap.classList.add("swap");
           setTimeout(function () { elCap.textContent = cap; elCap.classList.remove("swap"); }, 250);
@@ -376,7 +379,10 @@
     // Autoplay, unless the visitor asked their device for less motion: then
     // show the finished state with a big play button and let them choose.
     resize();
-    setPlaying(!reduce);
+    if (capture) {
+      window.PRDemo = { dur: DUR, seek: function (ms) { t = clamp(ms, 0, DUR - 1); clock = ms; draw(); } };
+      setPlaying(false);
+    } else setPlaying(!reduce);
   })();
 
   /* ---------- Qualifier ---------- */

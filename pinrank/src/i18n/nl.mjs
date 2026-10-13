@@ -39,7 +39,26 @@ export default {
     trust: ["Geld-terug-garantie na 3 maanden", "Elke week aan je profiel gewerkt", "Maandelijks rankingrapport"],
   },
 
+  demo: {
+    label: "Illustratief voorbeeld",
+    week: "Week",
+    avg: "Gem. positie",
+    top3: "In de top 3",
+    play: "Afspelen",
+    pause: "Pauzeren",
+    alt: "Animatie: de ranking van een vakman op 25 punten in zijn regio verbetert over 12 weken.",
+    captions: [
+      { w: 0, t: "Startmeting op 25 punten in je regio" },
+      { w: 1, t: "Profiel volledig geoptimaliseerd" },
+      { w: 3, t: "Elke week nieuwe berichten en foto’s" },
+      { w: 6, t: "Elke review krijgt een antwoord" },
+      { w: 9, t: "Google ziet een actieve, betrouwbare zaak" },
+      { w: 12, t: "Het doel: top 3 rond je zaak" },
+    ],
+  },
+
   mock: {
+    label: "Wat je klant ziet op Google",
     you: "Jouw bedrijf",
     rivalA: "Concurrent A",
     rivalB: "Concurrent B",
@@ -93,6 +112,8 @@ export default {
   proof: { title: "Wat klanten zeggen" },
 
   guarantee: {
+    ring: "GELD-TERUG-GARANTIE • NIET HOGER, GELD TERUG • ",
+    months: "maanden",
     badge: "3 maanden",
     title: "Niet hoger na 3 maanden? Geld terug.",
     body: "We meten je ranking bij de start. Staat je gemiddelde positie in Google Maps na 3 maanden niet hoger, dan betalen we je terug wat je bij ons betaald hebt. Het risico ligt bij ons, niet bij jou.",

@@ -108,6 +108,280 @@
     }).observe(heroCta);
   }
 
+  /* ---------- Header hairline once the page scrolls ---------- */
+  var top = $(".top");
+  if (top) {
+    var onScroll = function () { top.classList.toggle("scrolled", window.scrollY > 8); };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+  }
+
+  /* ---------- 3D demo ----------
+   * A tilted map with a 5×5 grid of columns, one per measuring point. Column
+   * height and colour follow the business's rank at that point; over a
+   * 12-week timeline every point moves from the "before" to the "after"
+   * grid, centre first (the area nearest the business improves first).
+   * Drawn on a 2D canvas with a small projection: no 3D library, ~0 KB extra.
+   */
+  (function demo() {
+    var root = $("[data-demo]");
+    if (!root || !PR.demo) return;
+    var cv = $("canvas", root);
+    var ctx = cv.getContext("2d");
+    if (!ctx) return;
+    var screen = $("[data-tilt]", root);
+    var elWeek = $("[data-week]", root), elAvg = $("[data-avg]", root), elTop = $("[data-top3]", root);
+    var elCap = $("[data-caption]", root), elProg = $("[data-progress]", root), elTime = $("[data-time]", root);
+    var btn = $("[data-play]", root), track = $("[data-track]", root);
+
+    var B = PR.demo.before, A = PR.demo.after, CAPS = PR.demo.captions;
+    var N = 5, DUR = 14000, T_IN = 1600, T_GROW = 10400; // ms: intro, growth ends, then hold
+    var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var playing = !reduce, visible = true, t = reduce ? T_GROW : 0, clock = 0, last = 0, raf = 0;
+    var W = 0, H = 0, S = 1, cx = 0, cy = 0;
+    var SIN_E = Math.sin(0.62), COS_E = Math.cos(0.62); // camera elevation
+    var FONT = getComputedStyle(document.body).fontFamily;
+    var nf = new Intl.NumberFormat(PR.locale, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+
+    var C = {
+      good: [92, 184, 138], mid: [226, 172, 74], bad: [214, 104, 76],
+      plane: "#1f2b27", road: "rgba(255,255,255,0.07)", dot: "rgba(255,255,255,0.10)",
+    };
+    var clamp = function (x, a, b) { return x < a ? a : x > b ? b : x; };
+    var ease = function (x) { x = clamp(x, 0, 1); return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+    var mix = function (a, b, k) { return [a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k, a[2] + (b[2] - a[2]) * k]; };
+    function rankColor(r) {
+      if (r <= 3) return C.good;
+      if (r <= 6) return mix(C.good, C.mid, (r - 3) / 3);
+      if (r <= 10) return C.mid;
+      if (r <= 14) return mix(C.mid, C.bad, (r - 10) / 4);
+      return C.bad;
+    }
+    var rgb = function (c, k) { k = k == null ? 1 : k; return "rgb(" + (c[0] * k | 0) + "," + (c[1] * k | 0) + "," + (c[2] * k | 0) + ")"; };
+
+    function growth() { return clamp((t - T_IN) / (T_GROW - T_IN), 0, 1); }
+    function rankAt(i, p) {
+      var r = Math.floor(i / N) - 2, c = (i % N) - 2;
+      var dist = Math.sqrt(r * r + c * c) / 2.83;           // 0 at the business, 1 at the corners
+      var k = ease((p - dist * 0.35) / 0.65);
+      return B[i] + (A[i] - B[i]) * k;
+    }
+
+    function resize() {
+      var rect = cv.getBoundingClientRect();
+      var dpr = Math.min(2, window.devicePixelRatio || 1);
+      W = rect.width; H = rect.height;
+      cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      // fit the scene between the search chip and the caption/stats overlay
+      var topPad = 58, band = H - topPad - Math.max(118, H * 0.28);
+      S = Math.min(W / 7, band / 4.9);
+      cx = W / 2; cy = topPad + 3.2 * S;
+      draw();
+    }
+
+    function proj(x, y, z, cs, sn) {
+      var X = x * cs - y * sn, Y = x * sn + y * cs;
+      return { x: cx + X * S, y: cy + Y * S * SIN_E - z * S * COS_E, d: Y };
+    }
+    function poly(pts, fill) {
+      ctx.beginPath();
+      ctx.moveTo(pts[0].x, pts[0].y);
+      for (var i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
+      ctx.closePath();
+      ctx.fillStyle = fill;
+      ctx.fill();
+    }
+
+    function draw() {
+      if (!W) return;
+      var yaw = Math.PI / 4 + Math.sin(clock / 5200) * 0.16;
+      var cs = Math.cos(yaw), sn = Math.sin(yaw);
+      var intro = ease(t / T_IN);
+      var p = growth();
+      ctx.clearRect(0, 0, W, H);
+
+      // Ground plane, streets and measuring dots
+      ctx.globalAlpha = intro;
+      var E = 2.85;
+      poly([proj(-E, -E, 0, cs, sn), proj(E, -E, 0, cs, sn), proj(E, E, 0, cs, sn), proj(-E, E, 0, cs, sn)], C.plane);
+      ctx.strokeStyle = C.road; ctx.lineWidth = Math.max(1, S * 0.05);
+      [-1.5, -0.5, 0.5, 1.5].forEach(function (v, k) {
+        ctx.lineWidth = Math.max(1, S * (k === 1 ? 0.12 : 0.04));
+        var a = proj(v, -E, 0, cs, sn), b = proj(v, E, 0, cs, sn);
+        ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+        a = proj(-E, v, 0, cs, sn); b = proj(E, v, 0, cs, sn);
+        ctx.lineWidth = Math.max(1, S * (k === 2 ? 0.12 : 0.04));
+        ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+      });
+
+      // Pulse ring around the business
+      var pulse = (clock % 2400) / 2400;
+      ctx.strokeStyle = "rgba(92,184,138," + (0.5 * (1 - pulse) * intro) + ")";
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      for (var a = 0; a <= 32; a++) {
+        var ang = (a / 32) * Math.PI * 2, rr = 0.4 + pulse * 1.3;
+        var q = proj(Math.cos(ang) * rr, Math.sin(ang) * rr, 0, cs, sn);
+        a ? ctx.lineTo(q.x, q.y) : ctx.moveTo(q.x, q.y);
+      }
+      ctx.stroke();
+
+      // Columns, far to near
+      var cells = [];
+      for (var i = 0; i < N * N; i++) {
+        var gx = (i % N) - 2, gy = Math.floor(i / N) - 2;
+        var r = rankAt(i, p);
+        cells.push({ i: i, x: gx, y: gy, r: r, d: proj(gx, gy, 0, cs, sn).d });
+      }
+      cells.sort(function (m, n) { return m.d - n.d; });
+
+      var w = 0.26;
+      var normals = [[0, -1], [1, 0], [0, 1], [-1, 0]];
+      cells.forEach(function (c) {
+        var rise = ease((t - 200 - c.d * 60 - 300) / 1100);   // columns grow in during the intro
+        var h = (0.12 + (21 - clamp(c.r, 1, 21)) / 20 * 1.5) * rise;
+        var col = rankColor(c.r);
+        var base = [[c.x - w, c.y - w], [c.x + w, c.y - w], [c.x + w, c.y + w], [c.x - w, c.y + w]];
+        var lo = base.map(function (b) { return proj(b[0], b[1], 0, cs, sn); });
+        var hi = base.map(function (b) { return proj(b[0], b[1], h, cs, sn); });
+
+        // soft contact shadow
+        ctx.globalAlpha = 0.35 * intro;
+        poly(base.map(function (b) { return proj(b[0] + 0.12, b[1] + 0.12, 0, cs, sn); }), "#000");
+        ctx.globalAlpha = intro;
+
+        for (var s = 0; s < 4; s++) {
+          var nx = normals[s][0], ny = normals[s][1];
+          var nY = nx * sn + ny * cs, nX = nx * cs - ny * sn;
+          if (nY <= 0) continue;
+          var shade = 0.58 + 0.22 * nX;
+          poly([lo[s], lo[(s + 1) % 4], hi[(s + 1) % 4], hi[s]], rgb(col, shade));
+        }
+        poly(hi, rgb(col, 1.04));
+
+        // rank number on the top face
+        var tc = proj(c.x, c.y, h, cs, sn);
+        var label = c.r >= 20.5 ? "20+" : String(Math.round(c.r));
+        ctx.fillStyle = "rgba(14,20,18,0.85)";
+        ctx.font = "600 " + Math.max(9, S * 0.2).toFixed(1) + "px " + FONT;
+        ctx.textAlign = "center"; ctx.textBaseline = "middle";
+        if (rise > 0.6) ctx.fillText(label, tc.x, tc.y + 0.5);
+
+        // the business itself: a pin floating over the centre column
+        if (c.i === 12) {
+          var pz = h + 0.55 + Math.sin(clock / 500) * 0.06;
+          var pp = proj(c.x, c.y, pz, cs, sn), pr = Math.max(7, S * 0.2);
+          ctx.fillStyle = "#ffffff";
+          ctx.beginPath();
+          ctx.moveTo(pp.x, pp.y + pr * 2.1);
+          ctx.bezierCurveTo(pp.x - pr * 0.4, pp.y + pr * 1.2, pp.x - pr, pp.y + pr * 0.7, pp.x - pr, pp.y);
+          ctx.arc(pp.x, pp.y, pr, Math.PI, 0);
+          ctx.bezierCurveTo(pp.x + pr, pp.y + pr * 0.7, pp.x + pr * 0.4, pp.y + pr * 1.2, pp.x, pp.y + pr * 2.1);
+          ctx.fill();
+          ctx.fillStyle = rgb(C.good);
+          ctx.beginPath(); ctx.arc(pp.x, pp.y, pr * 0.42, 0, Math.PI * 2); ctx.fill();
+        }
+      });
+      ctx.globalAlpha = 1;
+      hud(p);
+    }
+
+    var lastWeek = -1, lastCap = "";
+    function hud(p) {
+      var week = Math.round(p * 12), sum = 0, top3 = 0;
+      for (var i = 0; i < N * N; i++) { var r = rankAt(i, p); sum += Math.min(r, 20); if (Math.round(r) <= 3) top3++; }
+      var avg = nf.format(sum / (N * N));
+      if (elAvg.textContent !== avg) elAvg.textContent = avg;
+      if (elTop.textContent !== top3 + "/25") elTop.textContent = top3 + "/25";
+      if (week !== lastWeek) {
+        lastWeek = week;
+        elWeek.textContent = week;
+        track.setAttribute("aria-valuenow", week);
+        var cap = CAPS[0].t;
+        CAPS.forEach(function (c) { if (week >= c.w) cap = c.t; });
+        if (cap !== lastCap) {
+          lastCap = cap;
+          elCap.classList.add("swap");
+          setTimeout(function () { elCap.textContent = cap; elCap.classList.remove("swap"); }, 250);
+        }
+      }
+      elProg.style.width = (t / DUR) * 100 + "%";
+      var sec = Math.floor(t / 1000), tot = Math.round(DUR / 1000);
+      elTime.textContent = "0:" + (sec < 10 ? "0" : "") + sec + " / 0:" + tot;
+    }
+
+    function frame(now) {
+      raf = 0;
+      var dt = last ? Math.min(50, now - last) : 16;
+      last = now;
+      if (playing) {
+        t += dt; clock += dt;
+        if (t >= DUR) { t = 0; lastWeek = -1; }
+      }
+      draw();
+      schedule();
+    }
+    function schedule() {
+      if (playing && visible && !document.hidden && !raf) raf = requestAnimationFrame(frame);
+      if (!playing || !visible) last = 0;
+    }
+    function setPlaying(v) {
+      playing = v;
+      btn.classList.toggle("paused", !v);
+      btn.setAttribute("aria-label", btn.getAttribute(v ? "data-label-pause" : "data-label-play"));
+      schedule();
+    }
+    btn.addEventListener("click", function () {
+      if (!playing && t >= DUR - 50) t = 0;
+      setPlaying(!playing);
+    });
+
+    // Scrub: drag or tap the track; arrow keys step a week
+    function seek(e) {
+      var rect = track.getBoundingClientRect();
+      t = clamp((e.clientX - rect.left) / rect.width, 0, 1) * DUR;
+      draw();
+    }
+    track.addEventListener("pointerdown", function (e) {
+      track.setPointerCapture(e.pointerId);
+      setPlaying(false); seek(e);
+      var move = function (ev) { seek(ev); };
+      var up = function () { track.removeEventListener("pointermove", move); track.removeEventListener("pointerup", up); };
+      track.addEventListener("pointermove", move);
+      track.addEventListener("pointerup", up);
+    });
+    track.addEventListener("keydown", function (e) {
+      var step = (T_GROW - T_IN) / 12;
+      if (e.key === "ArrowRight") t = Math.min(DUR, t + step);
+      else if (e.key === "ArrowLeft") t = Math.max(0, t - step);
+      else return;
+      e.preventDefault(); setPlaying(false); draw();
+    });
+
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (en) { visible = en[0].isIntersecting; schedule(); }).observe(root);
+    }
+    document.addEventListener("visibilitychange", schedule);
+    if ("ResizeObserver" in window) new ResizeObserver(resize).observe(cv); else window.addEventListener("resize", resize);
+
+    // A gentle 3D tilt toward the pointer (mouse only)
+    if (screen && !reduce && matchMedia("(hover: hover)").matches) {
+      screen.addEventListener("pointermove", function (e) {
+        var rect = screen.getBoundingClientRect();
+        var px = (e.clientX - rect.left) / rect.width - 0.5, py = (e.clientY - rect.top) / rect.height - 0.5;
+        screen.style.setProperty("--ry", (px * 6).toFixed(2) + "deg");
+        screen.style.setProperty("--rx", (-py * 5).toFixed(2) + "deg");
+      });
+      screen.addEventListener("pointerleave", function () {
+        screen.style.setProperty("--ry", "0deg"); screen.style.setProperty("--rx", "0deg");
+      });
+    }
+
+    setPlaying(playing);
+    resize();
+  })();
+
   /* ---------- Qualifier ---------- */
   var dlg = $("#quiz");
   var form = $("#quiz-form");

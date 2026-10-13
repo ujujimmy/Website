@@ -39,7 +39,26 @@ export default {
     trust: ["Money-back guarantee after 3 months", "Your profile worked on every week", "Monthly ranking report"],
   },
 
+  demo: {
+    label: "Illustrative example",
+    week: "Week",
+    avg: "Avg. position",
+    top3: "In the top 3",
+    play: "Play",
+    pause: "Pause",
+    alt: "Animation: a tradesperson’s ranking at 25 points across their area improves over 12 weeks.",
+    captions: [
+      { w: 0, t: "Baseline at 25 points across your area" },
+      { w: 1, t: "Profile fully optimised" },
+      { w: 3, t: "New posts and photos every week" },
+      { w: 6, t: "Every review gets a reply" },
+      { w: 9, t: "Google sees an active, trustworthy business" },
+      { w: 12, t: "The goal: top 3 around your business" },
+    ],
+  },
+
   mock: {
+    label: "What your customer sees on Google",
     you: "Your business",
     rivalA: "Competitor A",
     rivalB: "Competitor B",
@@ -93,6 +112,8 @@ export default {
   proof: { title: "What clients say" },
 
   guarantee: {
+    ring: "MONEY-BACK GUARANTEE • NOT HIGHER, MONEY BACK • ",
+    months: "months",
     badge: "3 months",
     title: "Not higher after 3 months? Money back.",
     body: "We measure your ranking at the start. If your average position on Google Maps isn’t higher after 3 months, we refund what you paid us. The risk is on us, not on you.",

@@ -39,7 +39,26 @@ export default {
     trust: ["Satisfait ou remboursé après 3 mois", "Votre fiche travaillée chaque semaine", "Rapport de classement mensuel"],
   },
 
+  demo: {
+    label: "Exemple illustratif",
+    week: "Semaine",
+    avg: "Position moy.",
+    top3: "Dans le top 3",
+    play: "Lecture",
+    pause: "Pause",
+    alt: "Animation : le classement d’un artisan sur 25 points de sa région s’améliore en 12 semaines.",
+    captions: [
+      { w: 0, t: "Mesure de départ sur 25 points de votre région" },
+      { w: 1, t: "Fiche entièrement optimisée" },
+      { w: 3, t: "Nouvelles publications et photos chaque semaine" },
+      { w: 6, t: "Chaque avis reçoit une réponse" },
+      { w: 9, t: "Google voit une entreprise active et fiable" },
+      { w: 12, t: "L’objectif : le top 3 autour de chez vous" },
+    ],
+  },
+
   mock: {
+    label: "Ce que voit votre client sur Google",
     you: "Votre entreprise",
     rivalA: "Concurrent A",
     rivalB: "Concurrent B",
@@ -93,6 +112,8 @@ export default {
   proof: { title: "Ce que disent nos clients" },
 
   guarantee: {
+    ring: "SATISFAIT OU REMBOURSÉ • PAS MIEUX CLASSÉ, REMBOURSÉ • ",
+    months: "mois",
     badge: "3 mois",
     title: "Pas mieux classé après 3 mois ? Remboursé.",
     body: "Nous mesurons votre classement au départ. Si votre position moyenne dans Google Maps n’a pas progressé après 3 mois, nous vous remboursons ce que vous nous avez payé. Le risque est pour nous, pas pour vous.",

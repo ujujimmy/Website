@@ -8,7 +8,7 @@
  */
 
 import { createHash } from "node:crypto";
-import { mkdir, readFile, rm, writeFile, copyFile } from "node:fs/promises";
+import { cp, mkdir, readFile, rm, writeFile, copyFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -55,6 +55,7 @@ for (const t of all) {
 await write("/index.html", root(all));
 await writeFile(join(out, "app.js"), appJs);
 await copyFile(join(here, "src/assets/favicon.svg"), join(out, "favicon.svg"));
+await cp(join(here, "src/assets/fonts"), join(out, "fonts"), { recursive: true });
 await writeFile(join(out, "robots.txt"), `User-agent: *\nAllow: /\nSitemap: ${config.siteUrl}/sitemap.xml\n`);
 await writeFile(
   join(out, "sitemap.xml"),

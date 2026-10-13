@@ -15,17 +15,34 @@ export const esc = (s) =>
   String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 
 const icon = {
-  pin: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7z" fill="currentColor"/><circle cx="12" cy="9" r="3.2" fill="#fff"/></svg>`,
-  check: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
-  cross: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7L7 17" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>`,
-  chat: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 8.6c.2-.4.5-.4.8-.4h.5c.2 0 .4 0 .5.4l.6 1.5c.1.2 0 .5-.1.6l-.5.6c.4.9 1.2 1.7 2.1 2.1l.6-.5c.2-.2.4-.2.6-.1l1.5.6c.3.1.4.3.4.5v.5c0 .3 0 .6-.4.8-.5.3-1.2.5-2 .3-1.9-.5-4.2-2.8-4.7-4.7-.2-.8 0-1.5.1-2.2z" fill="currentColor"/></svg>`,
+  pin: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7z" fill="currentColor"/><circle cx="12" cy="9" r="2.8" fill="var(--pin-dot, #fff)"/></svg>`,
+  check: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  cross: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7L7 17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+  chat: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 8.6c.2-.4.5-.4.8-.4h.5c.2 0 .4 0 .5.4l.6 1.5c.1.2 0 .5-.1.6l-.5.6c.4.9 1.2 1.7 2.1 2.1l.6-.5c.2-.2.4-.2.6-.1l1.5.6c.3.1.4.3.4.5v.5c0 .3 0 .6-.4.8-.5.3-1.2.5-2 .3-1.9-.5-4.2-2.8-4.7-4.7-.2-.8 0-1.5.1-2.2z" fill="currentColor"/></svg>`,
   star: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17l-5.9 3.3 1.3-6.5L2.5 9.3l6.6-.8z" fill="currentColor"/></svg>`,
-  search: `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>`,
-  shield: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l8 3v6c0 5-3.4 8.9-8 10-4.6-1.1-8-5-8-10v-6z" fill="currentColor"/><path d="M8.3 12.2l2.6 2.6 4.9-5" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
-  arrow: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  search: `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
+  arrow: `<svg class="arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  pause: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5h3v14H8zM13 5h3v14h-3z" fill="currentColor"/></svg>`,
+  play: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5l11 7-11 7z" fill="currentColor"/></svg>`,
 };
 
-const logo = `<span class="logo-mark">${icon.pin}</span><span class="logo-word">Pin<b>Rank</b></span>`;
+const logo = `<span class="logo-mark">${icon.pin}</span><span class="logo-word">PinRank</span>`;
+
+/** Wrap each word for the headline's load-in. Leaves tags (the <em>) intact. */
+function splitWords(html) {
+  let i = 0;
+  return html
+    .split(/(<[^>]+>)/)
+    .map((part) =>
+      part.startsWith("<")
+        ? part
+        : part
+            .split(/(\s+)/)
+            .map((w) => (!w ? "" : /^\s+$/.test(w) ? " " : `<span class="w"><span style="--i:${i++}">${w}</span></span>`))
+            .join(""),
+    )
+    .join("");
+}
 
 /* ---------- URLs ---------- */
 
@@ -65,8 +82,9 @@ ${noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonical" hr
 <meta property="og:url" content="${config.siteUrl}${path}">
 <meta property="og:locale" content="${t.ogLocale}">
 <meta property="og:site_name" content="${esc(config.brand)}">
-<meta name="theme-color" content="#0b1b3a">
+<meta name="theme-color" content="#fbfbf9">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/fonts/newsreader-500.woff2" as="font" type="font/woff2" crossorigin>
 <style>${css}</style>
 </head>
 <body>
@@ -74,7 +92,7 @@ ${noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonical" hr
   <div class="wrap top-in">
     <a class="logo" href="${landingPath(t, pr.trade)}" aria-label="${esc(config.brand)}">${logo}</a>
     <nav class="lang" aria-label="${t.nav.langLabel}">${langSwitch}</nav>
-    ${pr.isLanding ? `<a class="btn btn-cta btn-sm top-cta" href="${waHref(t.wa.generic)}" data-open-quiz>${t.nav.cta}</a>` : ""}
+    ${pr.isLanding ? `<a class="btn btn-primary btn-sm top-cta" href="${waHref(t.wa.generic)}" data-open-quiz>${t.nav.cta}</a>` : ""}
   </div>
 </header>
 ${body}
@@ -90,11 +108,13 @@ function footer(t) {
   const c = config.company;
   const year = new Date().getFullYear();
   return `<footer class="foot">
-  <div class="wrap">
-    <a class="logo logo-sm" href="/${t.code}/">${logo}</a>
-    <p>© ${year} ${esc(c.name)}${c.address ? ` · ${esc(c.address)}` : ""}${c.vat ? ` · ${t.footer.vat} ${esc(c.vat)}` : ""} · <a href="mailto:${esc(c.email)}">${esc(c.email)}</a></p>
-    <p><a href="${privacyPath(t)}">${t.footer.privacy}</a>${config.metaPixelId ? ` · <a href="#" data-cookie-settings>${t.cookie.settings}</a>` : ""}</p>
-    <p class="fine">${t.footer.disclaimer}</p>
+  <div class="wrap foot-in">
+    <a class="logo" href="/${t.code}/">${logo}</a>
+    <div>
+      <p>© ${year} ${esc(c.name)}${c.address ? ` · ${esc(c.address)}` : ""}${c.vat ? ` · ${t.footer.vat} ${esc(c.vat)}` : ""} · <a href="mailto:${esc(c.email)}">${esc(c.email)}</a></p>
+      <p><a href="${privacyPath(t)}">${t.footer.privacy}</a>${config.metaPixelId ? ` · <a href="#" data-cookie-settings>${t.cookie.settings}</a>` : ""}</p>
+      <p class="fine">${t.footer.disclaimer}</p>
+    </div>
   </div>
 </footer>`;
 }
@@ -104,16 +124,34 @@ function cookieBanner(t) {
   return `<div class="cookie" id="cookie" role="region" aria-label="Cookies" hidden>
   <p>${t.cookie.text} <a href="${privacyPath(t)}">${t.footer.privacy}</a></p>
   <div class="cookie-btns">
-    <button type="button" class="btn btn-ghost-dark btn-sm" data-consent="no">${t.cookie.decline}</button>
-    <button type="button" class="btn btn-cta btn-sm" data-consent="yes">${t.cookie.accept}</button>
+    <button type="button" class="btn btn-line btn-sm" data-consent="no">${t.cookie.decline}</button>
+    <button type="button" class="btn btn-primary btn-sm" data-consent="yes">${t.cookie.accept}</button>
   </div>
 </div>`;
 }
 
-/** The subset of config and copy the browser needs. Nothing secret lives in config, but keep it lean. */
+/* ---------- Data shared by the 3D demo and the 2D grids ---------- */
+
+const BEFORE = [
+  [21, 16, 14, 18, 21],
+  [13, 9, 8, 11, 17],
+  [12, 7, 3, 6, 15],
+  [15, 10, 8, 12, 18],
+  [21, 17, 13, 19, 21],
+];
+const AFTER = [
+  [6, 4, 3, 5, 8],
+  [3, 2, 1, 2, 4],
+  [2, 1, 1, 1, 3],
+  [4, 2, 1, 2, 5],
+  [7, 4, 3, 5, 9],
+];
+
+/** The subset of config and copy the browser needs. */
 function clientData(t, extra) {
   return {
     lang: t.code,
+    locale: t.htmlLang,
     brand: config.brand,
     whatsapp: config.whatsapp,
     pixel: config.metaPixelId,
@@ -134,21 +172,6 @@ function clientData(t, extra) {
 
 /* ---------- Landing ---------- */
 
-const BEFORE = [
-  [21, 16, 14, 18, 21],
-  [13, 9, 8, 11, 17],
-  [12, 7, 3, 6, 15],
-  [15, 10, 8, 12, 18],
-  [21, 17, 13, 19, 21],
-];
-const AFTER = [
-  [6, 4, 3, 5, 8],
-  [3, 2, 1, 2, 4],
-  [2, 1, 1, 1, 3],
-  [4, 2, 1, 2, 5],
-  [7, 4, 3, 5, 9],
-];
-
 function rankGrid(rows, label) {
   const cells = rows
     .flat()
@@ -163,28 +186,72 @@ function rankGrid(rows, label) {
   </figure>`;
 }
 
+/** The "demo video": a 3D map drawn on canvas by app.js, with a player bar. */
+function demo(t, tr) {
+  const d = t.demo;
+  return `<figure class="demo" data-demo>
+  <div class="demo-screen" data-tilt>
+    <canvas aria-hidden="true"></canvas>
+    <div class="demo-top">
+      <span class="demo-search">${icon.search}<span>${tr ? tr.search : t.trades.electrician.search}</span></span>
+      <span class="demo-tag">${d.label}</span>
+    </div>
+    <div class="demo-bottom">
+      <p class="demo-caption" data-caption>${d.captions[0].t}</p>
+      <dl class="demo-hud">
+        <div><dt>${d.week}</dt><dd data-week>0</dd></div>
+        <div><dt>${d.avg}</dt><dd data-avg>–</dd></div>
+        <div><dt>${d.top3}</dt><dd data-top3>–</dd></div>
+      </dl>
+    </div>
+  </div>
+  <div class="demo-bar">
+    <button type="button" class="demo-play" data-play aria-label="${d.pause}" data-label-play="${d.play}" data-label-pause="${d.pause}">${icon.pause}${icon.play}</button>
+    <div class="demo-track" data-track role="slider" tabindex="0" aria-label="${d.week}" aria-valuemin="0" aria-valuemax="12" aria-valuenow="0"><span data-progress></span></div>
+    <span class="demo-time" data-time>0:00</span>
+  </div>
+  <figcaption class="sr-only">${d.alt}</figcaption>
+</figure>`;
+}
+
 function mock(t, tr) {
   const m = t.mock;
   const n = (x) => x.toLocaleString(t.htmlLang, { minimumFractionDigits: 1 });
-  const row = (name, rating, count, you) => `<div class="mock-card${you ? " you" : ""}">
-      <div><b>${name}</b>
+  const row = (pos, name, rating, count, you) => `<div class="mock-card${you ? " you" : ""}">
+      <span class="mock-pos">${pos}</span>
+      <div class="mock-info"><b>${name}</b>
         <span class="mock-rating">${rating} <i class="stars">${icon.star.repeat(5)}</i> (${count})</span>
         <span class="mock-open">${m.open}</span></div>
       <div class="mock-actions"><span>${m.call}</span><span>${m.route}</span></div>
     </div>`;
-  return `<div class="mock" aria-hidden="true">
-    <div class="mock-search">${icon.search}<span>${tr ? tr.search : t.trades.electrician.search}</span></div>
-    <div class="mock-map">
-      <span class="mpin p1">${icon.pin}<em>1</em></span>
-      <span class="mpin p2">${icon.pin}</span>
-      <span class="mpin p3">${icon.pin}</span>
+  return `<figure class="mock-wrap">
+    <div class="mock" aria-hidden="true">
+      <div class="mock-search">${icon.search}<span>${tr ? tr.search : t.trades.electrician.search}</span></div>
+      <div class="mock-map">
+        <span class="mpin p1">${icon.pin}</span>
+        <span class="mpin p2">${icon.pin}</span>
+        <span class="mpin p3">${icon.pin}</span>
+      </div>
+      <div class="mock-list">
+        ${row(1, m.you, n(4.9), 58, true)}
+        ${row(2, m.rivalA, n(4.6), 31)}
+        ${row(3, m.rivalB, n(4.2), 12)}
+      </div>
     </div>
-    <div class="mock-list">
-      ${row(m.you, n(4.9), 58, true)}
-      ${row(m.rivalA, n(4.6), 31)}
-      ${row(m.rivalB, n(4.2), 12)}
-    </div>
-    <span class="mock-cap">${m.caption}</span>
+    <figcaption>${m.label} · ${m.caption}</figcaption>
+  </figure>`;
+}
+
+function seal(t) {
+  const g = t.guarantee;
+  return `<div class="seal" aria-hidden="true">
+    <svg viewBox="0 0 200 200">
+      <defs><path id="seal-ring" d="M100,100 m-80,0 a80,80 0 1,1 160,0 a80,80 0 1,1 -160,0"/></defs>
+      <circle cx="100" cy="100" r="96" fill="none" stroke="currentColor" stroke-width="1"/>
+      <circle cx="100" cy="100" r="64" fill="none" stroke="currentColor" stroke-width="1"/>
+      <text class="seal-text"><textPath href="#seal-ring" textLength="500" lengthAdjust="spacing">${g.ring}${g.ring}</textPath></text>
+    </svg>
+    <span class="seal-c"><b>3</b><span>${g.months}</span></span>
   </div>`;
 }
 
@@ -193,15 +260,15 @@ function quizDialog(t, trade) {
   const tradeOptions = [...TRADES, "other"]
     .map(
       (k) =>
-        `<button type="button" class="opt" data-choice="trade" value="${k}" aria-pressed="${k === trade}">${t.trades[k].label}</button>`,
+        `<button type="button" class="opt" data-choice="trade" value="${k}" aria-pressed="${k === trade}"><span>${t.trades[k].label}</span>${icon.check}</button>`,
     )
     .join("");
   const gbpOptions = Object.entries(q.gbp)
-    .map(([k, v]) => `<button type="button" class="opt" data-choice="gbp" value="${k}" aria-pressed="false">${v}</button>`)
+    .map(([k, v]) => `<button type="button" class="opt" data-choice="gbp" value="${k}" aria-pressed="false"><span>${v}</span>${icon.check}</button>`)
     .join("");
   const field = (name, type, autocomplete, inputmode = "") => `<label class="field">
       <span>${q.fields[name]}</span>
-      <input name="${name}" type="${type}" autocomplete="${autocomplete}" ${inputmode ? `inputmode="${inputmode}"` : ""} required>
+      <input id="q-${name}" name="${name}" type="${type}" autocomplete="${autocomplete}" ${inputmode ? `inputmode="${inputmode}"` : ""} required>
       <small class="err" aria-live="polite"></small>
     </label>`;
 
@@ -210,7 +277,7 @@ function quizDialog(t, trade) {
     <div class="quiz-head">
       <button type="button" class="quiz-back" data-back hidden>← ${q.back}</button>
       <p class="quiz-progress" data-progress></p>
-      <button type="button" class="quiz-close" data-close aria-label="${q.close}">×</button>
+      <button type="button" class="quiz-close" data-close aria-label="${q.close}">${icon.cross}</button>
     </div>
     <div class="quiz-bar"><span data-bar></span></div>
     <h2 class="sr-only" id="quiz-title">${q.title}</h2>
@@ -224,10 +291,10 @@ function quizDialog(t, trade) {
       <legend>${q.q2}</legend>
       <label class="field">
         <span class="sr-only">${q.q2}</span>
-        <input name="region" type="text" autocomplete="address-level2" placeholder="${esc(q.q2Placeholder)}" required>
+        <input id="q-region" name="region" type="text" autocomplete="address-level2" placeholder="${esc(q.q2Placeholder)}" required>
         <small class="err" aria-live="polite"></small>
       </label>
-      <button type="button" class="btn btn-cta btn-block" data-next>${q.next} ${icon.arrow}</button>
+      <button type="button" class="btn btn-primary btn-block" data-next>${q.next} ${icon.arrow}</button>
     </fieldset>
 
     <fieldset data-step hidden>
@@ -241,7 +308,7 @@ function quizDialog(t, trade) {
       ${field("company", "text", "organization")}
       ${field("phone", "tel", "tel", "tel")}
       ${field("email", "email", "email", "email")}
-      <button type="submit" class="btn btn-cta btn-block">${q.submit} ${icon.arrow}</button>
+      <button type="submit" class="btn btn-primary btn-block">${q.submit} ${icon.arrow}</button>
       <p class="quiz-privacy">${q.privacy} <a href="${privacyPath(t)}" target="_blank">${q.privacyLink}</a></p>
     </fieldset>
 
@@ -262,16 +329,16 @@ export function landing(t, all, css, js, trade = null) {
   const tr = trade ? t.trades[trade] : null;
   const wa = waHref(t.wa.generic);
   const cta = (label, extra = "") =>
-    `<a class="btn btn-cta btn-lg ${extra}" href="${wa}" data-open-quiz>${label} ${icon.arrow}</a>`;
+    `<a class="btn btn-primary btn-lg ${extra}" href="${wa}" data-open-quiz>${label} ${icon.arrow}</a>`;
   const p = config.price;
   const price = new Intl.NumberFormat(t.htmlLang, { style: "currency", currency: p.currency, maximumFractionDigits: 0 }).format(p.amount);
 
   const testimonials = config.testimonials.length
-    ? `<section class="sec soft"><div class="wrap">
-        <h2 class="h2 center">${t.proof.title}</h2>
+    ? `<section class="sec"><div class="wrap">
+        <h2 class="h2 reveal">${t.proof.title}</h2>
         <div class="quotes">${config.testimonials
           .map(
-            (q) => `<figure class="quote"><i class="stars">${icon.star.repeat(5)}</i><blockquote>“${esc(q.quote)}”</blockquote>
+            (q) => `<figure class="quote reveal"><i class="stars">${icon.star.repeat(5)}</i><blockquote>“${esc(q.quote)}”</blockquote>
             <figcaption><b>${esc(q.name)}</b> · ${esc(q.business)}, ${esc(q.city)}</figcaption></figure>`,
           )
           .join("")}</div>
@@ -282,33 +349,36 @@ export function landing(t, all, css, js, trade = null) {
 <section class="hero">
   <div class="wrap hero-in">
     <div class="hero-copy">
-      <p class="eyebrow">${icon.pin} ${t.hero.eyebrow(tr)}</p>
-      <h1>${t.hero.title(tr)}</h1>
+      <p class="eyebrow">${icon.pin}<span>${t.hero.eyebrow(tr)}</span></p>
+      <h1>${splitWords(t.hero.title(tr))}</h1>
       <p class="lead">${t.hero.sub}</p>
       <div class="hero-ctas" data-hero-cta>
         ${cta(t.hero.cta)}
         <p class="cta-note">${t.hero.ctaNote}</p>
-        <a class="link-wa" href="${wa}" data-wa target="_blank" rel="noopener">${icon.chat} ${t.hero.wa}</a>
       </div>
+      <a class="link-wa" href="${wa}" data-wa target="_blank" rel="noopener">${icon.chat}<span>${t.hero.wa}</span></a>
       <ul class="trust">${t.hero.trust.map((x) => `<li>${icon.check}${x}</li>`).join("")}</ul>
     </div>
-    ${mock(t, tr)}
+    ${demo(t, tr)}
   </div>
 </section>
 
 <section class="sec">
-  <div class="wrap narrow">
-    <h2 class="h2">${t.problem.title}</h2>
-    <p class="body-lg">${t.problem.body}</p>
-  </div>
-  <div class="wrap cards3">
-    ${t.problem.points.map((x, i) => `<div class="card"><span class="num">0${i + 1}</span><h3>${x.t}</h3><p>${x.d}</p></div>`).join("")}
+  <div class="wrap split">
+    <div class="reveal">
+      <h2 class="h2">${t.problem.title}</h2>
+      <p class="body-lg">${t.problem.body}</p>
+      <ol class="points">
+        ${t.problem.points.map((x) => `<li><h3>${x.t}</h3><p>${x.d}</p></li>`).join("")}
+      </ol>
+    </div>
+    <div class="reveal">${mock(t, tr)}</div>
   </div>
 </section>
 
-<section class="sec soft">
-  <div class="wrap split">
-    <div>
+<section class="sec tint">
+  <div class="wrap split split-rev">
+    <div class="reveal">
       <h2 class="h2">${t.grid.title}</h2>
       <p class="body-lg">${t.grid.body}</p>
       <ul class="legend">
@@ -317,7 +387,7 @@ export function landing(t, all, css, js, trade = null) {
         <li><span class="dot b"></span>${t.grid.legend[2]}</li>
       </ul>
     </div>
-    <div>
+    <div class="reveal">
       <div class="ranks">
         ${rankGrid(BEFORE, t.grid.before)}
         <span class="ranks-arrow">${icon.arrow}</span>
@@ -330,69 +400,71 @@ export function landing(t, all, css, js, trade = null) {
 
 <section class="sec">
   <div class="wrap">
-    <h2 class="h2 center">${t.how.title}</h2>
+    <h2 class="h2 reveal">${t.how.title}</h2>
     <ol class="steps">
-      ${t.how.steps.map((s, i) => `<li><span class="step-n">${i + 1}</span><h3>${s.t}</h3><p>${s.d}</p></li>`).join("")}
+      ${t.how.steps.map((s, i) => `<li class="reveal"><span class="step-n">${i + 1}</span><h3>${s.t}</h3><p>${s.d}</p></li>`).join("")}
     </ol>
-    <div class="center">${cta(t.hero.cta)}</div>
+    ${cta(t.hero.cta)}
   </div>
 </section>
 
-<section class="sec soft">
+<section class="sec tint">
   <div class="wrap">
-    <h2 class="h2 center">${t.features.title}</h2>
-    <p class="body-lg center narrow">${t.features.sub}</p>
-    <div class="feats">
-      ${t.features.items.map((f) => `<div class="feat"><span class="feat-i">${icon.check}</span><div><h3>${f.t}</h3><p>${f.d}</p></div></div>`).join("")}
+    <div class="sec-head reveal">
+      <h2 class="h2">${t.features.title}</h2>
+      <p class="body-lg">${t.features.sub}</p>
     </div>
+    <ul class="feats">
+      ${t.features.items.map((f) => `<li class="reveal">${icon.check}<div><h3>${f.t}</h3><p>${f.d}</p></div></li>`).join("")}
+    </ul>
   </div>
 </section>
 
 ${testimonials}
 
 <section class="sec">
-  <div class="wrap">
-    <div class="guarantee">
-      <div class="seal">${icon.shield}<b>${t.guarantee.badge}</b></div>
-      <div>
-        <h2 class="h2">${t.guarantee.title}</h2>
-        <p class="body-lg">${t.guarantee.body}</p>
-        <p class="caption">${t.guarantee.note}</p>
-      </div>
+  <div class="wrap guarantee reveal">
+    ${seal(t)}
+    <div>
+      <h2 class="h2">${t.guarantee.title}</h2>
+      <p class="body-lg">${t.guarantee.body}</p>
+      <p class="caption">${t.guarantee.note}</p>
     </div>
   </div>
 </section>
 
-<section class="sec soft">
+<section class="sec tint">
   <div class="wrap">
-    <h2 class="h2 center">${t.fit.title}</h2>
+    <h2 class="h2 reveal">${t.fit.title}</h2>
     <div class="fit">
-      <div class="fit-col yes"><h3>${t.fit.yesTitle}</h3><ul>${t.fit.yes.map((x) => `<li>${icon.check}${x}</li>`).join("")}</ul></div>
-      <div class="fit-col no"><h3>${t.fit.noTitle}</h3><ul>${t.fit.no.map((x) => `<li>${icon.cross}${x}</li>`).join("")}</ul></div>
+      <div class="fit-col yes reveal"><h3>${t.fit.yesTitle}</h3><ul>${t.fit.yes.map((x) => `<li>${icon.check}${x}</li>`).join("")}</ul></div>
+      <div class="fit-col no reveal"><h3>${t.fit.noTitle}</h3><ul>${t.fit.no.map((x) => `<li>${icon.cross}${x}</li>`).join("")}</ul></div>
     </div>
   </div>
 </section>
 
 ${
   p.show
-    ? `<section class="sec" id="prijs">
-  <div class="wrap">
-    <h2 class="h2 center">${t.pricing.title}</h2>
-    <div class="price-card">
+    ? `<section class="sec">
+  <div class="wrap price-wrap">
+    <div class="reveal">
+      <h2 class="h2">${t.pricing.title}</h2>
+      <p class="body-lg">${t.pricing.note}</p>
+    </div>
+    <div class="price-card reveal">
       <p class="price-name">${t.pricing.name}</p>
-      <p class="price"><b>${price}</b> <span>${t.pricing.period[p.period]}<br>${t.pricing.vat}</span></p>
+      <p class="price"><b>${price}</b><span>${t.pricing.period[p.period]}<br>${t.pricing.vat}</span></p>
       <ul>${t.pricing.includes.map((x) => `<li>${icon.check}${x}</li>`).join("")}</ul>
       ${cta(t.pricing.cta, "btn-block")}
-      <p class="caption center">${t.pricing.note}</p>
     </div>
   </div>
 </section>`
     : ""
 }
 
-<section class="sec ${p.show ? "soft" : ""}">
-  <div class="wrap narrow">
-    <h2 class="h2 center">${t.faq.title}</h2>
+<section class="sec ${p.show ? "tint" : ""}">
+  <div class="wrap faq-wrap">
+    <h2 class="h2 reveal">${t.faq.title}</h2>
     <div class="faq">
       ${t.faq.items.map((f) => `<details><summary>${f.q}</summary><p>${f.a}</p></details>`).join("")}
     </div>
@@ -400,17 +472,19 @@ ${
 </section>
 
 <section class="final">
-  <div class="wrap narrow center">
+  <div class="wrap final-in reveal">
     <h2 class="h2">${t.final.title}</h2>
     <p class="body-lg">${t.final.body}</p>
-    ${cta(t.final.cta)}
-    <p><a class="link-wa" href="${wa}" data-wa target="_blank" rel="noopener">${icon.chat} WhatsApp</a></p>
+    <div class="final-ctas">
+      <a class="btn btn-light btn-lg" href="${wa}" data-open-quiz>${t.final.cta} ${icon.arrow}</a>
+      <a class="link-wa" href="${wa}" data-wa target="_blank" rel="noopener">${icon.chat}<span>WhatsApp</span></a>
+    </div>
   </div>
 </section>
 </main>
 
 <div class="sticky" data-sticky aria-hidden="true">
-  <a class="btn btn-cta" href="${wa}" data-open-quiz tabindex="-1">${t.sticky.cta} ${icon.arrow}</a>
+  <a class="btn btn-primary" href="${wa}" data-open-quiz tabindex="-1">${t.sticky.cta} ${icon.arrow}</a>
   <a class="btn btn-wa btn-icon" href="${wa}" data-wa target="_blank" rel="noopener" tabindex="-1" aria-label="WhatsApp">${icon.chat}</a>
 </div>
 
@@ -425,7 +499,12 @@ ${quizDialog(t, trade)}`;
     body,
     css,
     js,
-    pr: clientData(t, { page: "landing", trade, isLanding: true }),
+    pr: clientData(t, {
+      page: "landing",
+      trade,
+      isLanding: true,
+      demo: { before: BEFORE.flat(), after: AFTER.flat(), captions: t.demo.captions },
+    }),
   });
 }
 
@@ -437,12 +516,12 @@ export function thanks(t, all, css, js) {
     <span class="result-icon big">${icon.check}</span>
     <h1 class="h1-simple">${t.thanks.title}</h1>
     <p class="body-lg">${t.thanks.body}</p>
-    <div class="card">
+    <div class="prep-box">
       <h2 class="h3">${t.thanks.prepTitle}</h2>
       <ol class="prep">${t.thanks.prep.map((x) => `<li>${x}</li>`).join("")}</ol>
     </div>
     <p><a class="btn btn-wa" href="${waHref(t.wa.generic)}" data-wa target="_blank" rel="noopener">${icon.chat} ${t.thanks.wa}</a></p>
-    <p><a href="/${t.code}/">← ${t.thanks.back}</a></p>
+    <p><a class="back" href="/${t.code}/">← ${t.thanks.back}</a></p>
   </div>
 </main>`;
   return layout({
@@ -503,7 +582,7 @@ ${all.map((l) => `<link rel="alternate" hreflang="${l.code}" href="${config.site
 for(var i=0;i<l.length;i++){var k=String(l[i]).slice(0,2).toLowerCase();if(c.indexOf(k)>-1){d=k;break}}
 location.replace("/"+d+"/"+location.search+location.hash)})();
 </script>
-<style>body{font:16px system-ui,sans-serif;display:grid;place-items:center;min-height:100vh;margin:0;background:#fff;color:#0b1630}a{margin:0 .5em;color:#2563eb}</style>
+<style>body{font:16px system-ui,sans-serif;display:grid;place-items:center;min-height:100vh;margin:0;background:#fbfbf9;color:#141716}a{margin:0 .5em;color:#1f5c45}</style>
 </head>
 <body><p>${all.map((l) => `<a href="/${l.code}/">${l.label}</a>`).join("")}</p></body>
 </html>`;

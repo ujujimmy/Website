@@ -190,8 +190,9 @@ function rankGrid(rows, label) {
 function demo(t, tr) {
   const d = t.demo;
   return `<figure class="demo" data-demo>
-  <div class="demo-screen" data-tilt>
+  <div class="demo-screen">
     <canvas aria-hidden="true"></canvas>
+    <button type="button" class="demo-big" data-bigplay aria-label="${d.play}">${icon.play}<span>${d.play}</span></button>
     <div class="demo-top">
       <span class="demo-search">${icon.search}<span>${tr ? tr.search : t.trades.electrician.search}</span></span>
       <span class="demo-tag">${d.label}</span>
@@ -206,8 +207,8 @@ function demo(t, tr) {
     </div>
   </div>
   <div class="demo-bar">
-    <button type="button" class="demo-play" data-play aria-label="${d.pause}" data-label-play="${d.play}" data-label-pause="${d.pause}">${icon.pause}${icon.play}</button>
-    <div class="demo-track" data-track role="slider" tabindex="0" aria-label="${d.week}" aria-valuemin="0" aria-valuemax="12" aria-valuenow="0"><span data-progress></span></div>
+    <button type="button" class="demo-play" data-play aria-label="${d.pause}" data-label-play="${d.play}" data-label-pause="${d.pause}"><span class="i-pause">${icon.pause}</span><span class="i-play">${icon.play}</span></button>
+    <div class="demo-track" data-track role="slider" tabindex="0" aria-label="${d.week}" aria-valuemin="0" aria-valuemax="12" aria-valuenow="0"><span data-progress></span><i data-knob></i></div>
     <span class="demo-time" data-time>0:00</span>
   </div>
   <figcaption class="sr-only">${d.alt}</figcaption>

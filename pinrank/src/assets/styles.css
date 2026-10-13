@@ -48,7 +48,6 @@ body {
   color: var(--ink);
   background: var(--bg);
   -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
 }
 img, svg { display: block; max-width: 100%; }
 a { color: var(--accent); text-underline-offset: 3px; }
@@ -99,8 +98,7 @@ h3 { font-size: 1.05rem; font-weight: 650; letter-spacing: -0.005em; line-height
 /* ---------- Header ---------- */
 .top {
   position: sticky; top: 0; z-index: 10;
-  background: rgba(251, 251, 249, 0.82);
-  -webkit-backdrop-filter: saturate(1.4) blur(14px); backdrop-filter: saturate(1.4) blur(14px);
+  background: var(--bg);
   border-bottom: 1px solid transparent;
   transition: border-color 0.3s;
 }
@@ -164,18 +162,27 @@ h3 { font-size: 1.05rem; font-weight: 650; letter-spacing: -0.005em; line-height
 @keyframes fade { from { opacity: 0; transform: translateY(14px); } }
 
 /* ---------- 3D demo player ---------- */
-.demo { margin: 0; perspective: 1400px; }
+.demo { margin: 0; }
 .demo-screen {
   position: relative; aspect-ratio: 1 / 1.1; border-radius: 22px; overflow: hidden;
   background: radial-gradient(120% 90% at 50% 35%, var(--stage-2), var(--stage) 70%);
   color: #eef2f0;
   box-shadow: 0 50px 90px -50px rgba(14, 20, 18, 0.7), 0 2px 0 rgba(255, 255, 255, 0.04) inset;
-  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
-  transition: transform 0.6s var(--ease);
-  transform-style: preserve-3d;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 @media (min-width: 560px) { .demo-screen { aspect-ratio: 5 / 4.4; } }
-.demo canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.demo canvas { position: absolute; inset: 0; width: 100%; height: 100%; will-change: transform; transform: translateZ(0); }
+.demo-bottom, .demo-top { contain: layout paint; }
+.demo-hud dd { contain: content; }
+.demo-big {
+  position: absolute; left: 50%; top: 46%; z-index: 2; transform: translate(-50%, -50%) scale(0.9);
+  display: inline-flex; align-items: center; gap: 10px; padding: 14px 22px 14px 18px; border: 0; border-radius: 999px;
+  background: #fff; color: var(--ink); font-weight: 600; box-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.6);
+  opacity: 0; pointer-events: none; transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
+}
+.demo-big svg { width: 18px; height: 18px; }
+.demo.is-paused .demo-big { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%); }
 .demo-top { position: absolute; top: 14px; left: 14px; right: 14px; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
 .demo-search {
   display: inline-flex; align-items: center; gap: 8px; min-width: 0;
@@ -201,12 +208,12 @@ h3 { font-size: 1.05rem; font-weight: 650; letter-spacing: -0.005em; line-height
 .demo-play { flex: none; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--line); background: var(--paper); color: var(--ink); transition: border-color 0.2s; }
 .demo-play:hover { border-color: var(--ink); }
 .demo-play svg { width: 15px; height: 15px; }
-.demo-play svg + svg, .demo-play.paused svg:first-child { display: none; }
-.demo-play.paused svg + svg { display: block; }
+.demo-play .i-play, .demo.is-paused .demo-play .i-pause { display: none; }
+.demo.is-paused .demo-play .i-play { display: block; }
 .demo-track { position: relative; flex: 1; height: 24px; cursor: pointer; touch-action: none; }
 .demo-track::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 3px; margin-top: -1.5px; border-radius: 99px; background: var(--line); }
-.demo-track span { position: absolute; left: 0; top: 50%; height: 3px; margin-top: -1.5px; width: 0; border-radius: 99px; background: var(--ink); }
-.demo-track span::after { content: ""; position: absolute; right: -6px; top: -4.5px; width: 12px; height: 12px; border-radius: 50%; background: var(--ink); box-shadow: 0 0 0 4px var(--bg); }
+.demo-track span { position: absolute; left: 0; right: 0; top: 50%; height: 3px; margin-top: -1.5px; border-radius: 99px; background: var(--ink); transform: scaleX(0); transform-origin: left; will-change: transform; }
+.demo-track i { position: absolute; left: -6px; top: 50%; width: 12px; height: 12px; margin-top: -6px; border-radius: 50%; background: var(--ink); box-shadow: 0 0 0 4px var(--bg); will-change: transform; }
 .demo-time { flex: none; font-size: 0.8rem; color: var(--muted); font-variant-numeric: tabular-nums; }
 
 /* ---------- Sections ---------- */
@@ -389,7 +396,7 @@ h3 { font-size: 1.05rem; font-weight: 650; letter-spacing: -0.005em; line-height
 .sticky {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
   display: flex; gap: 10px; padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
-  background: rgba(251, 251, 249, 0.92); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  background: var(--bg);
   border-top: 1px solid var(--line);
   transform: translateY(110%); transition: transform 0.45s var(--ease);
 }
@@ -413,7 +420,7 @@ h3 { font-size: 1.05rem; font-weight: 650; letter-spacing: -0.005em; line-height
   margin: 0 auto; padding: 0; border: 0; color: var(--ink); background: var(--bg);
 }
 .quiz[open] { animation: dlg 0.5s var(--ease); }
-.quiz::backdrop { background: rgba(14, 20, 18, 0.55); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+.quiz::backdrop { background: rgba(14, 20, 18, 0.6); }
 @keyframes dlg { from { opacity: 0; transform: translateY(24px); } }
 @media (min-width: 620px) {
   .quiz { height: auto; max-height: calc(100% - 48px); margin: auto; border-radius: 24px; box-shadow: 0 40px 100px -30px rgba(0, 0, 0, 0.45); }

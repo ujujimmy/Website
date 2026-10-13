@@ -25,10 +25,10 @@ Meta ad ──► trade landing page ──► 4-step qualifier ──► Cal.co
 
   | | NL | FR |
   |---|---|---|
-  | Electricians | `/nl/elektricien/` | `/fr/electricien/` |
   | Roofers | `/nl/dakwerker/` | `/fr/couvreur/` |
+  | Renovation | `/nl/renovatie/` | `/fr/renovation/` |
   | Plumbers | `/nl/loodgieter/` | `/fr/plombier/` |
-  | Heating / heat pumps | `/nl/verwarming/` | `/fr/chauffagiste/` |
+  | Electricians | `/nl/elektricien/` | `/fr/electricien/` |
   | Mixed audience | `/nl/` | `/fr/` |
 
   English (`/en/…`) exists for reviewing the copy. The root `/` sends visitors to their browser language.
@@ -36,6 +36,13 @@ Meta ad ──► trade landing page ──► 4-step qualifier ──► Cal.co
   question is skipped. Answers prefill the calendar booking and the WhatsApp message.
 - **Every CTA works without JavaScript**: it falls back to a WhatsApp link.
 - **Money-back guarantee** is in the hero, a full section, pricing and the FAQ.
+- **The offer is a free ranking scan** (where they rank at 25 points, and who ranks above them). It's
+  more concrete than "book a call", so it usually pulls more clicks. Make sure you can deliver it before every call.
+- **Trade picker** on the general page: one tap answers the first question and opens the qualifier.
+- **Animated Google Maps scene:** the search types itself, the business climbs from position 7 to #1,
+  and a call comes in. On the general page it cycles through the four trades.
+- **Earnings calculator** before the price: the visitor's own job value against €800, so the price
+  reads as "pays for itself with 1 job".
 
 ## Go-live checklist
 
@@ -46,8 +53,7 @@ All of it is in `src/config.mjs`. The build lists every remaining `TODO(`.
 3. **Cal.com**: create a 15-min event and set `calLink` (e.g. `pinrank/gratis-gesprek`). The EU
    instance (cal.eu) is better for GDPR; see the comment in config. Until it's set, the funnel
    ends in WhatsApp only.
-4. **WhatsApp**: set `whatsapp`. Currently the jigme.agency (+91) number; a Belgian +32 number
-   will convert better with this audience.
+4. **WhatsApp**: set to +32 468 06 00 41. Change `whatsapp` if that ever moves.
 5. **Meta Pixel**: set `metaPixelId`. It loads **only after cookie consent**, which is required in the EU.
    The cookie banner appears automatically once an ID is set.
 6. **Price**: confirm the €800 period (`month` or `once`) or set `show: false`.

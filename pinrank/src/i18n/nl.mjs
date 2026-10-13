@@ -8,11 +8,11 @@ export default {
   slugs: { thanks: "bedankt", privacy: "privacy" },
 
   trades: {
-    electrician: { slug: "elektricien", label: "Elektricien", plural: "elektriciens", adPlural: "Elektriciens", search: "elektricien in de buurt" },
-    roofer: { slug: "dakwerker", label: "Dakwerker", plural: "dakwerkers", adPlural: "Dakwerkers", search: "dakwerker in de buurt" },
-    plumber: { slug: "loodgieter", label: "Loodgieter", plural: "loodgieters", adPlural: "Loodgieters", search: "loodgieter in de buurt" },
-    heating: { slug: "verwarming", label: "Verwarming / warmtepompen", plural: "installateurs", adPlural: "Installateurs", search: "warmtepomp installateur" },
-    other: { label: "Ander thuisservicebedrijf", plural: "vakmensen" },
+    roofer: { slug: "dakwerker", label: "Dakwerker", plural: "dakwerkers", adPlural: "Dakwerkers", search: "dakwerker in de buurt", job: 2500 },
+    renovation: { slug: "renovatie", label: "Renovatie / aannemer", plural: "renovatiebedrijven", adPlural: "Renovatiebedrijven", search: "renovatie aannemer in de buurt", job: 6000 },
+    plumber: { slug: "loodgieter", label: "Loodgieter", plural: "loodgieters", adPlural: "Loodgieters", search: "loodgieter in de buurt", job: 350 },
+    electrician: { slug: "elektricien", label: "Elektricien", plural: "elektriciens", adPlural: "Elektriciens", search: "elektricien in de buurt", job: 500 },
+    other: { label: "Ander bouw- of thuisservicebedrijf", plural: "vakmensen", job: 1500 },
   },
 
   meta: {
@@ -21,27 +21,28 @@ export default {
         ? `Meer klanten via Google Maps voor ${tr.plural} — PinRank`
         : "PinRank — Bovenaan in Google Maps voor vakmensen in België",
     description: (tr) =>
-      `PinRank optimaliseert elke week je Google-bedrijfsprofiel zodat ${tr ? tr.plural : "elektriciens, dakwerkers en thuisservicebedrijven"} in België hoger staan in Google Maps. Niet hoger na 3 maanden? Geld terug.`,
+      `PinRank optimaliseert elke week je Google-bedrijfsprofiel zodat ${tr ? tr.plural : "dakwerkers, renovatiebedrijven, loodgieters en elektriciens"} in België hoger staan in Google Maps. Niet hoger na 3 maanden? Geld terug.`,
   },
 
   /** Text on the link-preview image (scripts/og.mjs). */
-  og: { eyebrow: "Voor elektriciens, dakwerkers en vakmensen in België", title: "Bovenaan in Google Maps.", sub: "Niet hoger na 3 maanden? Geld terug." },
+  og: { eyebrow: "Voor dakwerkers, renovatie, loodgieters en elektriciens", title: "Bovenaan in Google Maps.", sub: "Niet hoger na 3 maanden? Geld terug." },
 
   /** Headline on the ad videos (scripts/ad-video.mjs). */
   adVideo: { headline: (tr) => (tr ? `${tr.adPlural}: sta jij in de top 3 op Google Maps?` : "Sta jij in de top 3 op Google Maps?") },
 
-  nav: { cta: "Gratis check", langLabel: "Taal" },
+  nav: { cta: "Gratis scan", langLabel: "Taal" },
 
   hero: {
-    eyebrow: (tr) => (tr ? `Voor ${tr.plural} in België` : "Voor elektriciens, dakwerkers en thuisservicebedrijven in België"),
+    eyebrow: (tr) => (tr ? `Voor ${tr.plural} in België` : "Voor dakwerkers, renovatiebedrijven, loodgieters en elektriciens in België"),
     title: (tr) =>
       tr
         ? `Iemand zoekt nu <em>‘${tr.search}’</em>. Sta jij in de top 3?`
         : "Sta bovenaan in Google Maps — en word gebeld <em>vóór</em> je concurrent.",
     sub: "PinRank werkt elke week aan je Google-bedrijfsprofiel, zodat klanten uit jouw regio jóu vinden en bellen. Staat je ranking na 3 maanden niet hoger? Dan krijg je je geld terug.",
-    cta: "Check gratis of je in aanmerking komt",
+    cta: "Vraag je gratis rankingscan aan",
     ctaNote: "4 korte vragen · 30 seconden · Vrijblijvend",
     wa: "Liever meteen een WhatsApp sturen",
+    pick: "Wat is jouw vak?",
     trust: ["Geld-terug-garantie na 3 maanden", "Elke week aan je profiel gewerkt", "Maandelijks rankingrapport"],
   },
 
@@ -68,6 +69,10 @@ export default {
     you: "Jouw bedrijf",
     rivalA: "Concurrent A",
     rivalB: "Concurrent B",
+    rivalC: "Concurrent C",
+    notVisible: "Plaats 7 · klanten zien je niet",
+    incoming: "Inkomende oproep",
+    via: "Nieuwe klant via Google Maps",
     open: "Nu open",
     call: "Bellen",
     route: "Route",
@@ -76,7 +81,7 @@ export default {
 
   problem: {
     title: "Wie niet in de top 3 staat, wordt zelden gebeld",
-    body: "Bij een stroompanne of een lekkend dak gaat niemand naar pagina twee. Mensen googelen, zien drie bedrijven op de kaart en bellen er één. Sta jij daar niet tussen, dan gaat die klus naar iemand anders — ook al werk je beter of goedkoper.",
+    body: "Bij een lekkend dak, een verstopte leiding of een stroompanne gaat niemand naar pagina twee. En wie een verbouwing plant, belt eerst de goed beoordeelde bedrijven bovenaan de kaart. Mensen googelen, zien drie bedrijven en bellen er één. Sta jij daar niet tussen, dan gaat die klus naar iemand anders — ook al werk je beter of goedkoper.",
     points: [
       { t: "Afhankelijk van anderen", d: "Zonder klanten via Google ben je afhankelijk van mond-tot-mondreclame of leadplatformen die je voor elke aanvraag laten betalen." },
       { t: "Een profiel dat stilstaat", d: "Google beloont profielen die actief zijn: nieuwe foto’s, berichten, antwoorden op reviews. De meeste vakmensen hebben daar geen tijd voor." },
@@ -96,7 +101,7 @@ export default {
   how: {
     title: "Zo werkt het",
     steps: [
-      { t: "Gratis gesprek van 15 minuten", d: "We bekijken samen je Google-profiel en waar je vandaag staat voor de zoekwoorden die jou klanten opleveren." },
+      { t: "Gratis rankingscan en gesprek (15 min)", d: "We tonen je op de kaart waar je vandaag staat voor de zoekwoorden die jou klanten opleveren, en wie er boven je staat." },
       { t: "We zetten je profiel goed", d: "In de eerste week stemmen we je categorieën, diensten, beschrijving, foto’s en werkgebied af op de zoektermen van jouw vak." },
       { t: "Elke week een stap vooruit", d: "Daarna werken we wekelijks aan je profiel. Elke maand krijg je een rapport met je ranking op de kaart." },
     ],
@@ -130,12 +135,23 @@ export default {
     title: "Is dit iets voor jou?",
     yesTitle: "Wel voor jou als…",
     yes: [
-      "je elektricien, dakwerker, loodgieter, installateur of een ander thuisservicebedrijf hebt",
+      "je een dakwerkersbedrijf, renovatiebedrijf, loodgieterij of elektriciteitsbedrijf hebt (of een ander bouw- of thuisservicebedrijf)",
       "je in België in een vaste regio werkt",
       "je meer klussen aankunt en die liever rechtstreeks krijgt dan via leadplatformen",
     ],
     noTitle: "Niet voor jou als…",
     no: ["je nu al geen nieuwe klanten meer aankunt", "je geen vast werkgebied hebt", "je resultaat verwacht binnen één week"],
+  },
+
+  calc: {
+    title: "Wat levert één extra klus jou op?",
+    sub: "Vul je eigen cijfers in en zie wanneer PinRank zichzelf terugverdient.",
+    job: "Gemiddelde waarde van een klus",
+    extra: "Extra klussen per maand via Google",
+    revenue: "Extra omzet per maand",
+    one: "PinRank is terugverdiend met {n} klus per maand.",
+    many: "PinRank is terugverdiend met {n} klussen per maand.",
+    note: "Rekenvoorbeeld met jouw cijfers, geen belofte van resultaat. Bedragen excl. btw.",
   },
 
   pricing: {
@@ -158,6 +174,7 @@ export default {
   faq: {
     title: "Veelgestelde vragen",
     items: [
+      { q: "Wat is de gratis rankingscan?", a: "Een kaart van je regio waarop je ziet op welke plaats je in Google Maps staat voor je belangrijkste zoekwoord, op 25 punten rond je zaak, en wie er boven je staat. We overlopen hem samen in het gratis gesprek." },
       { q: "Hoe snel zie ik resultaat?", a: "Dat hangt af van je regio en hoeveel concurrentie er is. Lokale ranking bouw je op over weken, niet dagen — daarom meten we na 3 maanden en geven we je dan een geld-terug-garantie." },
       { q: "Hoe werkt de geld-terug-garantie precies?", a: "Bij de start meten we je ranking op de kaart voor je belangrijkste zoekwoorden. Na 3 maanden meten we opnieuw, op dezelfde manier. Is je gemiddelde positie niet verbeterd, dan storten we terug wat je betaald hebt." },
       { q: "Moet ik zelf veel doen?", a: "Heel weinig. Je geeft ons toegang tot je Google-bedrijfsprofiel (we leggen uit hoe) en stuurt af en toe foto’s van je werk door. De rest doen wij." },
@@ -169,14 +186,14 @@ export default {
 
   final: {
     title: "Benieuwd waar je vandaag staat?",
-    body: "Beantwoord 4 korte vragen en plan meteen een gratis gesprek van 15 minuten. Liever eerst iets vragen? Stuur ons een WhatsApp.",
-    cta: "Check gratis of je in aanmerking komt",
+    body: "Beantwoord 4 korte vragen en we maken je gratis rankingscan: waar sta je vandaag, en wie staat er boven je? We bespreken hem in een gesprek van 15 minuten.",
+    cta: "Vraag je gratis rankingscan aan",
   },
 
-  sticky: { cta: "Gratis check" },
+  sticky: { cta: "Gratis scan" },
 
   quiz: {
-    title: "Kom je in aanmerking?",
+    title: "Je gratis rankingscan",
     progress: "Stap {n} van {total}",
     close: "Sluiten",
     back: "Terug",
@@ -188,13 +205,13 @@ export default {
     gbp: { yes: "Ja", no: "Nee", unsure: "Weet ik niet" },
     q4: "Waar mogen we je bereiken?",
     fields: { name: "Je naam", company: "Bedrijfsnaam", phone: "Gsm-nummer", email: "E-mailadres" },
-    submit: "Toon mijn resultaat",
+    submit: "Vraag mijn scan aan",
     privacy: "We gebruiken je gegevens alleen om je aanvraag op te volgen.",
     privacyLink: "Privacybeleid",
     errors: { required: "Vul dit even in.", phone: "Dit lijkt geen geldig nummer.", email: "Dit lijkt geen geldig e-mailadres." },
     resultTitle: "Goed nieuws, {name}!",
-    resultBody: "We helpen {plural} in {region}. Kies hieronder een moment voor je gratis gesprek van 15 minuten.",
-    resultBodyNoCal: "We helpen {plural} in {region}. Stuur ons een WhatsApp en we plannen meteen een gratis gesprek van 15 minuten.",
+    resultBody: "We maken je rankingscan voor {region}. Kies hieronder een moment voor je gratis gesprek van 15 minuten: we tonen je waar je staat en wat je concurrenten anders doen.",
+    resultBodyNoCal: "We maken je rankingscan voor {region}. Stuur ons een WhatsApp en we plannen meteen een gesprek van 15 minuten om hem te bespreken.",
     or: "of",
     wa: "Liever via WhatsApp? Stuur ons een bericht",
     waPrimary: "Plan je gesprek via WhatsApp",

@@ -28,10 +28,9 @@ export default {
   calEmbedJs: "https://app.cal.com/embed/embed.js",
 
   /**
-   * WhatsApp number, bare: country code, no +, no spaces.
-   * TODO(whatsapp): a Belgian +32 number lifts trust noticeably with this audience.
+   * WhatsApp number, bare: country code, no +, no spaces. (Belgian mobile: +32 468 06 00 41)
    */
-  whatsapp: "919773671272",
+  whatsapp: "32468060041",
 
   /** Meta Pixel ID. Loads only after the visitor accepts cookies (GDPR). */
   metaPixelId: "", // TODO(pixel)

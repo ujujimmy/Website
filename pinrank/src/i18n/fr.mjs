@@ -8,11 +8,11 @@ export default {
   slugs: { thanks: "merci", privacy: "confidentialite" },
 
   trades: {
-    electrician: { slug: "electricien", label: "Électricien", plural: "électriciens", adPlural: "Électriciens", search: "électricien près de chez moi" },
-    roofer: { slug: "couvreur", label: "Couvreur", plural: "couvreurs", adPlural: "Couvreurs", search: "couvreur près de chez moi" },
-    plumber: { slug: "plombier", label: "Plombier", plural: "plombiers", adPlural: "Plombiers", search: "plombier près de chez moi" },
-    heating: { slug: "chauffagiste", label: "Chauffage / pompes à chaleur", plural: "chauffagistes", adPlural: "Chauffagistes", search: "installateur pompe à chaleur" },
-    other: { label: "Autre service à domicile", plural: "artisans" },
+    roofer: { slug: "couvreur", label: "Couvreur", plural: "couvreurs", adPlural: "Couvreurs", search: "couvreur près de chez moi", job: 2500 },
+    renovation: { slug: "renovation", label: "Rénovation / entrepreneur", plural: "entreprises de rénovation", adPlural: "Entreprises de rénovation", search: "entreprise de rénovation près de chez moi", job: 6000 },
+    plumber: { slug: "plombier", label: "Plombier", plural: "plombiers", adPlural: "Plombiers", search: "plombier près de chez moi", job: 350 },
+    electrician: { slug: "electricien", label: "Électricien", plural: "électriciens", adPlural: "Électriciens", search: "électricien près de chez moi", job: 500 },
+    other: { label: "Autre entreprise du bâtiment ou de services", plural: "artisans", job: 1500 },
   },
 
   meta: {
@@ -21,27 +21,28 @@ export default {
         ? `Plus de clients via Google Maps pour les ${tr.plural} — PinRank`
         : "PinRank — En tête de Google Maps pour les artisans en Belgique",
     description: (tr) =>
-      `PinRank optimise chaque semaine votre fiche Google Business pour que les ${tr ? tr.plural : "électriciens, couvreurs et entreprises de services à domicile"} en Belgique montent dans Google Maps. Pas mieux classé après 3 mois ? Remboursé.`,
+      `PinRank optimise chaque semaine votre fiche Google Business pour que les ${tr ? tr.plural : "couvreurs, entreprises de rénovation, plombiers et électriciens"} en Belgique montent dans Google Maps. Pas mieux classé après 3 mois ? Remboursé.`,
   },
 
   /** Text on the link-preview image (scripts/og.mjs). */
-  og: { eyebrow: "Pour les électriciens, couvreurs et artisans en Belgique", title: "En tête de Google Maps.", sub: "Pas mieux classé après 3 mois ? Remboursé." },
+  og: { eyebrow: "Couvreurs, rénovation, plombiers et électriciens en Belgique", title: "En tête de Google Maps.", sub: "Pas mieux classé après 3 mois ? Remboursé." },
 
   /** Headline on the ad videos (scripts/ad-video.mjs). */
   adVideo: { headline: (tr) => (tr ? `${tr.adPlural} : êtes-vous dans le top 3 de Google Maps ?` : "Êtes-vous dans le top 3 de Google Maps ?") },
 
-  nav: { cta: "Test gratuit", langLabel: "Langue" },
+  nav: { cta: "Scan gratuit", langLabel: "Langue" },
 
   hero: {
-    eyebrow: (tr) => (tr ? `Pour les ${tr.plural} en Belgique` : "Pour les électriciens, couvreurs et services à domicile en Belgique"),
+    eyebrow: (tr) => (tr ? `Pour les ${tr.plural} en Belgique` : "Pour les couvreurs, entreprises de rénovation, plombiers et électriciens en Belgique"),
     title: (tr) =>
       tr
         ? `Quelqu’un cherche <em>« ${tr.search} »</em> en ce moment. Êtes-vous dans le top 3 ?`
         : "Apparaissez en tête de Google Maps — et soyez appelé <em>avant</em> vos concurrents.",
     sub: "Chaque semaine, PinRank travaille votre fiche Google Business pour que les clients de votre région vous trouvent et vous appellent. Votre classement n’a pas progressé après 3 mois ? Vous êtes remboursé.",
-    cta: "Vérifiez gratuitement si vous êtes éligible",
+    cta: "Demandez votre scan de classement gratuit",
     ctaNote: "4 questions · 30 secondes · Sans engagement",
     wa: "Je préfère envoyer un WhatsApp",
+    pick: "Votre métier ?",
     trust: ["Satisfait ou remboursé après 3 mois", "Votre fiche travaillée chaque semaine", "Rapport de classement mensuel"],
   },
 
@@ -68,6 +69,10 @@ export default {
     you: "Votre entreprise",
     rivalA: "Concurrent A",
     rivalB: "Concurrent B",
+    rivalC: "Concurrent C",
+    notVisible: "Position 7 · invisible pour vos clients",
+    incoming: "Appel entrant",
+    via: "Nouveau client via Google Maps",
     open: "Ouvert",
     call: "Appeler",
     route: "Itinéraire",
@@ -76,7 +81,7 @@ export default {
 
   problem: {
     title: "Hors du top 3, le téléphone sonne rarement",
-    body: "Lors d’une panne de courant ou d’une fuite de toiture, personne ne va en page deux. On cherche sur Google, on voit trois entreprises sur la carte et on en appelle une. Si vous n’y êtes pas, le chantier part chez quelqu’un d’autre — même si vous travaillez mieux ou moins cher.",
+    body: "Fuite de toiture, canalisation bouchée ou panne de courant : personne ne va en page deux. Et pour une rénovation, on appelle d’abord les entreprises bien notées en haut de la carte. On cherche sur Google, on voit trois entreprises et on en appelle une. Si vous n’y êtes pas, le chantier part chez quelqu’un d’autre — même si vous travaillez mieux ou moins cher.",
     points: [
       { t: "Dépendant des autres", d: "Sans clients via Google, vous dépendez du bouche-à-oreille ou de plateformes qui vous font payer chaque demande." },
       { t: "Une fiche à l’abandon", d: "Google récompense les fiches actives : nouvelles photos, publications, réponses aux avis. La plupart des artisans n’ont pas le temps." },
@@ -96,7 +101,7 @@ export default {
   how: {
     title: "Comment ça marche",
     steps: [
-      { t: "Appel gratuit de 15 minutes", d: "Nous regardons ensemble votre fiche Google et votre classement actuel sur les recherches qui vous amènent des clients." },
+      { t: "Scan gratuit et appel de 15 minutes", d: "Nous vous montrons sur la carte où vous en êtes aujourd’hui sur les recherches qui vous amènent des clients, et qui est au-dessus de vous." },
       { t: "Nous optimisons votre fiche", d: "La première semaine, nous ajustons vos catégories, services, description, photos et zone d’intervention selon les recherches de votre métier." },
       { t: "Chaque semaine, un pas en avant", d: "Ensuite, nous travaillons votre fiche chaque semaine. Chaque mois, vous recevez un rapport avec votre classement sur la carte." },
     ],
@@ -130,12 +135,23 @@ export default {
     title: "Est-ce fait pour vous ?",
     yesTitle: "Oui, si…",
     yes: [
-      "vous êtes électricien, couvreur, plombier, chauffagiste ou une autre entreprise de services à domicile",
+      "vous êtes couvreur, entreprise de rénovation, plombier ou électricien (ou une autre entreprise du bâtiment ou de services à domicile)",
       "vous travaillez dans une région fixe en Belgique",
       "vous pouvez prendre plus de chantiers et préférez les recevoir en direct plutôt que via des plateformes",
     ],
     noTitle: "Non, si…",
     no: ["vous ne pouvez déjà plus accepter de nouveaux clients", "vous n’avez pas de zone d’intervention fixe", "vous attendez des résultats en une semaine"],
+  },
+
+  calc: {
+    title: "Que vous rapporte un chantier de plus ?",
+    sub: "Entrez vos propres chiffres et voyez quand PinRank est rentabilisé.",
+    job: "Valeur moyenne d’un chantier",
+    extra: "Chantiers en plus par mois via Google",
+    revenue: "Chiffre d’affaires en plus par mois",
+    one: "PinRank est rentabilisé avec {n} chantier par mois.",
+    many: "PinRank est rentabilisé avec {n} chantiers par mois.",
+    note: "Exemple de calcul avec vos chiffres, pas une promesse de résultat. Montants HTVA.",
   },
 
   pricing: {
@@ -158,6 +174,7 @@ export default {
   faq: {
     title: "Questions fréquentes",
     items: [
+      { q: "Qu’est-ce que le scan de classement gratuit ?", a: "Une carte de votre région qui montre votre position dans Google Maps pour votre mot-clé principal, sur 25 points autour de votre entreprise, et qui est au-dessus de vous. Nous la parcourons ensemble lors de l’appel gratuit." },
       { q: "En combien de temps vais-je voir des résultats ?", a: "Cela dépend de votre région et de la concurrence. Le classement local se construit en semaines, pas en jours — c’est pourquoi nous mesurons après 3 mois et vous offrons alors une garantie de remboursement." },
       { q: "Comment fonctionne exactement la garantie ?", a: "Au départ, nous mesurons votre classement sur la carte pour vos mots-clés principaux. Après 3 mois, nous mesurons à nouveau, de la même façon. Si votre position moyenne ne s’est pas améliorée, nous vous remboursons ce que vous avez payé." },
       { q: "Est-ce que je dois faire beaucoup moi-même ?", a: "Très peu. Vous nous donnez accès à votre fiche Google Business (nous vous expliquons comment) et vous nous envoyez de temps en temps des photos de vos chantiers. Nous faisons le reste." },
@@ -169,14 +186,14 @@ export default {
 
   final: {
     title: "Curieux de savoir où vous en êtes ?",
-    body: "Répondez à 4 questions et planifiez directement un appel gratuit de 15 minutes. Une question d’abord ? Envoyez-nous un WhatsApp.",
-    cta: "Vérifiez gratuitement si vous êtes éligible",
+    body: "Répondez à 4 questions et nous préparons votre scan de classement gratuit : où en êtes-vous aujourd’hui, et qui est au-dessus de vous ? Nous le passons en revue lors d’un appel de 15 minutes.",
+    cta: "Demandez votre scan de classement gratuit",
   },
 
-  sticky: { cta: "Test gratuit" },
+  sticky: { cta: "Scan gratuit" },
 
   quiz: {
-    title: "Êtes-vous éligible ?",
+    title: "Votre scan de classement gratuit",
     progress: "Étape {n} sur {total}",
     close: "Fermer",
     back: "Retour",
@@ -188,13 +205,13 @@ export default {
     gbp: { yes: "Oui", no: "Non", unsure: "Je ne sais pas" },
     q4: "Où pouvons-nous vous joindre ?",
     fields: { name: "Votre nom", company: "Nom de l’entreprise", phone: "Numéro de GSM", email: "Adresse e-mail" },
-    submit: "Voir mon résultat",
+    submit: "Demander mon scan",
     privacy: "Nous utilisons vos données uniquement pour donner suite à votre demande.",
     privacyLink: "Politique de confidentialité",
     errors: { required: "Merci de compléter ce champ.", phone: "Ce numéro ne semble pas valide.", email: "Cette adresse e-mail ne semble pas valide." },
     resultTitle: "Bonne nouvelle, {name} !",
-    resultBody: "Nous aidons les {plural} dans la région de {region}. Choisissez ci-dessous un moment pour votre appel gratuit de 15 minutes.",
-    resultBodyNoCal: "Nous aidons les {plural} dans la région de {region}. Envoyez-nous un WhatsApp et nous planifions tout de suite un appel gratuit de 15 minutes.",
+    resultBody: "Nous préparons votre scan de classement pour {region}. Choisissez ci-dessous un moment pour votre appel gratuit de 15 minutes : nous vous montrons où vous en êtes et ce que vos concurrents font différemment.",
+    resultBodyNoCal: "Nous préparons votre scan de classement pour {region}. Envoyez-nous un WhatsApp et nous planifions tout de suite un appel de 15 minutes pour le passer en revue.",
     or: "ou",
     wa: "Vous préférez WhatsApp ? Envoyez-nous un message",
     waPrimary: "Planifier l’appel via WhatsApp",

@@ -126,6 +126,71 @@
     document.documentElement.classList.add("io");
   } else revealEls.forEach(function (el) { el.classList.add("in"); });
 
+  /* ---------- Google Maps scene ----------
+   * One loop (~10 s): the search types itself, rival pins drop in, the
+   * business sits at "position 7", then climbs to #1, its pin lands and a
+   * call comes in. On the general page each loop types the next trade. Only
+   * classes and a CSS variable change, so the browser animates it all on the
+   * compositor. Runs only while on screen; reduced motion keeps the final frame.
+   */
+  try { (function maps() {
+    var root = $("[data-maps]");
+    if (!root || (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches)) return;
+    var queries = JSON.parse(root.getAttribute("data-queries") || "[]");
+    var typed = $("[data-typed]", root);
+    var rows = {};
+    $$("[data-row]", root).forEach(function (r) { rows[r.getAttribute("data-row")] = r; });
+    var timers = [], running = false, qi = 0;
+    function later(ms, fn) { timers.push(setTimeout(fn, ms)); }
+    function place(order) { // order: row keys from position 1 down; the 4th slot is "further down"
+      order.forEach(function (k, i) {
+        var r = rows[k];
+        r.style.setProperty("--pos", i);
+        r.classList.toggle("low", i === 3);
+        r.classList.toggle("top", k === "you" && i === 0);
+        $("[data-rank]", r).textContent = k === "you" && i === 3 ? 7 : i + 1;
+      });
+    }
+    function cycle() {
+      var q = queries[qi++ % queries.length] || "";
+      root.classList.remove("ring", "top", "drop");
+      root.classList.add("before", "typing");
+      place(["a", "b", "c", "you"]);
+      typed.textContent = "";
+      for (var i = 1; i <= q.length; i++) (function (n) { later(250 + n * 45, function () { typed.textContent = q.slice(0, n); }); })(i);
+      var t = 250 + q.length * 45 + 250;
+      later(t, function () { root.classList.remove("typing"); void root.offsetWidth; root.classList.add("drop"); });
+      later(t + 1500, function () { place(["you", "a", "b", "c"]); root.classList.remove("before"); });
+      later(t + 2500, function () { root.classList.add("top"); });
+      later(t + 3300, function () { root.classList.add("ring"); });
+      later(t + 6800, function () { root.classList.remove("ring"); });
+      later(t + 7600, cycle);
+    }
+    function start() { if (running) return; running = true; cycle(); }
+    function stop() { running = false; timers.forEach(clearTimeout); timers = []; }
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (en) { en[0].isIntersecting ? start() : stop(); }, { threshold: 0.35 }).observe(root);
+    }
+    document.addEventListener("visibilitychange", function () { if (document.hidden) stop(); });
+  })(); } catch (err) { if (window.console) console.error(err); }
+
+  /* ---------- ROI calculator ---------- */
+  try { (function calc() {
+    var root = $("[data-calc]");
+    if (!root || !PR.calc) return;
+    var C = PR.calc, job = $("[data-job]", root), extra = $("[data-extra]", root);
+    var money = new Intl.NumberFormat(PR.locale, { style: "currency", currency: C.currency, maximumFractionDigits: 0 });
+    function update() {
+      var v = C.steps[+job.value], n = +extra.value, be = Math.ceil(C.price / v);
+      $("[data-out-job]", root).textContent = money.format(v);
+      $("[data-out-extra]", root).textContent = n;
+      $("[data-out-rev]", root).textContent = money.format(v * n);
+      $("[data-out-be]", root).textContent = (be === 1 ? C.one : C.many).replace("{n}", be);
+    }
+    job.addEventListener("input", update);
+    extra.addEventListener("input", update);
+  })(); } catch (err) { if (window.console) console.error(err); }
+
   /* ---------- 3D demo (video) ----------
    * The 3D scene is a pre-recorded video (scripts/demo-video.mjs): phones
    * decode video in hardware, so it plays smoothly where drawing it live
@@ -301,6 +366,19 @@
     }
   }
   $$("[data-open-quiz]").forEach(function (a) { a.addEventListener("click", open); });
+  // Hero trade picker: one tap answers the first question and opens the
+  // qualifier on the next. Without the dialog the chips are links to the trade pages.
+  $$("[data-pick]").forEach(function (a) {
+    a.addEventListener("click", function (e) {
+      e.preventDefault();
+      var k = a.getAttribute("data-pick");
+      state.trade = k;
+      $$("[data-choice='trade']", form).forEach(function (o) { o.setAttribute("aria-pressed", String(o.value === k)); });
+      if (!dlg.open) dlg.showModal();
+      if (!started) { started = true; track("StartQuiz", { content_category: k }, true); }
+      show(1);
+    });
+  });
   $("[data-close]", form).addEventListener("click", function () { dlg.close(); });
   dlg.addEventListener("click", function (e) { if (e.target === dlg) dlg.close(); }); // backdrop
   $("[data-back]", form).addEventListener("click", function () { if (current > 0) show(current - 1); });

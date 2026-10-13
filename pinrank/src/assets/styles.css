@@ -242,44 +242,108 @@ h3 { font-size: 1.05rem; font-weight: 650; letter-spacing: -0.005em; line-height
 .points h3 { margin-bottom: 4px; }
 .points p { margin: 0; color: var(--muted); font-size: 0.97rem; }
 
-/* Phone mock of the Google Maps 3-pack */
-.mock-wrap { margin: 0; }
-.mock-wrap figcaption { margin-top: 16px; text-align: center; font-size: 0.82rem; color: var(--muted); }
-.mock {
-  max-width: 380px; margin: 0 auto; padding: 14px;
+/* Google Maps scene: the 3-pack a customer sees, played as a short story by app.js */
+.maps { margin: 0; }
+.maps figcaption { margin-top: 16px; text-align: center; font-size: 0.82rem; color: var(--muted); }
+.maps-phone {
+  position: relative; max-width: 380px; margin: 0 auto; padding: 14px; overflow: hidden;
   background: var(--paper); border-radius: 30px; border: 1px solid var(--line);
   box-shadow: 0 40px 70px -45px rgba(20, 23, 22, 0.45);
   font-size: 0.84rem;
 }
-.mock-search { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 999px; background: var(--tint); font-weight: 500; }
-.mock-search svg { width: 16px; height: 16px; color: var(--muted); }
+.mock-search { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 999px; background: var(--tint); font-weight: 500; min-height: 41px; }
+.mock-search svg { width: 16px; height: 16px; color: var(--muted); flex: none; }
+.mock-search span { white-space: nowrap; overflow: hidden; }
+.caret { width: 1.5px; height: 1.1em; background: var(--ink); opacity: 0; flex: none; margin-left: -6px; }
+.maps.typing .caret { animation: blink 0.8s steps(1) infinite; }
+@keyframes blink { 0% { opacity: 1; } 50% { opacity: 0; } }
 .mock-map {
-  position: relative; height: 120px; margin: 12px 0; border-radius: 16px;
+  position: relative; height: 120px; margin: 12px 0 6px; border-radius: 16px;
   background:
     linear-gradient(90deg, transparent 47%, #fff 47%, #fff 52%, transparent 52%) 0 0 / 110px 100%,
     linear-gradient(0deg, transparent 45%, #fff 45%, #fff 51%, transparent 51%) 0 0 / 100% 64px,
     #e8ece6;
 }
 .mpin { position: absolute; width: 26px; height: 26px; color: #9aa39e; }
-.mpin.p1 { left: 44%; top: 26%; width: 36px; height: 36px; color: var(--accent); animation: bob 3s ease-in-out infinite; }
-.mpin.p2 { left: 18%; top: 50%; }
-.mpin.p3 { left: 72%; top: 42%; }
+.mpin.p1 { left: 18%; top: 50%; }
+.mpin.p2 { left: 72%; top: 40%; }
+.mpin.p3 { left: 30%; top: 14%; }
+.mpin.pyou { left: 46%; top: 22%; width: 36px; height: 36px; color: var(--accent); z-index: 1;
+  transition: transform 0.9s var(--ease), color 0.6s; }
+.maps.before .mpin.pyou { transform: translate(105px, 46px) scale(0.6); color: #c3c9c5; }
+.maps.top .mpin.pyou { animation: bob 2.4s ease-in-out 0.9s infinite; }
 @keyframes bob { 50% { transform: translateY(-5px); } }
-.mock-list { display: grid; gap: 6px; }
-.mock-card { display: grid; grid-template-columns: 1.4rem 1fr auto; align-items: center; gap: 8px; padding: 10px 12px; border-radius: 12px; }
-.mock-card + .mock-card { border-top: 1px solid var(--line); border-radius: 0; }
-.mock-card.you { background: var(--accent-soft); border-radius: 12px; }
-.mock-card.you + .mock-card { border-top-color: transparent; }
+.maps.drop .mpin.p1, .maps.drop .mpin.p2, .maps.drop .mpin.p3 { animation: pindrop 0.55s var(--ease) both; }
+.maps.drop .mpin.p2 { animation-delay: 0.1s; }
+.maps.drop .mpin.p3 { animation-delay: 0.2s; }
+@keyframes pindrop { from { transform: translateY(-28px); opacity: 0; } }
+
+.maps-list { --rh: 70px; position: relative; height: calc(var(--rh) * 4 + 12px); }
+.maps-list::after { content: ""; position: absolute; left: 10px; right: 10px; top: calc(var(--rh) * 3 + 6px); border-top: 1px dashed var(--line); }
+.mrow {
+  position: absolute; left: 0; right: 0; top: 0; height: var(--rh);
+  display: grid; grid-template-columns: 1.4rem 1fr auto; align-items: center; gap: 8px; padding: 0 12px; border-radius: 12px;
+  transform: translateY(calc(var(--pos) * var(--rh) + clamp(0px, (var(--pos) - 2) * 12px, 12px)));
+  transition: transform 0.9s var(--ease), opacity 0.5s, background-color 0.5s;
+}
+.mrow.low { opacity: 0.45; }
+.mrow.you.top { background: var(--accent-soft); }
 .mock-pos { font-family: var(--serif); font-size: 1.1rem; color: var(--muted); }
-.mock-card.you .mock-pos { color: var(--accent); }
+.mrow.you .mock-pos { color: var(--accent); }
 .mock-info { min-width: 0; }
 .mock-info b { display: block; font-size: 0.92rem; font-weight: 650; }
 .mock-rating { display: flex; align-items: center; gap: 4px; color: var(--muted); }
 .stars { display: inline-flex; color: #e5a823; }
 .stars svg { width: 11px; height: 11px; }
 .mock-open { color: var(--good); font-size: 0.76rem; font-weight: 600; }
+.mock-hidden { display: none; color: var(--bad); font-size: 0.76rem; font-weight: 600; }
+.maps.before .mrow.you .mock-hidden { display: block; }
+.maps.before .mrow.you .mock-open { display: none; }
+.maps.before .mrow.you .mock-pos { color: var(--bad); }
 .mock-actions { display: grid; gap: 4px; }
 .mock-actions span { font-size: 0.7rem; font-weight: 600; color: var(--accent); border: 1px solid #cfe0d7; border-radius: 999px; padding: 2px 10px; text-align: center; }
+.maps.ring .mrow.you .call { animation: ringpulse 1s ease-out 3; background: var(--accent); color: #fff; border-color: var(--accent); }
+@keyframes ringpulse { from { box-shadow: 0 0 0 0 rgba(31, 92, 69, 0.45); } to { box-shadow: 0 0 0 10px rgba(31, 92, 69, 0); } }
+.maps-toast {
+  position: absolute; left: 12px; right: 12px; top: 12px; z-index: 3;
+  display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 16px;
+  background: var(--ink); color: #fff; box-shadow: 0 16px 30px -12px rgba(0, 0, 0, 0.5);
+  transform: translateY(-150%); transition: transform 0.55s var(--ease);
+}
+.maps.ring .maps-toast { transform: none; }
+.maps-toast b { display: block; font-size: 0.86rem; }
+.maps-toast small { display: block; font-size: 0.74rem; color: rgba(255, 255, 255, 0.65); }
+.maps-toast-i { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--good); flex: none; }
+.maps-toast-i svg { width: 16px; height: 16px; }
+.maps.ring .maps-toast-i svg { animation: shake 0.5s ease-in-out 0.4s 3; }
+@keyframes shake { 25% { transform: rotate(-14deg); } 75% { transform: rotate(14deg); } }
+
+/* Hero trade picker (general page) */
+.pick { display: flex; flex-direction: column; gap: 10px; margin: -6px 0 24px; animation: fade 1s var(--ease) 0.5s both; }
+.pick-label { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.pick-chips { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+@media (min-width: 560px) { .pick-chips { display: flex; flex-wrap: wrap; } }
+.chip { text-align: center; }
+.chip {
+  padding: 10px 16px; border: 1px solid var(--line); border-radius: 999px; background: var(--paper);
+  color: var(--ink); font-weight: 600; font-size: 0.95rem; text-decoration: none;
+  transition: border-color 0.2s, transform 0.25s var(--ease), background-color 0.2s;
+}
+.chip:hover { border-color: var(--ink); transform: translateY(-1px); }
+.chip:active { transform: scale(0.97); }
+
+/* ROI calculator */
+.calc { display: grid; gap: 32px; align-items: center; }
+@media (min-width: 900px) { .calc { grid-template-columns: 1fr 460px; gap: 80px; } }
+.calc-box { padding: 30px; border-radius: 22px; background: var(--paper); border: 1px solid var(--line); box-shadow: 0 40px 80px -50px rgba(20, 23, 22, 0.35); }
+.calc-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-weight: 600; font-size: 0.95rem; }
+.calc-row + input { margin-bottom: 18px; }
+.calc-row output { font-family: var(--serif); font-size: 1.35rem; font-weight: 500; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.calc-box input[type="range"] { width: 100%; height: 28px; margin: 4px 0 0; accent-color: var(--ink); cursor: pointer; }
+.calc-result { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding-top: 18px; border-top: 1px solid var(--line); font-weight: 600; }
+.calc-result b { font-family: var(--serif); font-weight: 500; font-size: 2.4rem; line-height: 1; font-variant-numeric: tabular-nums; }
+.calc-be { margin: 12px 0 8px; font-weight: 600; color: var(--accent); }
+.calc-box .caption { margin: 0; }
 
 /* Ranking grid (2D) */
 .legend { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: 0.88rem; color: var(--muted); }

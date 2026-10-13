@@ -9,7 +9,7 @@
 
 import config from "./config.mjs";
 
-export const TRADES = ["electrician", "roofer", "plumber", "heating"];
+export const TRADES = ["roofer", "renovation", "plumber", "electrician"];
 
 export const esc = (s) =>
   String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
@@ -22,6 +22,7 @@ const icon = {
   star: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17l-5.9 3.3 1.3-6.5L2.5 9.3l6.6-.8z" fill="currentColor"/></svg>`,
   search: `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
   arrow: `<svg class="arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  phone: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z" fill="currentColor"/></svg>`,
   pause: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5h3v14H8zM13 5h3v14h-3z" fill="currentColor"/></svg>`,
   play: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5l11 7-11 7z" fill="currentColor"/></svg>`,
 };
@@ -210,7 +211,7 @@ export function demo(t, tr, { canvas = false } = {}) {
     ${stage}
     <button type="button" class="demo-big" data-bigplay aria-label="${d.play}">${icon.play}<span>${d.play}</span></button>
     <div class="demo-top">
-      <span class="demo-search">${icon.search}<span>${tr ? tr.search : t.trades.electrician.search}</span></span>
+      <span class="demo-search">${icon.search}<span>${tr ? tr.search : t.trades[TRADES[0]].search}</span></span>
       <span class="demo-tag">${d.label}</span>
     </div>
     <div class="demo-bottom">
@@ -231,32 +232,69 @@ export function demo(t, tr, { canvas = false } = {}) {
 </figure>`;
 }
 
+/**
+ * The Google Maps result a customer sees, played as a short story: the search
+ * types itself, pins drop, the business climbs from "position 7, not visible"
+ * to #1, and a call comes in. app.js drives it (CSS transforms only); without
+ * JS, or with reduced motion, it rests on the final frame below.
+ */
 function mock(t, tr) {
   const m = t.mock;
   const n = (x) => x.toLocaleString(t.htmlLang, { minimumFractionDigits: 1 });
-  const row = (pos, name, rating, count, you) => `<div class="mock-card${you ? " you" : ""}">
-      <span class="mock-pos">${pos}</span>
+  const queries = tr ? [tr.search] : TRADES.map((k) => t.trades[k].search);
+  const row = (key, pos, name, rating, count) => `<div class="mrow${key === "you" ? " you top" : ""}${pos === 3 ? " low" : ""}" data-row="${key}" style="--pos:${pos}">
+      <span class="mock-pos" data-rank>${pos + 1}</span>
       <div class="mock-info"><b>${name}</b>
         <span class="mock-rating">${rating} <i class="stars">${icon.star.repeat(5)}</i> (${count})</span>
-        <span class="mock-open">${m.open}</span></div>
-      <div class="mock-actions"><span>${m.call}</span><span>${m.route}</span></div>
+        <span class="mock-open">${m.open}</span>${key === "you" ? `<span class="mock-hidden">${m.notVisible}</span>` : ""}</div>
+      <div class="mock-actions"><span class="call">${m.call}</span><span>${m.route}</span></div>
     </div>`;
-  return `<figure class="mock-wrap">
-    <div class="mock" aria-hidden="true">
-      <div class="mock-search">${icon.search}<span>${tr ? tr.search : t.trades.electrician.search}</span></div>
+  return `<figure class="maps" data-maps data-queries="${esc(JSON.stringify(queries))}">
+    <div class="maps-phone" aria-hidden="true">
+      <div class="maps-toast"><span class="maps-toast-i">${icon.phone}</span><span><b>${m.incoming}</b><small>${m.via}</small></span></div>
+      <div class="mock-search">${icon.search}<span data-typed>${queries[0]}</span><i class="caret"></i></div>
       <div class="mock-map">
         <span class="mpin p1">${icon.pin}</span>
         <span class="mpin p2">${icon.pin}</span>
         <span class="mpin p3">${icon.pin}</span>
+        <span class="mpin pyou">${icon.pin}</span>
       </div>
-      <div class="mock-list">
-        ${row(1, m.you, n(4.9), 58, true)}
-        ${row(2, m.rivalA, n(4.6), 31)}
-        ${row(3, m.rivalB, n(4.2), 12)}
+      <div class="maps-list">
+        ${row("you", 0, m.you, n(4.9), 58)}
+        ${row("a", 1, m.rivalA, n(4.6), 31)}
+        ${row("b", 2, m.rivalB, n(4.2), 12)}
+        ${row("c", 3, m.rivalC, n(4.4), 19)}
       </div>
     </div>
     <figcaption>${m.label} · ${m.caption}</figcaption>
   </figure>`;
+}
+
+/** ROI calculator: the visitor's own numbers against the monthly price. */
+const JOB_STEPS = [100, 150, 200, 250, 300, 350, 400, 500, 600, 750, 1000, 1250, 1500, 2000, 2500, 3000, 4000, 5000, 6000, 7500, 10000, 12500, 15000, 20000];
+function calc(t, tr) {
+  const c = t.calc, p = config.price;
+  const money = (v) => new Intl.NumberFormat(t.htmlLang, { style: "currency", currency: p.currency, maximumFractionDigits: 0 }).format(v);
+  const want = (tr || t.trades.other).job;
+  const idx = JOB_STEPS.reduce((best, v, i) => (Math.abs(v - want) < Math.abs(JOB_STEPS[best] - want) ? i : best), 0);
+  const job = JOB_STEPS[idx], extra = 2, be = Math.ceil(p.amount / job);
+  return `<section class="sec">
+  <div class="wrap calc" data-calc>
+    <div class="reveal">
+      <h2 class="h2">${c.title}</h2>
+      <p class="body-lg">${c.sub}</p>
+    </div>
+    <div class="calc-box reveal">
+      <label class="calc-row" for="calc-job"><span>${c.job}</span><output data-out-job>${money(job)}</output></label>
+      <input type="range" id="calc-job" min="0" max="${JOB_STEPS.length - 1}" step="1" value="${idx}" data-job>
+      <label class="calc-row" for="calc-extra"><span>${c.extra}</span><output data-out-extra>${extra}</output></label>
+      <input type="range" id="calc-extra" min="1" max="15" step="1" value="${extra}" data-extra>
+      <div class="calc-result"><span>${c.revenue}</span><b data-out-rev>${money(job * extra)}</b></div>
+      <p class="calc-be" data-out-be>${(be === 1 ? c.one : c.many).replace("{n}", be)}</p>
+      <p class="caption">${c.note}</p>
+    </div>
+  </div>
+</section>`;
 }
 
 function seal(t) {
@@ -369,6 +407,7 @@ export function landing(t, all, css, js, trade = null) {
       <p class="eyebrow">${icon.pin}<span>${t.hero.eyebrow(tr)}</span></p>
       <h1>${splitWords(t.hero.title(tr))}</h1>
       <p class="lead">${t.hero.sub}</p>
+      ${tr ? "" : `<div class="pick" role="group" aria-label="${esc(t.hero.pick)}"><span class="pick-label">${t.hero.pick}</span><div class="pick-chips">${TRADES.map((k) => `<a class="chip" href="${landingPath(t, k)}" data-pick="${k}">${t.trades[k].label.split(" / ")[0]}</a>`).join("")}</div></div>`}
       <div class="hero-ctas" data-hero-cta>
         ${cta(t.hero.cta)}
         <p class="cta-note">${t.hero.ctaNote}</p>
@@ -460,9 +499,11 @@ ${testimonials}
   </div>
 </section>
 
+${p.show ? calc(t, tr) : ""}
+
 ${
   p.show
-    ? `<section class="sec">
+    ? `<section class="sec tint">
   <div class="wrap price-wrap">
     <div class="reveal">
       <h2 class="h2">${t.pricing.title}</h2>
@@ -479,7 +520,7 @@ ${
     : ""
 }
 
-<section class="sec ${p.show ? "tint" : ""}">
+<section class="sec">
   <div class="wrap faq-wrap">
     <h2 class="h2 reveal">${t.faq.title}</h2>
     <div class="faq">
@@ -521,6 +562,7 @@ ${quizDialog(t, trade)}`;
       trade,
       isLanding: true,
       demo: demoData(t),
+      calc: { steps: JOB_STEPS, price: config.price.amount, currency: config.price.currency, one: t.calc.one, many: t.calc.many },
     }),
   });
 }

@@ -8,7 +8,7 @@
  * The demo is stepped frame by frame (no screen recording), so every video
  * is perfectly smooth regardless of how fast this machine is.
  *
- *   node build.mjs && npx -y -p playwright@1.56.1 node scripts/ad-video.mjs [nl fr]
+ *   node build.mjs && npx -y -p playwright@1.56.1 node scripts/ad-video.mjs [nl fr] [--only=renovation]
  * Needs ffmpeg with libx264 on PATH. Output: ads/video/*.mp4
  */
 
@@ -37,6 +37,8 @@ catch { ({ chromium } = createRequire(join(process.cwd(), "x.js"))("playwright")
 const langs = { nl, fr, en };
 const pick = process.argv.slice(2).filter((a) => langs[a]);
 const todo = (pick.length ? pick : ["nl", "fr"]).map((c) => langs[c]);
+// --only=<trade>  record just that trade's feed video (e.g. after adding a trade)
+const only = (process.argv.find((a) => a.startsWith("--only=")) || "").slice(7);
 const domain = new URL(config.siteUrl).host;
 
 /* ---------- the ad page, composed from the built landing page ---------- */
@@ -138,6 +140,7 @@ async function record(t, trade, shape) {
 }
 
 for (const t of todo) {
+  if (only) { await record(t, only, "4x5"); continue; }
   await record(t, null, "4x5");
   await record(t, null, "9x16");
   for (const trade of TRADES) await record(t, trade, "4x5");

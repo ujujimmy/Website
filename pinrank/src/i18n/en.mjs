@@ -8,11 +8,11 @@ export default {
   slugs: { thanks: "thank-you", privacy: "privacy" },
 
   trades: {
-    electrician: { slug: "electrician", label: "Electrician", plural: "electricians", adPlural: "Electricians", search: "electrician near me" },
-    roofer: { slug: "roofer", label: "Roofer", plural: "roofers", adPlural: "Roofers", search: "roofer near me" },
-    plumber: { slug: "plumber", label: "Plumber", plural: "plumbers", adPlural: "Plumbers", search: "plumber near me" },
-    heating: { slug: "heating", label: "Heating / heat pumps", plural: "heating installers", adPlural: "Heating installers", search: "heat pump installer" },
-    other: { label: "Other home service business", plural: "trades businesses" },
+    roofer: { slug: "roofer", label: "Roofer", plural: "roofers", adPlural: "Roofers", search: "roofer near me", job: 2500 },
+    renovation: { slug: "renovation", label: "Renovation / contractor", plural: "renovation contractors", adPlural: "Renovation contractors", search: "renovation contractor near me", job: 6000 },
+    plumber: { slug: "plumber", label: "Plumber", plural: "plumbers", adPlural: "Plumbers", search: "plumber near me", job: 350 },
+    electrician: { slug: "electrician", label: "Electrician", plural: "electricians", adPlural: "Electricians", search: "electrician near me", job: 500 },
+    other: { label: "Other construction or home service business", plural: "trades businesses", job: 1500 },
   },
 
   meta: {
@@ -21,27 +21,28 @@ export default {
         ? `More customers from Google Maps for ${tr.plural} — PinRank`
         : "PinRank — Top of Google Maps for trades businesses in Belgium",
     description: (tr) =>
-      `PinRank works on your Google Business Profile every week so ${tr ? tr.plural : "electricians, roofers and home service businesses"} in Belgium rank higher on Google Maps. Not higher after 3 months? Money back.`,
+      `PinRank works on your Google Business Profile every week so ${tr ? tr.plural : "roofers, renovation contractors, plumbers and electricians"} in Belgium rank higher on Google Maps. Not higher after 3 months? Money back.`,
   },
 
   /** Text on the link-preview image (scripts/og.mjs). */
-  og: { eyebrow: "For electricians, roofers and trades in Belgium", title: "Top of Google Maps.", sub: "Not higher after 3 months? Money back." },
+  og: { eyebrow: "For roofers, renovation, plumbers and electricians in Belgium", title: "Top of Google Maps.", sub: "Not higher after 3 months? Money back." },
 
   /** Headline on the ad videos (scripts/ad-video.mjs). */
   adVideo: { headline: (tr) => (tr ? `${tr.adPlural}: are you in the top 3 on Google Maps?` : "Are you in the top 3 on Google Maps?") },
 
-  nav: { cta: "Free check", langLabel: "Language" },
+  nav: { cta: "Free scan", langLabel: "Language" },
 
   hero: {
-    eyebrow: (tr) => (tr ? `For ${tr.plural} in Belgium` : "For electricians, roofers and home service businesses in Belgium"),
+    eyebrow: (tr) => (tr ? `For ${tr.plural} in Belgium` : "For roofers, renovation contractors, plumbers and electricians in Belgium"),
     title: (tr) =>
       tr
         ? `Someone is searching <em>“${tr.search}”</em> right now. Are you in the top 3?`
         : "Get to the top of Google Maps — and get the call <em>before</em> your competitor.",
     sub: "PinRank works on your Google Business Profile every week, so customers in your area find you and call you. Ranking not higher after 3 months? You get your money back.",
-    cta: "Check for free if you qualify",
+    cta: "Get your free ranking scan",
     ctaNote: "4 quick questions · 30 seconds · No obligation",
     wa: "Rather send a WhatsApp right away",
+    pick: "Your trade?",
     trust: ["Money-back guarantee after 3 months", "Your profile worked on every week", "Monthly ranking report"],
   },
 
@@ -68,6 +69,10 @@ export default {
     you: "Your business",
     rivalA: "Competitor A",
     rivalB: "Competitor B",
+    rivalC: "Competitor C",
+    notVisible: "Position 7 · customers don’t see you",
+    incoming: "Incoming call",
+    via: "New customer from Google Maps",
     open: "Open now",
     call: "Call",
     route: "Directions",
@@ -76,7 +81,7 @@ export default {
 
   problem: {
     title: "If you’re not in the top 3, the phone rarely rings",
-    body: "When the power is out or the roof is leaking, nobody goes to page two. People search on Google, see three businesses on the map and call one of them. If you’re not there, the job goes to someone else — even if you do better or cheaper work.",
+    body: "A leaking roof, a blocked drain, a power cut: nobody goes to page two. And for a renovation, people call the well-reviewed firms at the top of the map first. They search on Google, see three businesses and call one of them. If you’re not there, the job goes to someone else — even if you do better or cheaper work.",
     points: [
       { t: "Dependent on others", d: "Without customers from Google, you rely on word of mouth or lead platforms that charge you for every enquiry." },
       { t: "A profile standing still", d: "Google rewards active profiles: new photos, posts, replies to reviews. Most tradespeople don’t have time for that." },
@@ -96,7 +101,7 @@ export default {
   how: {
     title: "How it works",
     steps: [
-      { t: "Free 15-minute call", d: "We look at your Google profile together and where you rank today for the searches that bring you customers." },
+      { t: "Free ranking scan and 15-minute call", d: "We show you on the map where you rank today for the searches that bring you customers, and who ranks above you." },
       { t: "We set your profile up properly", d: "In the first week we tune your categories, services, description, photos and service area to the searches in your trade." },
       { t: "A step forward every week", d: "After that we work on your profile weekly. Every month you get a report showing your ranking on the map." },
     ],
@@ -130,12 +135,23 @@ export default {
     title: "Is this for you?",
     yesTitle: "It’s for you if…",
     yes: [
-      "you run an electrical, roofing, plumbing, heating or other home service business",
+      "you run a roofing, renovation, plumbing or electrical business (or another construction or home service business)",
       "you work in a fixed area in Belgium",
       "you can take on more jobs and would rather get them directly than through lead platforms",
     ],
     noTitle: "It’s not for you if…",
     no: ["you already can’t take on new customers", "you don’t have a fixed service area", "you expect results within a week"],
+  },
+
+  calc: {
+    title: "What’s one extra job worth to you?",
+    sub: "Enter your own numbers and see when PinRank pays for itself.",
+    job: "Average job value",
+    extra: "Extra jobs per month from Google",
+    revenue: "Extra revenue per month",
+    one: "PinRank pays for itself with {n} job a month.",
+    many: "PinRank pays for itself with {n} jobs a month.",
+    note: "An example with your numbers, not a promise of results. Amounts excl. VAT.",
   },
 
   pricing: {
@@ -158,6 +174,7 @@ export default {
   faq: {
     title: "Frequently asked questions",
     items: [
+      { q: "What is the free ranking scan?", a: "A map of your area showing where you rank on Google Maps for your main keyword at 25 points around your business, and who ranks above you. We go through it together on the free call." },
       { q: "How quickly will I see results?", a: "It depends on your area and how much competition there is. Local ranking builds over weeks, not days — that’s why we measure after 3 months and back it with a money-back guarantee." },
       { q: "How exactly does the money-back guarantee work?", a: "At the start we measure your ranking on the map for your main keywords. After 3 months we measure again, the same way. If your average position hasn’t improved, we refund what you paid." },
       { q: "Do I have to do much myself?", a: "Very little. You give us access to your Google Business Profile (we explain how) and forward photos of your work now and then. We do the rest." },
@@ -169,14 +186,14 @@ export default {
 
   final: {
     title: "Curious where you stand today?",
-    body: "Answer 4 quick questions and book a free 15-minute call straight away. Want to ask something first? Send us a WhatsApp.",
-    cta: "Check for free if you qualify",
+    body: "Answer 4 quick questions and we’ll prepare your free ranking scan: where you stand today, and who ranks above you. We go through it on a 15-minute call.",
+    cta: "Get your free ranking scan",
   },
 
-  sticky: { cta: "Free check" },
+  sticky: { cta: "Free scan" },
 
   quiz: {
-    title: "Do you qualify?",
+    title: "Your free ranking scan",
     progress: "Step {n} of {total}",
     close: "Close",
     back: "Back",
@@ -188,13 +205,13 @@ export default {
     gbp: { yes: "Yes", no: "No", unsure: "Not sure" },
     q4: "How can we reach you?",
     fields: { name: "Your name", company: "Business name", phone: "Mobile number", email: "Email address" },
-    submit: "Show my result",
+    submit: "Request my scan",
     privacy: "We only use your details to follow up on your request.",
     privacyLink: "Privacy policy",
     errors: { required: "Please fill this in.", phone: "That doesn’t look like a valid number.", email: "That doesn’t look like a valid email address." },
     resultTitle: "Good news, {name}!",
-    resultBody: "We help {plural} in {region}. Pick a time below for your free 15-minute call.",
-    resultBodyNoCal: "We help {plural} in {region}. Send us a WhatsApp and we’ll book your free 15-minute call right away.",
+    resultBody: "We’re preparing your ranking scan for {region}. Pick a time below for your free 15-minute call: we’ll show you where you stand and what your competitors do differently.",
+    resultBodyNoCal: "We’re preparing your ranking scan for {region}. Send us a WhatsApp and we’ll book a 15-minute call to go through it.",
     or: "or",
     wa: "Prefer WhatsApp? Send us a message",
     waPrimary: "Book your call on WhatsApp",

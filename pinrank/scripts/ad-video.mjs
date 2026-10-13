@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Records the 3D demo as Meta ad videos: MP4 (H.264), 30 fps, 14 s, silent.
+ * Records the 3D demo as Meta ad videos: MP4 (H.264 Main + silent AAC), 30 fps, 14 s.
  *
  *   4:5  (1080×1350) for Facebook/Instagram feed: one per trade + one general
  *   9:16 (1080×1920) for Stories/Reels: one general
@@ -23,7 +23,7 @@ import config from "../src/config.mjs";
 import en from "../src/i18n/en.mjs";
 import fr from "../src/i18n/fr.mjs";
 import nl from "../src/i18n/nl.mjs";
-import { TRADES, landingPath } from "../src/render.mjs";
+import { TRADES, demo, landingPath } from "../src/render.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const dist = join(here, "..", "dist");
@@ -46,7 +46,7 @@ const pin = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 
 async function adPage(t, trade) {
   const html = await readFile(join(dist, landingPath(t, trade), "index.html"), "utf8");
   const css = html.match(/<style>([\s\S]*?)<\/style>/)[1];
-  const figure = html.match(/<figure class="demo"[\s\S]*?<\/figure>/)[0];
+  const figure = demo(t, trade ? t.trades[trade] : null, { canvas: true });
   const pr = html.match(/<script>window\.PR=[\s\S]*?<\/script>/)[0];
   const tr = trade ? t.trades[trade] : null;
   return `<!doctype html><html lang="${t.htmlLang}"><head><meta charset="utf-8">
@@ -58,7 +58,8 @@ async function adPage(t, trade) {
   .ad-brand svg { width: 20px; height: 20px; color: var(--accent); }
   .ad h1 { font: 500 38px/1.06 var(--serif); letter-spacing: -0.02em; margin: 0; text-wrap: balance; }
   .ad .demo { flex: 1; min-height: 0; display: flex; animation: none; }
-  .ad .demo-screen { flex: 1; aspect-ratio: auto; cursor: default; }
+  .ad .demo-wrap { flex: 1; display: flex; container-type: normal; }
+  .ad .demo-screen { flex: 1; aspect-ratio: auto; cursor: default; font-size: 16px; }
   .ad .demo-bar, .ad .demo-big { display: none !important; }
   .ad-foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
   .ad-foot p { margin: 0; font: 500 21px/1.2 var(--serif); color: var(--accent); text-wrap: balance; }
@@ -80,7 +81,7 @@ async function adPage(t, trade) {
   </div>
 </div>
 ${pr}
-<script src="/app.js"></script>
+<script src="/demo-render.js"></script>
 </body></html>`;
 }
 
@@ -91,6 +92,7 @@ const types = { ".html": "text/html; charset=utf-8", ".js": "text/javascript", "
 const server = createServer(async (req, res) => {
   const url = new URL(req.url, "http://x");
   if (pages.has(url.pathname)) return res.writeHead(200, { "Content-Type": types[".html"] }).end(pages.get(url.pathname));
+  if (url.pathname === "/demo-render.js") return res.writeHead(200, { "Content-Type": types[".js"] }).end(await readFile(join(here, "../src/assets/demo-render.js")));
   let p = decodeURIComponent(url.pathname);
   if (p.endsWith("/")) p += "index.html";
   try { res.writeHead(200, { "Content-Type": types[extname(p)] || "application/octet-stream" }).end(await readFile(join(dist, p))); }
@@ -115,8 +117,11 @@ async function record(t, trade, shape) {
   await page.evaluate(() => document.fonts.ready);
   const dur = await page.evaluate(() => window.PRDemo.dur);
 
+  // Main profile + a silent AAC track: plays in every phone gallery, WhatsApp and Ads Manager
   const ff = spawn("ffmpeg", ["-y", "-loglevel", "error", "-f", "image2pipe", "-framerate", String(FPS), "-i", "-",
-    "-c:v", "libx264", "-preset", "slow", "-crf", "20", "-pix_fmt", "yuv420p", "-movflags", "+faststart",
+    "-f", "lavfi", "-i", "anullsrc=r=44100:cl=stereo", "-map", "0:v", "-map", "1:a", "-shortest",
+    "-c:v", "libx264", "-profile:v", "main", "-level", "4.0", "-preset", "slow", "-crf", "20", "-pix_fmt", "yuv420p",
+    "-c:a", "aac", "-b:a", "64k", "-movflags", "+faststart",
     join(out, `${name}.mp4`)], { stdio: ["pipe", "inherit", "inherit"] });
   const done = new Promise((ok, fail) => ff.on("close", (c) => (c ? fail(new Error(`ffmpeg exited ${c}`)) : ok())));
 

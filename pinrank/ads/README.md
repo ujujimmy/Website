@@ -38,7 +38,7 @@ which trade and angle brought in each booking. `fbclid` is kept too.
 | `{lang}-all-9x16.mp4` | Stories / Reels |
 | `{lang}-{trade}-4x5.mp4` | Feed, one per trade — headline and search bar name the trade |
 
-All are 1080 px wide, 30 fps, 14 seconds, H.264 MP4, silent (most feed video plays muted). Add
+All are 1080 px wide, 30 fps, 14 seconds, H.264 MP4 with a silent sound track (most feed video plays muted). Add
 captions or music in Ads Manager if you like.
 
 ---

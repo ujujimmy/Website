@@ -1,0 +1,8 @@
+# Netlify, deploying from Git: set the site's Base directory to `pinrank`.
+# (For a drag-and-drop deploy, drop the built `dist` folder instead; no build needed.)
+[build]
+  command = "node build.mjs"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"

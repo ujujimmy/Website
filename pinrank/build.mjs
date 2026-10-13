@@ -53,9 +53,24 @@ for (const t of all) {
 }
 
 await write("/index.html", root(all));
+await write("/404.html", root(all)); // unknown URLs land on the visitor's language
+// Netlify reads _headers from the publish folder (Vercel uses vercel.json instead)
+await writeFile(join(out, "_headers"), `/app.js
+  Cache-Control: public, max-age=31536000, immutable
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+/demo/*
+  Cache-Control: public, max-age=604800
+/og/*
+  Cache-Control: public, max-age=604800
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+`);
 await writeFile(join(out, "app.js"), appJs);
 await copyFile(join(here, "src/assets/favicon.svg"), join(out, "favicon.svg"));
 await cp(join(here, "src/assets/fonts"), join(out, "fonts"), { recursive: true });
+await cp(join(here, "src/assets/demo"), join(out, "demo"), { recursive: true }).catch(() => console.warn("⚠️  No demo video yet: run scripts/demo-video.mjs"));
 await cp(join(here, "src/assets/og"), join(out, "og"), { recursive: true }).catch(() => console.warn("⚠️  No link-preview images yet: run scripts/og.mjs"));
 await writeFile(join(out, "robots.txt"), `User-agent: *\nAllow: /\nSitemap: ${config.siteUrl}/sitemap.xml\n`);
 await writeFile(

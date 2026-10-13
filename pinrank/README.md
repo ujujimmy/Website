@@ -87,6 +87,15 @@ npx -y -p playwright@1.56.1 node scripts/og.mjs          # link-preview images �
 npx -y -p playwright@1.56.1 node scripts/ad-video.mjs     # ad videos → ads/video/ (~2 min each)
 ```
 
+## Deploy (Netlify)
+
+- **Drag and drop:** run `node build.mjs`, then drop the `dist` folder on
+  app.netlify.com/drop. Cache headers come along in `dist/_headers`.
+- **From Git:** New site → import this repo → **Base directory: `pinrank`**. `netlify.toml`
+  sets the build command and publish folder.
+
+Then add the domain under Site configuration → Domain management.
+
 ## Deploy (Vercel)
 
 New Vercel project → import this repo → **Root Directory: `pinrank`**. `vercel.json` sets the

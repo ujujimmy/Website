@@ -89,6 +89,7 @@ ${noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonical" hr
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#fbfbf9">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script>document.documentElement.classList.add("js")</script>
 <link rel="preload" href="/fonts/newsreader-500.woff2" as="font" type="font/woff2" crossorigin>
 <style>${css}</style>
 </head>
@@ -152,8 +153,11 @@ const AFTER = [
   [7, 4, 3, 5, 9],
 ];
 
+/** Data the demo (and its recording) needs in window.PR. */
+export const demoData = (t) => ({ before: BEFORE.flat(), after: AFTER.flat(), captions: t.demo.captions });
+
 /** The subset of config and copy the browser needs. */
-function clientData(t, extra) {
+export function clientData(t, extra) {
   return {
     lang: t.code,
     locale: t.htmlLang,
@@ -191,12 +195,19 @@ function rankGrid(rows, label) {
   </figure>`;
 }
 
-/** The "demo video": a 3D map drawn on canvas by app.js, with a player bar. */
-function demo(t, tr) {
+/**
+ * The 3D demo: a recorded video of the scene (assets/demo/) with the caption,
+ * counters and search bar as live text on top. `canvas: true` is the version
+ * the recording scripts draw live with demo-render.js.
+ */
+export function demo(t, tr, { canvas = false } = {}) {
   const d = t.demo;
+  const stage = canvas
+    ? `<canvas aria-hidden="true"></canvas>`
+    : `<video muted playsinline loop preload="none" poster="/demo/poster.jpg" aria-hidden="true" disablepictureinpicture disableremoteplayback><source src="/demo/demo.mp4" type="video/mp4"><source src="/demo/demo.webm" type="video/webm"></video>`;
   return `<figure class="demo" data-demo>
-  <div class="demo-screen">
-    <canvas aria-hidden="true"></canvas>
+  <div class="demo-wrap"><div class="demo-screen">
+    ${stage}
     <button type="button" class="demo-big" data-bigplay aria-label="${d.play}">${icon.play}<span>${d.play}</span></button>
     <div class="demo-top">
       <span class="demo-search">${icon.search}<span>${tr ? tr.search : t.trades.electrician.search}</span></span>
@@ -210,7 +221,7 @@ function demo(t, tr) {
         <div><dt>${d.top3}</dt><dd data-top3>–</dd></div>
       </dl>
     </div>
-  </div>
+  </div></div>
   <div class="demo-bar">
     <button type="button" class="demo-play" data-play aria-label="${d.pause}" data-label-play="${d.play}" data-label-pause="${d.pause}"><span class="i-pause">${icon.pause}</span><span class="i-play">${icon.play}</span></button>
     <div class="demo-track" data-track role="slider" tabindex="0" aria-label="${d.week}" aria-valuemin="0" aria-valuemax="12" aria-valuenow="0"><span data-progress></span><i data-knob></i></div>
@@ -407,7 +418,7 @@ export function landing(t, all, css, js, trade = null) {
 <section class="sec">
   <div class="wrap">
     <h2 class="h2 reveal">${t.how.title}</h2>
-    <ol class="steps">
+    <ol class="steps" data-inview>
       ${t.how.steps.map((s, i) => `<li class="reveal"><span class="step-n">${i + 1}</span><h3>${s.t}</h3><p>${s.d}</p></li>`).join("")}
     </ol>
     ${cta(t.hero.cta)}
@@ -509,7 +520,7 @@ ${quizDialog(t, trade)}`;
       page: "landing",
       trade,
       isLanding: true,
-      demo: { before: BEFORE.flat(), after: AFTER.flat(), captions: t.demo.captions },
+      demo: demoData(t),
     }),
   });
 }

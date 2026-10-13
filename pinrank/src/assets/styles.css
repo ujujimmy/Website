@@ -163,47 +163,49 @@ h3 { font-size: 1.05rem; font-weight: 650; letter-spacing: -0.005em; line-height
 
 /* ---------- 3D demo player ---------- */
 .demo { margin: 0; }
+/* The screen has one fixed shape and its text is sized in em off its width
+   (16px at the 480px it's recorded at), so the live overlays always sit in
+   the same place over the recorded scene, at any size. */
+.demo-wrap { container-type: inline-size; }
 .demo-screen {
-  position: relative; aspect-ratio: 1 / 1.1; border-radius: 22px; overflow: hidden;
+  position: relative; aspect-ratio: 480 / 528; border-radius: 22px; overflow: hidden;
+  font-size: calc(100cqw / 30);
   background: radial-gradient(120% 90% at 50% 35%, var(--stage-2), var(--stage) 70%);
   color: #eef2f0;
-  box-shadow: 0 50px 90px -50px rgba(14, 20, 18, 0.7), 0 2px 0 rgba(255, 255, 255, 0.04) inset;
+  box-shadow: 0 40px 60px -40px rgba(14, 20, 18, 0.6);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
-@media (min-width: 560px) { .demo-screen { aspect-ratio: 5 / 4.4; } }
-.demo canvas { position: absolute; inset: 0; width: 100%; height: 100%; will-change: transform; transform: translateZ(0); }
-.demo-bottom, .demo-top { contain: layout paint; }
-.demo-hud dd { contain: content; }
+.demo video, .demo canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
 .demo-big {
   position: absolute; left: 50%; top: 46%; z-index: 2; transform: translate(-50%, -50%) scale(0.9);
   display: inline-flex; align-items: center; gap: 10px; padding: 14px 22px 14px 18px; border: 0; border-radius: 999px;
-  background: #fff; color: var(--ink); font-weight: 600; box-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.6);
+  background: #fff; color: var(--ink); font: 600 1rem var(--sans); box-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.6);
   opacity: 0; pointer-events: none; transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
 }
 .demo-big svg { width: 18px; height: 18px; }
 .demo.is-paused .demo-big { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%); }
-.demo-top { position: absolute; top: 14px; left: 14px; right: 14px; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.demo-top { position: absolute; top: 0.875em; left: 0.875em; right: 0.875em; display: flex; justify-content: space-between; align-items: center; gap: 0.625em; }
 .demo-search {
-  display: inline-flex; align-items: center; gap: 8px; min-width: 0;
-  padding: 7px 14px 7px 10px; border-radius: 999px;
+  display: inline-flex; align-items: center; gap: 0.5em; min-width: 0;
+  padding: 0.44em 0.9em 0.44em 0.65em; border-radius: 999px;
   background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.1);
-  font-size: 0.8rem; font-weight: 500;
+  font-size: 0.8em; font-weight: 500;
 }
 .demo-search span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.demo-search svg { width: 14px; height: 14px; flex: none; opacity: 0.7; }
-.demo-tag { flex: none; font-size: 0.66rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255, 255, 255, 0.5); }
-.demo-bottom { position: absolute; left: 16px; right: 16px; bottom: 14px; }
+.demo-search svg { width: 1.1em; height: 1.1em; flex: none; opacity: 0.7; }
+.demo-tag { flex: none; font-size: 0.66em; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255, 255, 255, 0.5); }
+.demo-bottom { position: absolute; left: 1em; right: 1em; bottom: 0.875em; }
 .demo-caption {
-  font-family: var(--serif); font-style: italic; font-size: clamp(1.05rem, 3.6vw, 1.3rem); line-height: 1.25;
-  color: #fff; margin: 0 0 12px; min-height: 1.25em;
-  transition: opacity 0.35s var(--ease), transform 0.35s var(--ease);
+  font-family: var(--serif); font-style: italic; font-size: 1.2em; line-height: 1.25;
+  color: #fff; margin: 0 0 0.6em; min-height: 1.25em;
+  transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
 }
 .demo-caption.swap { opacity: 0; transform: translateY(6px); }
-.demo-hud { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 0; padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.12); }
+.demo-hud { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6em; margin: 0; padding-top: 0.75em; border-top: 1px solid rgba(255, 255, 255, 0.12); }
 .demo-hud div { min-width: 0; }
-.demo-hud dt { font-size: 0.64rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255, 255, 255, 0.5); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.demo-hud dd { margin: 2px 0 0; font-size: clamp(1.05rem, 3.6vw, 1.35rem); font-weight: 600; font-variant-numeric: tabular-nums; color: #fff; }
+.demo-hud dt { font-size: 0.64em; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255, 255, 255, 0.5); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.demo-hud dd { margin: 0.1em 0 0; font-size: 1.25em; font-weight: 600; font-variant-numeric: tabular-nums; color: #fff; }
 .demo-bar { display: flex; align-items: center; gap: 14px; margin-top: 14px; padding: 0 4px; }
 .demo-play { flex: none; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--line); background: var(--paper); color: var(--ink); transition: border-color 0.2s; }
 .demo-play:hover { border-color: var(--ink); }
@@ -212,8 +214,12 @@ h3 { font-size: 1.05rem; font-weight: 650; letter-spacing: -0.005em; line-height
 .demo.is-paused .demo-play .i-play { display: block; }
 .demo-track { position: relative; flex: 1; height: 24px; cursor: pointer; touch-action: none; }
 .demo-track::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 3px; margin-top: -1.5px; border-radius: 99px; background: var(--line); }
-.demo-track span { position: absolute; left: 0; right: 0; top: 50%; height: 3px; margin-top: -1.5px; border-radius: 99px; background: var(--ink); transform: scaleX(0); transform-origin: left; will-change: transform; }
-.demo-track i { position: absolute; left: -6px; top: 50%; width: 12px; height: 12px; margin-top: -6px; border-radius: 50%; background: var(--ink); box-shadow: 0 0 0 4px var(--bg); will-change: transform; }
+.demo-track span { position: absolute; left: 0; right: 0; top: 50%; height: 3px; margin-top: -1.5px; border-radius: 99px; background: var(--ink); transform-origin: left; animation: bar 14s linear infinite both; animation-play-state: paused; }
+.demo-track i { position: absolute; inset: 0; animation: rail 14s linear infinite both; animation-play-state: paused; pointer-events: none; }
+.demo-track i::after { content: ""; position: absolute; right: -6px; top: 50%; width: 12px; height: 12px; margin-top: -6px; border-radius: 50%; background: var(--ink); box-shadow: 0 0 0 4px var(--bg); }
+.demo.playing .demo-track span, .demo.playing .demo-track i { animation-play-state: running; }
+@keyframes bar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes rail { from { transform: translateX(-100%); } to { transform: translateX(0); } }
 .demo-time { flex: none; font-size: 0.8rem; color: var(--muted); font-variant-numeric: tabular-nums; }
 
 /* ---------- Sections ---------- */
@@ -482,15 +488,19 @@ h3 { font-size: 1.05rem; font-weight: 650; letter-spacing: -0.005em; line-height
 .prose h2 { margin-top: 1.8em; }
 .prose p { color: var(--muted); }
 
-/* ---------- Scroll-linked motion (progressive: browsers without it show everything static) ---------- */
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .reveal { animation: reveal linear both; animation-timeline: view(); animation-range: entry 0% entry 55%; }
-    .steps::before { animation: draw linear both; animation-timeline: view(); animation-range: entry 30% cover 45%; }
-  }
+/* ---------- Reveal on scroll ----------
+   One-shot: app.js adds .in when an element first enters the viewport, the
+   transition runs once, then costs nothing. Only hidden when JS is running
+   (html.js, set in <head>). If app.js never takes over (html.io), a CSS
+   timer shows everything after 2.5 s. */
+@media (prefers-reduced-motion: no-preference) {
+  .js .reveal:not(.in) { opacity: 0; transform: translateY(26px); }
+  .js:not(.io) .reveal:not(.in) { animation: show 0s 2.5s forwards; }
+  .js .reveal { transition: opacity 0.9s var(--ease), transform 0.9s var(--ease); }
+  .js .steps::before { transform: scaleX(0); transition: transform 1.4s var(--ease) 0.2s; }
+  .js .steps.in::before { transform: none; }
 }
-@keyframes reveal { from { opacity: 0; transform: translateY(28px); } }
-@keyframes draw { from { transform: scaleX(0); } }
+@keyframes show { to { opacity: 1; transform: none; } }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition: none !important; scroll-behavior: auto !important; }

@@ -56,8 +56,10 @@ async function adPage(t, trade) {
 <style>
   html, body { height: 100%; overflow: hidden; }
   .ad { height: 100%; display: flex; flex-direction: column; gap: 20px; padding: 34px 30px 32px; }
-  .ad-brand { display: flex; align-items: center; gap: 8px; font: 500 22px var(--serif); letter-spacing: -0.02em; }
-  .ad-brand svg { width: 20px; height: 20px; color: var(--accent); }
+  .ad-brand { display: flex; align-items: center; gap: 9px; color: #5a5a5a; }
+  .ad-brand img { height: 34px; }
+  .ad-brand b { display: block; font: 700 18px/1 var(--sans); letter-spacing: .05em; }
+  .ad-brand small { display: block; font: 500 8px/1 var(--sans); letter-spacing: .42em; margin-top: 4px; }
   .ad h1 { font: 500 38px/1.06 var(--serif); letter-spacing: -0.02em; margin: 0; text-wrap: balance; }
   .ad .demo { flex: 1; min-height: 0; display: flex; animation: none; }
   .ad .demo-wrap { flex: 1; display: flex; container-type: normal; }
@@ -74,7 +76,7 @@ async function adPage(t, trade) {
   .tall .ad-foot p { font-size: 24px; }
 </style></head>
 <body class="__SHAPE__"><div class="ad">
-  <div class="ad-brand">${pin}PinRank</div>
+  <div class="ad-brand"><img src="/brand/mark.png" alt=""><span><b>PINRANK</b><small>BELGIUM</small></span></div>
   <h1>${t.adVideo.headline(tr)}</h1>
   ${figure}
   <div class="ad-foot">
@@ -90,7 +92,7 @@ ${pr}
 /* ---------- local server: the built site plus the composed ad pages ---------- */
 
 const pages = new Map();
-const types = { ".html": "text/html; charset=utf-8", ".js": "text/javascript", ".woff2": "font/woff2", ".svg": "image/svg+xml" };
+const types = { ".html": "text/html; charset=utf-8", ".js": "text/javascript", ".woff2": "font/woff2", ".svg": "image/svg+xml", ".png": "image/png" };
 const server = createServer(async (req, res) => {
   const url = new URL(req.url, "http://x");
   if (pages.has(url.pathname)) return res.writeHead(200, { "Content-Type": types[".html"] }).end(pages.get(url.pathname));

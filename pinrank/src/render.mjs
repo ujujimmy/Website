@@ -26,11 +26,13 @@ const icon = {
   heart: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.3-9.1C1.4 8 3.5 4.5 7 4.5c2 0 3.5 1.1 5 3 1.5-1.9 3-3 5-3 3.5 0 5.6 3.5 4.3 6.9-1.8 4.5-9.3 9.1-9.3 9.1z" fill="currentColor"/></svg>`,
   comment: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z" fill="currentColor"/></svg>`,
   share: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5L21 4l-6 17-3.5-7.2z" fill="currentColor"/></svg>`,
+  lock: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10V8a5 5 0 0 1 10 0v2h1v11H6V10zm2 0h6V8a3 3 0 0 0-6 0z" fill="currentColor"/></svg>`,
+  tool: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5 5L3 18l3 3 6.7-6.7a4 4 0 0 0 5-5l-2.5 2.5-2.5-.5-.5-2.5z" fill="currentColor"/></svg>`,
   pause: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5h3v14H8zM13 5h3v14h-3z" fill="currentColor"/></svg>`,
   play: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5l11 7-11 7z" fill="currentColor"/></svg>`,
 };
 
-const logo = `<span class="logo-mark">${icon.pin}</span><span class="logo-word">PinRank</span>`;
+const logo = `<img class="logo-mark" src="/brand/mark.png" alt="" width="29" height="35"><span class="logo-word"><b>PINRANK</b><small>BELGIUM</small></span>`;
 
 /** Wrap each word for the headline's load-in. Leaves tags (the <em>) intact. */
 function splitWords(html) {
@@ -92,7 +94,10 @@ ${noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonical" hr
 <meta property="og:image:alt" content="${esc(t.og.title + " " + t.og.sub)}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#fbfbf9">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/brand/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
 <script>document.documentElement.classList.add("js")</script>
 <link rel="preload" href="/fonts/newsreader-500.woff2" as="font" type="font/woff2" crossorigin>
 <style>${css}</style>
@@ -300,11 +305,39 @@ function reel(t, tr) {
       </svg>
       <div class="reel-shade"></div>
       <div class="reel-bars"><i></i><i></i><i></i></div>
-      <div class="reel-user"><span class="reel-avatar">${icon.pin}</span><b>${so.handle}</b></div>
+      <div class="reel-user"><span class="reel-avatar"><img src="/brand/mark.png" alt=""></span><b>${so.handle}</b></div>
       <div class="reel-side"><span>${icon.heart}</span><span>${icon.comment}</span><span>${icon.share}</span></div>
       <p class="reel-sub" data-sub>${words(caps[0])}</p>
     </div>
     <figcaption>${so.platforms}<small>${so.label}</small></figcaption>
+  </figure>`;
+}
+
+/**
+ * The free website, shown as a browser window that builds a sample trades
+ * site block by block. app.js replays it and, on the general page, swaps the
+ * sample trade each time. Without JS it rests fully built.
+ */
+function site(t, tr) {
+  const w = t.website;
+  const keys = tr ? [Object.keys(t.trades).find((k) => t.trades[k] === tr)] : TRADES;
+  const samples = keys.map((k) => w.samples[k]);
+  const s0 = samples[0];
+  const n = (x) => x.toLocaleString(t.htmlLang, { minimumFractionDigits: 1 });
+  return `<figure class="site" data-site data-samples="${esc(JSON.stringify(samples))}">
+    <div class="site-win" aria-hidden="true">
+      <div class="site-bar"><i></i><i></i><i></i><span class="site-url">${icon.lock}${w.url}</span></div>
+      <div class="site-body">
+        <div class="site-nav b" style="--d:0"><b data-s="name">${esc(s0.name)}</b><span class="site-call">${icon.phone}${w.call}</span></div>
+        <div class="site-hero b" style="--d:1">
+          <p data-s="title">${esc(s0.title)}</p>
+          <div class="site-ctas"><span class="site-btn">${w.quote}</span><span class="site-btn ghost">${icon.chat} WhatsApp</span></div>
+        </div>
+        <div class="site-services">${s0.services.map((x, i) => `<span class="b" style="--d:${2 + i * 0.5}">${icon.tool}<em data-s="svc${i}">${esc(x)}</em></span>`).join("")}</div>
+        <div class="site-reviews b" style="--d:3.6"><i class="stars">${icon.star.repeat(5)}</i> ${n(4.9)} · 58 ${w.reviews}</div>
+      </div>
+    </div>
+    <figcaption>${w.label}</figcaption>
   </figure>`;
 }
 
@@ -316,7 +349,7 @@ function calc(t, tr) {
   const want = (tr || t.trades.other).job;
   const idx = JOB_STEPS.reduce((best, v, i) => (Math.abs(v - want) < Math.abs(JOB_STEPS[best] - want) ? i : best), 0);
   const job = JOB_STEPS[idx], extra = 2, be = Math.ceil(p.amount / job);
-  return `<section class="sec tint">
+  return `<section class="sec">
   <div class="wrap calc" data-calc>
     <div class="reveal">
       <h2 class="h2">${c.title}</h2>
@@ -525,9 +558,20 @@ export function landing(t, all, css, js, trade = null) {
   </div>
 </section>
 
+<section class="sec tint">
+  <div class="wrap split split-rev">
+    <div class="reveal">
+      <h2 class="h2">${t.website.title}</h2>
+      <p class="body-lg">${t.website.body}</p>
+      <ul class="site-points">${t.website.points.map((x) => `<li>${icon.check}${x}</li>`).join("")}</ul>
+    </div>
+    <div class="reveal">${site(t, tr)}</div>
+  </div>
+</section>
+
 ${testimonials}
 
-<section class="sec tint">
+<section class="sec">
   <div class="wrap guarantee reveal">
     ${seal(t)}
     <div>
@@ -538,7 +582,7 @@ ${testimonials}
   </div>
 </section>
 
-<section class="sec">
+<section class="sec tint">
   <div class="wrap">
     <h2 class="h2 reveal">${t.fit.title}</h2>
     <div class="fit">
@@ -552,7 +596,7 @@ ${p.show ? calc(t, tr) : ""}
 
 ${
   p.show
-    ? `<section class="sec">
+    ? `<section class="sec tint">
   <div class="wrap price-wrap">
     <div class="reveal">
       <h2 class="h2">${t.pricing.title}</h2>
@@ -569,7 +613,7 @@ ${
     : ""
 }
 
-<section class="sec tint">
+<section class="sec">
   <div class="wrap faq-wrap">
     <h2 class="h2 reveal">${t.faq.title}</h2>
     <div class="faq">
@@ -683,6 +727,7 @@ export function root(all) {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(config.brand)}</title>
+<link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="canonical" href="${config.siteUrl}/${config.defaultLanguage}/">
 ${all.map((l) => `<link rel="alternate" hreflang="${l.code}" href="${config.siteUrl}/${l.code}/">`).join("\n")}
 <script>
@@ -690,7 +735,7 @@ ${all.map((l) => `<link rel="alternate" hreflang="${l.code}" href="${config.site
 for(var i=0;i<l.length;i++){var k=String(l[i]).slice(0,2).toLowerCase();if(c.indexOf(k)>-1){d=k;break}}
 location.replace("/"+d+"/"+location.search+location.hash)})();
 </script>
-<style>body{font:16px system-ui,sans-serif;display:grid;place-items:center;min-height:100vh;margin:0;background:#fbfbf9;color:#141716}a{margin:0 .5em;color:#1f5c45}</style>
+<style>body{font:16px system-ui,sans-serif;display:grid;place-items:center;min-height:100vh;margin:0;background:#fbfbf9;color:#141716}a{margin:0 .5em;color:#1c5482}</style>
 </head>
 <body><p>${all.map((l) => `<a href="/${l.code}/">${l.label}</a>`).join("")}</p></body>
 </html>`;

@@ -63,12 +63,22 @@ await writeFile(join(out, "_headers"), `/app.js
   Cache-Control: public, max-age=604800
 /og/*
   Cache-Control: public, max-age=604800
+/brand/*
+  Cache-Control: public, max-age=604800
 /*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
 `);
 await writeFile(join(out, "app.js"), appJs);
-await copyFile(join(here, "src/assets/favicon.svg"), join(out, "favicon.svg"));
+await cp(join(here, "src/assets/brand"), join(out, "brand"), { recursive: true });
+// browsers and iOS look for these two at the root
+await copyFile(join(here, "src/assets/brand/favicon.ico"), join(out, "favicon.ico"));
+await copyFile(join(here, "src/assets/brand/apple-touch-icon.png"), join(out, "apple-touch-icon.png"));
+await writeFile(join(out, "site.webmanifest"), JSON.stringify({
+  name: "PinRank Belgium", short_name: config.brand, start_url: `/${config.defaultLanguage}/`, display: "browser",
+  background_color: "#fbfbf9", theme_color: "#1c5482",
+  icons: [{ src: "/brand/icon-192.png", sizes: "192x192", type: "image/png" }, { src: "/brand/icon-512.png", sizes: "512x512", type: "image/png" }],
+}, null, 2));
 await cp(join(here, "src/assets/fonts"), join(out, "fonts"), { recursive: true });
 await cp(join(here, "src/assets/demo"), join(out, "demo"), { recursive: true }).catch(() => console.warn("⚠️  No demo video yet: run scripts/demo-video.mjs"));
 await cp(join(here, "src/assets/og"), join(out, "og"), { recursive: true }).catch(() => console.warn("⚠️  No link-preview images yet: run scripts/og.mjs"));

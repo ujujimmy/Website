@@ -43,7 +43,7 @@ export default {
     ctaNote: "4 korte vragen · 30 seconden · Vrijblijvend",
     wa: "Liever meteen een WhatsApp sturen",
     pick: "Wat is jouw vak?",
-    trust: ["Geld-terug-garantie na 3 maanden", "Reels en posts voor je socials", "Elke week aan je profiel gewerkt", "Maandelijks rankingrapport"],
+    trust: ["Geld-terug-garantie na 3 maanden", "Reels en posts voor je socials", "Gratis website voor je zaak", "Maandelijks rankingrapport"],
   },
 
   demo: {
@@ -140,6 +140,23 @@ export default {
     },
   },
 
+  website: {
+    title: "Geen website, of een verouderde? Wij bouwen er gratis een.",
+    body: "Klanten die je vinden in Google Maps, klikken vaak door naar je website. Wij bouwen een snelle, mobiele site met je diensten, werkgebied, foto’s en reviews, gekoppeld aan je Google-profiel. Gratis, als onderdeel van je PinRank-pakket.",
+    points: ["Snel en perfect op je gsm", "Je diensten, werkgebied en reviews", "Bel- en WhatsApp-knop bovenaan", "Wij bouwen hem: jij levert foto’s en info"],
+    label: "Voorbeeld van een website",
+    url: "jouwbedrijf.be",
+    call: "Bel nu",
+    quote: "Offerte aanvragen",
+    reviews: "Google-reviews",
+    samples: {
+      roofer: { name: "Dakwerken Peeters", title: "Uw dakwerker in Gent en omstreken", services: ["Nieuw dak", "Dakherstelling", "Dakgoten"] },
+      renovation: { name: "Peeters Renovatie", title: "Renovatie van A tot Z in Leuven", services: ["Badkamers", "Keukens", "Totaalrenovatie"] },
+      plumber: { name: "Loodgieterij Peeters", title: "Uw loodgieter in Antwerpen, 7 op 7", services: ["Lekdetectie", "Ontstopping", "Sanitair"] },
+      electrician: { name: "Elektro Peeters", title: "Erkend elektricien in Brugge", services: ["Keuring", "Zekeringkast", "Laadpalen"] },
+    },
+  },
+
   proof: { title: "Wat klanten zeggen" },
 
   guarantee: {
@@ -186,6 +203,7 @@ export default {
       "Antwoord op elke review",
       "Maandelijks rankingrapport op de kaart",
       "Reels en posts voor Instagram, Facebook, TikTok en YouTube, met ondertitels",
+      "Gratis website voor je zaak, gekoppeld aan je Google-profiel",
       "Geld-terug-garantie na 3 maanden",
     ],
     cta: "Plan een gratis gesprek",
@@ -197,6 +215,7 @@ export default {
     items: [
       { q: "Wat is de gratis rankingscan?", a: "Een kaart van je regio waarop je ziet op welke plaats je in Google Maps staat voor je belangrijkste zoekwoord, op 25 punten rond je zaak, en wie er boven je staat. We overlopen hem samen in het gratis gesprek." },
       { q: "Wat moet ik doen voor de social media?", a: "Je geeft ons één keer toegang tot je Instagram, Facebook, TikTok en YouTube en stuurt af en toe foto’s of filmpjes van je werk via WhatsApp. Wij monteren er reels van met ondertitels, schrijven de captions en posten alles voor je." },
+      { q: "Is de website echt gratis?", a: "Ja. We bouwen hem als onderdeel van je PinRank-pakket, zonder extra kosten. Heb je al een website, dan bekijken we samen of we die beter maken of vervangen." },
       { q: "Hoe snel zie ik resultaat?", a: "Dat hangt af van je regio en hoeveel concurrentie er is. Lokale ranking bouw je op over weken, niet dagen — daarom meten we na 3 maanden en geven we je dan een geld-terug-garantie." },
       { q: "Hoe werkt de geld-terug-garantie precies?", a: "Bij de start meten we je ranking op de kaart voor je belangrijkste zoekwoorden. Na 3 maanden meten we opnieuw, op dezelfde manier. Is je gemiddelde positie niet verbeterd, dan storten we terug wat je betaald hebt." },
       { q: "Moet ik zelf veel doen?", a: "Heel weinig. Je geeft ons toegang tot je Google-bedrijfsprofiel (we leggen uit hoe) en stuurt af en toe foto’s van je werk door. De rest doen wij." },

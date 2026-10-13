@@ -63,6 +63,8 @@ Google Maps toont drie bedrijven. Die drie krijgen het telefoontje.
 PinRank werkt elke week aan je Google-bedrijfsprofiel, zodat jij daar staat. Niet hoger na 3 maanden? Dan krijg je je geld terug.
 
 Vraag je gratis rankingscan aan: in 30 seconden.
+
+Bonus: we bouwen gratis een website voor je zaak.
 ```
 
 **Headline:** Sta jij in de top 3 op Google Maps?  
@@ -111,6 +113,8 @@ Geen tijd voor Instagram, TikTok of YouTube?
 Wij maken van je werffoto’s en filmpjes reels met ondertitels, schrijven de captions en posten ze voor je. En we werken aan je plek bovenaan in Google Maps.
 
 Jij geeft toegang, wij doen de rest. Speciaal voor vakmensen in België.
+
+Bonus: we bouwen gratis een website voor je zaak.
 ```
 
 **Headline:** Je socials én Google Maps, geregeld  
@@ -133,6 +137,8 @@ Google Maps toont drie bedrijven. Die drie krijgen het telefoontje.
 PinRank werkt elke week aan je Google-bedrijfsprofiel, zodat jij daar staat. Niet hoger na 3 maanden? Dan krijg je je geld terug.
 
 Vraag je gratis rankingscan aan: in 30 seconden.
+
+Bonus: we bouwen gratis een website voor je zaak.
 ```
 
 **Headline:** Sta jij in de top 3 op Google Maps?  
@@ -181,6 +187,8 @@ Geen tijd voor Instagram, TikTok of YouTube?
 Wij maken van je werffoto’s en filmpjes reels met ondertitels, schrijven de captions en posten ze voor je. En we werken aan je plek bovenaan in Google Maps.
 
 Jij geeft toegang, wij doen de rest. Speciaal voor dakwerkers in België.
+
+Bonus: we bouwen gratis een website voor je zaak.
 ```
 
 **Headline:** Je socials én Google Maps, geregeld  
@@ -203,6 +211,8 @@ Google Maps toont drie bedrijven. Die drie krijgen het telefoontje.
 PinRank werkt elke week aan je Google-bedrijfsprofiel, zodat jij daar staat. Niet hoger na 3 maanden? Dan krijg je je geld terug.
 
 Vraag je gratis rankingscan aan: in 30 seconden.
+
+Bonus: we bouwen gratis een website voor je zaak.
 ```
 
 **Headline:** Sta jij in de top 3 op Google Maps?  
@@ -251,6 +261,8 @@ Geen tijd voor Instagram, TikTok of YouTube?
 Wij maken van je werffoto’s en filmpjes reels met ondertitels, schrijven de captions en posten ze voor je. En we werken aan je plek bovenaan in Google Maps.
 
 Jij geeft toegang, wij doen de rest. Speciaal voor renovatiebedrijven in België.
+
+Bonus: we bouwen gratis een website voor je zaak.
 ```
 
 **Headline:** Je socials én Google Maps, geregeld  
@@ -273,6 +285,8 @@ Google Maps toont drie bedrijven. Die drie krijgen het telefoontje.
 PinRank werkt elke week aan je Google-bedrijfsprofiel, zodat jij daar staat. Niet hoger na 3 maanden? Dan krijg je je geld terug.
 
 Vraag je gratis rankingscan aan: in 30 seconden.
+
+Bonus: we bouwen gratis een website voor je zaak.
 ```
 
 **Headline:** Sta jij in de top 3 op Google Maps?  
@@ -321,6 +335,8 @@ Geen tijd voor Instagram, TikTok of YouTube?
 Wij maken van je werffoto’s en filmpjes reels met ondertitels, schrijven de captions en posten ze voor je. En we werken aan je plek bovenaan in Google Maps.
 
 Jij geeft toegang, wij doen de rest. Speciaal voor loodgieters in België.
+
+Bonus: we bouwen gratis een website voor je zaak.
 ```
 
 **Headline:** Je socials én Google Maps, geregeld  
@@ -343,6 +359,8 @@ Google Maps toont drie bedrijven. Die drie krijgen het telefoontje.
 PinRank werkt elke week aan je Google-bedrijfsprofiel, zodat jij daar staat. Niet hoger na 3 maanden? Dan krijg je je geld terug.
 
 Vraag je gratis rankingscan aan: in 30 seconden.
+
+Bonus: we bouwen gratis een website voor je zaak.
 ```
 
 **Headline:** Sta jij in de top 3 op Google Maps?  
@@ -391,6 +409,8 @@ Geen tijd voor Instagram, TikTok of YouTube?
 Wij maken van je werffoto’s en filmpjes reels met ondertitels, schrijven de captions en posten ze voor je. En we werken aan je plek bovenaan in Google Maps.
 
 Jij geeft toegang, wij doen de rest. Speciaal voor elektriciens in België.
+
+Bonus: we bouwen gratis een website voor je zaak.
 ```
 
 **Headline:** Je socials én Google Maps, geregeld  
@@ -419,6 +439,8 @@ Google Maps affiche trois entreprises. Ce sont elles qui reçoivent l’appel.
 Chaque semaine, PinRank travaille votre fiche Google Business pour que vous y soyez. Pas mieux classé après 3 mois ? Vous êtes remboursé.
 
 Demandez votre scan de classement gratuit : 30 secondes.
+
+En bonus : nous créons gratuitement le site web de votre entreprise.
 ```
 
 **Headline:** Êtes-vous dans le top 3 de Google Maps ?  
@@ -467,6 +489,8 @@ Pas le temps pour Instagram, TikTok ou YouTube ?
 Nous transformons vos photos et vidéos de chantier en reels sous-titrés, écrivons les légendes et les publions pour vous. Et nous travaillons votre place en tête de Google Maps.
 
 Vous donnez l’accès, nous faisons le reste. Spécialement pour les artisans en Belgique.
+
+En bonus : nous créons gratuitement le site web de votre entreprise.
 ```
 
 **Headline:** Vos réseaux et Google Maps, réglés  
@@ -489,6 +513,8 @@ Google Maps affiche trois entreprises. Ce sont elles qui reçoivent l’appel.
 Chaque semaine, PinRank travaille votre fiche Google Business pour que vous y soyez. Pas mieux classé après 3 mois ? Vous êtes remboursé.
 
 Demandez votre scan de classement gratuit : 30 secondes.
+
+En bonus : nous créons gratuitement le site web de votre entreprise.
 ```
 
 **Headline:** Êtes-vous dans le top 3 de Google Maps ?  
@@ -537,6 +563,8 @@ Pas le temps pour Instagram, TikTok ou YouTube ?
 Nous transformons vos photos et vidéos de chantier en reels sous-titrés, écrivons les légendes et les publions pour vous. Et nous travaillons votre place en tête de Google Maps.
 
 Vous donnez l’accès, nous faisons le reste. Spécialement pour les couvreurs en Belgique.
+
+En bonus : nous créons gratuitement le site web de votre entreprise.
 ```
 
 **Headline:** Vos réseaux et Google Maps, réglés  
@@ -559,6 +587,8 @@ Google Maps affiche trois entreprises. Ce sont elles qui reçoivent l’appel.
 Chaque semaine, PinRank travaille votre fiche Google Business pour que vous y soyez. Pas mieux classé après 3 mois ? Vous êtes remboursé.
 
 Demandez votre scan de classement gratuit : 30 secondes.
+
+En bonus : nous créons gratuitement le site web de votre entreprise.
 ```
 
 **Headline:** Êtes-vous dans le top 3 de Google Maps ?  
@@ -607,6 +637,8 @@ Pas le temps pour Instagram, TikTok ou YouTube ?
 Nous transformons vos photos et vidéos de chantier en reels sous-titrés, écrivons les légendes et les publions pour vous. Et nous travaillons votre place en tête de Google Maps.
 
 Vous donnez l’accès, nous faisons le reste. Spécialement pour les entreprises de rénovation en Belgique.
+
+En bonus : nous créons gratuitement le site web de votre entreprise.
 ```
 
 **Headline:** Vos réseaux et Google Maps, réglés  
@@ -629,6 +661,8 @@ Google Maps affiche trois entreprises. Ce sont elles qui reçoivent l’appel.
 Chaque semaine, PinRank travaille votre fiche Google Business pour que vous y soyez. Pas mieux classé après 3 mois ? Vous êtes remboursé.
 
 Demandez votre scan de classement gratuit : 30 secondes.
+
+En bonus : nous créons gratuitement le site web de votre entreprise.
 ```
 
 **Headline:** Êtes-vous dans le top 3 de Google Maps ?  
@@ -677,6 +711,8 @@ Pas le temps pour Instagram, TikTok ou YouTube ?
 Nous transformons vos photos et vidéos de chantier en reels sous-titrés, écrivons les légendes et les publions pour vous. Et nous travaillons votre place en tête de Google Maps.
 
 Vous donnez l’accès, nous faisons le reste. Spécialement pour les plombiers en Belgique.
+
+En bonus : nous créons gratuitement le site web de votre entreprise.
 ```
 
 **Headline:** Vos réseaux et Google Maps, réglés  
@@ -699,6 +735,8 @@ Google Maps affiche trois entreprises. Ce sont elles qui reçoivent l’appel.
 Chaque semaine, PinRank travaille votre fiche Google Business pour que vous y soyez. Pas mieux classé après 3 mois ? Vous êtes remboursé.
 
 Demandez votre scan de classement gratuit : 30 secondes.
+
+En bonus : nous créons gratuitement le site web de votre entreprise.
 ```
 
 **Headline:** Êtes-vous dans le top 3 de Google Maps ?  
@@ -747,6 +785,8 @@ Pas le temps pour Instagram, TikTok ou YouTube ?
 Nous transformons vos photos et vidéos de chantier en reels sous-titrés, écrivons les légendes et les publions pour vous. Et nous travaillons votre place en tête de Google Maps.
 
 Vous donnez l’accès, nous faisons le reste. Spécialement pour les électriciens en Belgique.
+
+En bonus : nous créons gratuitement le site web de votre entreprise.
 ```
 
 **Headline:** Vos réseaux et Google Maps, réglés  

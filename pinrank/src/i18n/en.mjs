@@ -43,7 +43,7 @@ export default {
     ctaNote: "4 quick questions · 30 seconds · No obligation",
     wa: "Rather send a WhatsApp right away",
     pick: "Your trade?",
-    trust: ["Money-back guarantee after 3 months", "Reels and posts for your socials", "Your profile worked on every week", "Monthly ranking report"],
+    trust: ["Money-back guarantee after 3 months", "Reels and posts for your socials", "Free website for your business", "Monthly ranking report"],
   },
 
   demo: {
@@ -140,6 +140,23 @@ export default {
     },
   },
 
+  website: {
+    title: "No website, or an outdated one? We build one for free.",
+    body: "Customers who find you on Google Maps often click through to your website. We build a fast, mobile site with your services, service area, photos and reviews, linked to your Google profile. Free, as part of your PinRank package.",
+    points: ["Fast and perfect on mobile", "Your services, area and reviews", "Call and WhatsApp buttons up front", "We build it: you send photos and info"],
+    label: "Example website",
+    url: "yourbusiness.be",
+    call: "Call now",
+    quote: "Get a quote",
+    reviews: "Google reviews",
+    samples: {
+      roofer: { name: "Peeters Roofing", title: "Your roofer in Ghent and around", services: ["New roofs", "Repairs", "Gutters"] },
+      renovation: { name: "Peeters Renovation", title: "Renovation from A to Z in Leuven", services: ["Bathrooms", "Kitchens", "Full renovation"] },
+      plumber: { name: "Peeters Plumbing", title: "Your plumber in Antwerp, 7 days a week", services: ["Leak detection", "Unblocking", "Bathrooms"] },
+      electrician: { name: "Peeters Electrical", title: "Certified electrician in Bruges", services: ["Inspections", "Fuse boxes", "EV chargers"] },
+    },
+  },
+
   proof: { title: "What clients say" },
 
   guarantee: {
@@ -186,6 +203,7 @@ export default {
       "A reply to every review",
       "Monthly ranking report on the map",
       "Reels and posts for Instagram, Facebook, TikTok and YouTube, with subtitles",
+      "Free website, linked to your Google profile",
       "Money-back guarantee after 3 months",
     ],
     cta: "Book a free call",
@@ -197,6 +215,7 @@ export default {
     items: [
       { q: "What is the free ranking scan?", a: "A map of your area showing where you rank on Google Maps for your main keyword at 25 points around your business, and who ranks above you. We go through it together on the free call." },
       { q: "What do I need to do for social media?", a: "You give us access to your Instagram, Facebook, TikTok and YouTube once, and send photos or clips of your work on WhatsApp now and then. We edit them into subtitled reels, write the captions and post everything for you." },
+      { q: "Is the website really free?", a: "Yes. We build it as part of your PinRank package at no extra cost. Already have a website? We’ll look together at whether to improve or replace it." },
       { q: "How quickly will I see results?", a: "It depends on your area and how much competition there is. Local ranking builds over weeks, not days — that’s why we measure after 3 months and back it with a money-back guarantee." },
       { q: "How exactly does the money-back guarantee work?", a: "At the start we measure your ranking on the map for your main keywords. After 3 months we measure again, the same way. If your average position hasn’t improved, we refund what you paid." },
       { q: "Do I have to do much myself?", a: "Very little. You give us access to your Google Business Profile (we explain how) and forward photos of your work now and then. We do the rest." },

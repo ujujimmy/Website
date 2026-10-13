@@ -43,7 +43,7 @@ export default {
     ctaNote: "4 questions · 30 secondes · Sans engagement",
     wa: "Je préfère envoyer un WhatsApp",
     pick: "Votre métier ?",
-    trust: ["Satisfait ou remboursé après 3 mois", "Reels et posts pour vos réseaux", "Votre fiche travaillée chaque semaine", "Rapport de classement mensuel"],
+    trust: ["Satisfait ou remboursé après 3 mois", "Reels et posts pour vos réseaux", "Site web gratuit pour votre entreprise", "Rapport de classement mensuel"],
   },
 
   demo: {
@@ -140,6 +140,23 @@ export default {
     },
   },
 
+  website: {
+    title: "Pas de site, ou un site dépassé ? Nous en créons un gratuitement.",
+    body: "Les clients qui vous trouvent sur Google Maps cliquent souvent vers votre site. Nous créons un site rapide et mobile avec vos services, votre zone d’intervention, vos photos et vos avis, relié à votre fiche Google. Gratuit, inclus dans votre formule PinRank.",
+    points: ["Rapide et parfait sur mobile", "Vos services, votre zone et vos avis", "Boutons Appeler et WhatsApp bien visibles", "Nous le créons : vous fournissez photos et infos"],
+    label: "Exemple de site",
+    url: "votreentreprise.be",
+    call: "Appeler",
+    quote: "Demander un devis",
+    reviews: "avis Google",
+    samples: {
+      roofer: { name: "Toitures Dubois", title: "Votre couvreur à Namur et environs", services: ["Toiture neuve", "Réparation", "Gouttières"] },
+      renovation: { name: "Dubois Rénovation", title: "Rénovation complète à Liège", services: ["Salles de bain", "Cuisines", "Rénovation totale"] },
+      plumber: { name: "Plomberie Dubois", title: "Votre plombier à Charleroi, 7j/7", services: ["Recherche de fuite", "Débouchage", "Sanitaire"] },
+      electrician: { name: "Électricité Dubois", title: "Électricien agréé à Mons", services: ["Contrôle", "Tableau électrique", "Bornes de recharge"] },
+    },
+  },
+
   proof: { title: "Ce que disent nos clients" },
 
   guarantee: {
@@ -186,6 +203,7 @@ export default {
       "Réponse à chaque avis",
       "Rapport de classement mensuel sur la carte",
       "Reels et publications pour Instagram, Facebook, TikTok et YouTube, sous-titrés",
+      "Site web gratuit, relié à votre fiche Google",
       "Satisfait ou remboursé après 3 mois",
     ],
     cta: "Planifier un appel gratuit",
@@ -197,6 +215,7 @@ export default {
     items: [
       { q: "Qu’est-ce que le scan de classement gratuit ?", a: "Une carte de votre région qui montre votre position dans Google Maps pour votre mot-clé principal, sur 25 points autour de votre entreprise, et qui est au-dessus de vous. Nous la parcourons ensemble lors de l’appel gratuit." },
       { q: "Que dois-je faire pour les réseaux sociaux ?", a: "Vous nous donnez une seule fois l’accès à votre Instagram, Facebook, TikTok et YouTube, et vous nous envoyez de temps en temps des photos ou vidéos de vos chantiers par WhatsApp. Nous en faisons des reels sous-titrés, écrivons les légendes et publions tout pour vous." },
+      { q: "Le site est-il vraiment gratuit ?", a: "Oui. Nous le créons dans le cadre de votre formule PinRank, sans frais supplémentaires. Vous avez déjà un site ? Nous voyons ensemble s’il faut l’améliorer ou le remplacer." },
       { q: "En combien de temps vais-je voir des résultats ?", a: "Cela dépend de votre région et de la concurrence. Le classement local se construit en semaines, pas en jours — c’est pourquoi nous mesurons après 3 mois et vous offrons alors une garantie de remboursement." },
       { q: "Comment fonctionne exactement la garantie ?", a: "Au départ, nous mesurons votre classement sur la carte pour vos mots-clés principaux. Après 3 mois, nous mesurons à nouveau, de la même façon. Si votre position moyenne ne s’est pas améliorée, nous vous remboursons ce que vous avez payé." },
       { q: "Est-ce que je dois faire beaucoup moi-même ?", a: "Très peu. Vous nous donnez accès à votre fiche Google Business (nous vous expliquons comment) et vous nous envoyez de temps en temps des photos de vos chantiers. Nous faisons le reste." },

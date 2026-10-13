@@ -216,6 +216,28 @@
     document.addEventListener("visibilitychange", function () { if (document.hidden) stop(); else if (inView) start(); });
   })(); } catch (err) { if (window.console) console.error(err); }
 
+  /* ---------- Free website (browser window building a sample site) ---------- */
+  try { (function site() {
+    var root = $("[data-site]");
+    if (!root || (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches)) return;
+    var samples = JSON.parse(root.getAttribute("data-samples") || "[]");
+    var timer = 0, running = false, inView = false, n = 0;
+    function set(key, v) { var el = $('[data-s="' + key + '"]', root); if (el) el.textContent = v; }
+    function play() {
+      var sm = samples[n++ % samples.length];
+      set("name", sm.name); set("title", sm.title);
+      sm.services.forEach(function (x, i) { set("svc" + i, x); });
+      root.classList.remove("play"); void root.offsetWidth; root.classList.add("play");
+      timer = setTimeout(play, 6000);
+    }
+    function start() { if (!running) { running = true; play(); } }
+    function stop() { running = false; clearTimeout(timer); }
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (en) { inView = en[0].isIntersecting; inView ? start() : stop(); }, { threshold: 0.35 }).observe(root);
+    }
+    document.addEventListener("visibilitychange", function () { if (document.hidden) stop(); else if (inView) start(); });
+  })(); } catch (err) { if (window.console) console.error(err); }
+
   /* ---------- ROI calculator ---------- */
   try { (function calc() {
     var root = $("[data-calc]");

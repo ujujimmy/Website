@@ -45,6 +45,10 @@ Meta ad ──► trade landing page ──► 4-step qualifier ──► Cal.co
   explains that you make and post reels and captions for Instagram, Facebook, TikTok and YouTube; the
   client only gives access and sends photos on WhatsApp. It's also in the price box, hero and FAQ.
   If socials become a paid add-on, edit `social` and `pricing.includes` in `src/i18n/*.mjs`.
+- **Free website included:** a section with a browser window that builds a sample trades site
+  (name, headline, services, reviews) explains you build their website for free. Also in the price box,
+  hero checklist, FAQ and as a bonus line in the ads. Confirm the terms (who owns the site and domain
+  if they cancel) before you sell it.
 - **Earnings calculator** before the price: the visitor's own job value against €800, so the price
   reads as "pays for itself with 1 job".
 
@@ -67,6 +71,13 @@ All of it is in `src/config.mjs`. The build lists every remaining `TODO(`.
 9. **Testimonials**: add real ones to `testimonials` and the section appears.
 10. Optional: `leadWebhook` (Make/Zapier/n8n → Google Sheet) to capture everyone who answers the
    questions, so you can follow up those who don't book.
+
+## Brand
+
+The logo mark lives in `src/assets/brand/` (cut from the supplied logo, transparent PNG), with the
+favicon set: `favicon.ico`, `favicon-32.png`, `apple-touch-icon.png` and `icon-192/512.png` (used by
+`site.webmanifest`). The wordmark (PINRANK / BELGIUM) is live text next to the mark. Brand colours:
+navy `#1C5482` (the site accent), teal `#7CC8BC`, grey `#5A5A5A`.
 
 ## Meta events
 

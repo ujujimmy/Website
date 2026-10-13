@@ -41,6 +41,10 @@ Meta ad ──► trade landing page ──► 4-step qualifier ──► Cal.co
 - **Trade picker** on the general page: one tap answers the first question and opens the qualifier.
 - **Animated Google Maps scene:** the search types itself, the business climbs from position 7 to #1,
   and a call comes in. On the general page it cycles through the four trades.
+- **Socials included:** a section with an animated example reel (subtitles appear word by word)
+  explains that you make and post reels and captions for Instagram, Facebook, TikTok and YouTube; the
+  client only gives access and sends photos on WhatsApp. It's also in the price box, hero and FAQ.
+  If socials become a paid add-on, edit `social` and `pricing.includes` in `src/i18n/*.mjs`.
 - **Earnings calculator** before the price: the visitor's own job value against €800, so the price
   reads as "pays for itself with 1 job".
 
@@ -78,7 +82,7 @@ UTM parameters and `fbclid` are kept for the visit and sent with every webhook e
 
 ## Meta ads pack
 
-`ads/README.md` has ready-to-paste ad copy (NL + FR, every trade, three angles each), campaign
+`ads/README.md` has ready-to-paste ad copy (NL + FR, every trade, four angles each), campaign
 setup, and tracking links. `ads/video/` holds the matching 14-second ad videos of the 3D demo:
 4:5 for Feed (general + one per trade) and 9:16 for Stories/Reels.
 

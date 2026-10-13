@@ -23,6 +23,9 @@ const icon = {
   search: `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
   arrow: `<svg class="arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
   phone: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z" fill="currentColor"/></svg>`,
+  heart: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.3-9.1C1.4 8 3.5 4.5 7 4.5c2 0 3.5 1.1 5 3 1.5-1.9 3-3 5-3 3.5 0 5.6 3.5 4.3 6.9-1.8 4.5-9.3 9.1-9.3 9.1z" fill="currentColor"/></svg>`,
+  comment: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z" fill="currentColor"/></svg>`,
+  share: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5L21 4l-6 17-3.5-7.2z" fill="currentColor"/></svg>`,
   pause: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5h3v14H8zM13 5h3v14h-3z" fill="currentColor"/></svg>`,
   play: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5l11 7-11 7z" fill="currentColor"/></svg>`,
 };
@@ -270,6 +273,41 @@ function mock(t, tr) {
   </figure>`;
 }
 
+/**
+ * Example reel for the socials section: a job-site scene with a slow zoom and
+ * subtitles appearing word by word, the way the reels themselves are captioned.
+ * app.js plays it; without JS it rests on the full caption.
+ */
+function reel(t, tr) {
+  const so = t.social;
+  const caps = tr ? [so.captions[Object.keys(t.trades).find((k) => t.trades[k] === tr)]] : TRADES.map((k) => so.captions[k]);
+  const words = (c) => c.split(" ").map((w) => `<span class="on">${esc(w)}</span>`).join(" ");
+  return `<figure class="reel" data-reel data-captions="${esc(JSON.stringify(caps))}">
+    <div class="reel-phone" aria-hidden="true">
+      <svg class="reel-scene" viewBox="0 0 270 480" preserveAspectRatio="xMidYMid slice">
+        <defs><linearGradient id="reel-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bcd6e0"/><stop offset="1" stop-color="#efe9dc"/></linearGradient></defs>
+        <rect width="270" height="480" fill="url(#reel-sky)"/>
+        <circle cx="214" cy="92" r="26" fill="#f6dfa4"/>
+        <rect y="372" width="270" height="108" fill="#a9b79a"/>
+        <rect x="58" y="236" width="156" height="140" fill="#ebe3d3"/>
+        <rect x="170" y="150" width="20" height="50" fill="#6e3428"/>
+        <polygon points="40,242 136,162 232,242" fill="#8a4434"/>
+        <polygon points="40,242 136,162 136,174 54,242" fill="#a35442"/>
+        <rect x="76" y="262" width="34" height="34" fill="#9ab4c1"/><rect x="162" y="262" width="34" height="34" fill="#9ab4c1"/>
+        <rect x="120" y="306" width="32" height="70" fill="#5a4535"/>
+        <g stroke="#59626a" stroke-width="4" stroke-linecap="round"><line x1="214" y1="378" x2="246" y2="196"/><line x1="232" y1="378" x2="262" y2="200"/></g>
+        <g stroke="#59626a" stroke-width="3"><line x1="218" y1="352" x2="236" y2="354"/><line x1="223" y1="322" x2="241" y2="325"/><line x1="228" y1="292" x2="246" y2="296"/><line x1="233" y1="262" x2="251" y2="267"/><line x1="238" y1="232" x2="256" y2="238"/></g>
+      </svg>
+      <div class="reel-shade"></div>
+      <div class="reel-bars"><i></i><i></i><i></i></div>
+      <div class="reel-user"><span class="reel-avatar">${icon.pin}</span><b>${so.handle}</b></div>
+      <div class="reel-side"><span>${icon.heart}</span><span>${icon.comment}</span><span>${icon.share}</span></div>
+      <p class="reel-sub" data-sub>${words(caps[0])}</p>
+    </div>
+    <figcaption>${so.platforms}<small>${so.label}</small></figcaption>
+  </figure>`;
+}
+
 /** ROI calculator: the visitor's own numbers against the monthly price. */
 const JOB_STEPS = [100, 150, 200, 250, 300, 350, 400, 500, 600, 750, 1000, 1250, 1500, 2000, 2500, 3000, 4000, 5000, 6000, 7500, 10000, 12500, 15000, 20000];
 function calc(t, tr) {
@@ -278,7 +316,7 @@ function calc(t, tr) {
   const want = (tr || t.trades.other).job;
   const idx = JOB_STEPS.reduce((best, v, i) => (Math.abs(v - want) < Math.abs(JOB_STEPS[best] - want) ? i : best), 0);
   const job = JOB_STEPS[idx], extra = 2, be = Math.ceil(p.amount / job);
-  return `<section class="sec">
+  return `<section class="sec tint">
   <div class="wrap calc" data-calc>
     <div class="reveal">
       <h2 class="h2">${c.title}</h2>
@@ -476,9 +514,20 @@ export function landing(t, all, css, js, trade = null) {
   </div>
 </section>
 
+<section class="sec">
+  <div class="wrap split">
+    <div class="reveal">
+      <h2 class="h2">${t.social.title}</h2>
+      <p class="body-lg">${t.social.body}</p>
+      <ol class="social-steps">${t.social.steps.map((x) => `<li><h3>${x.t}</h3><p>${x.d}</p></li>`).join("")}</ol>
+    </div>
+    <div class="reveal">${reel(t, tr)}</div>
+  </div>
+</section>
+
 ${testimonials}
 
-<section class="sec">
+<section class="sec tint">
   <div class="wrap guarantee reveal">
     ${seal(t)}
     <div>
@@ -489,7 +538,7 @@ ${testimonials}
   </div>
 </section>
 
-<section class="sec tint">
+<section class="sec">
   <div class="wrap">
     <h2 class="h2 reveal">${t.fit.title}</h2>
     <div class="fit">
@@ -503,7 +552,7 @@ ${p.show ? calc(t, tr) : ""}
 
 ${
   p.show
-    ? `<section class="sec tint">
+    ? `<section class="sec">
   <div class="wrap price-wrap">
     <div class="reveal">
       <h2 class="h2">${t.pricing.title}</h2>
@@ -520,7 +569,7 @@ ${
     : ""
 }
 
-<section class="sec">
+<section class="sec tint">
   <div class="wrap faq-wrap">
     <h2 class="h2 reveal">${t.faq.title}</h2>
     <div class="faq">

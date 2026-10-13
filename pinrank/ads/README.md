@@ -1,6 +1,7 @@
 # PinRank — Meta ads pack
 
-Copy in Dutch and French for the four trades (roofers, renovation, plumbers, electricians),
+Copy in Dutch and French for the four trades (roofers, renovation, plumbers, electricians), four angles each
+(top 3, money-back, lead platforms, socials),
 the ad videos, and links with tracking already on them.
 
 > **Before launch:** every link and the videos say `pinrank.be`. Once the real domain is set
@@ -100,6 +101,22 @@ PinRank werkt aan je profiel om daar te komen. Met geld-terug-garantie na 3 maan
 **Description:** Geen commissie per aanvraag  
 **Link:** `https://pinrank.be/nl/?utm_source=meta&utm_medium=paid&utm_campaign=pinrank_nl&utm_content=all_leads`
 
+### social
+
+**Primary text**
+
+```
+Geen tijd voor Instagram, TikTok of YouTube?
+
+Wij maken van je werffoto’s en filmpjes reels met ondertitels, schrijven de captions en posten ze voor je. En we werken aan je plek bovenaan in Google Maps.
+
+Jij geeft toegang, wij doen de rest. Speciaal voor vakmensen in België.
+```
+
+**Headline:** Je socials én Google Maps, geregeld  
+**Description:** Jij geeft toegang, wij doen de rest  
+**Link:** `https://pinrank.be/nl/?utm_source=meta&utm_medium=paid&utm_campaign=pinrank_nl&utm_content=all_social`
+
 ## Dakwerkers
 
 Landing page: `https://pinrank.be/nl/dakwerker/` · Video (feed): `ads/video/nl-dakwerker-4x5.mp4`
@@ -153,6 +170,22 @@ PinRank werkt aan je profiel om daar te komen. Met geld-terug-garantie na 3 maan
 **Headline:** Klanten die rechtstreeks jóu bellen  
 **Description:** Geen commissie per aanvraag  
 **Link:** `https://pinrank.be/nl/dakwerker/?utm_source=meta&utm_medium=paid&utm_campaign=pinrank_nl&utm_content=dakwerker_leads`
+
+### social
+
+**Primary text**
+
+```
+Geen tijd voor Instagram, TikTok of YouTube?
+
+Wij maken van je werffoto’s en filmpjes reels met ondertitels, schrijven de captions en posten ze voor je. En we werken aan je plek bovenaan in Google Maps.
+
+Jij geeft toegang, wij doen de rest. Speciaal voor dakwerkers in België.
+```
+
+**Headline:** Je socials én Google Maps, geregeld  
+**Description:** Jij geeft toegang, wij doen de rest  
+**Link:** `https://pinrank.be/nl/dakwerker/?utm_source=meta&utm_medium=paid&utm_campaign=pinrank_nl&utm_content=dakwerker_social`
 
 ## Renovatiebedrijven
 
@@ -208,6 +241,22 @@ PinRank werkt aan je profiel om daar te komen. Met geld-terug-garantie na 3 maan
 **Description:** Geen commissie per aanvraag  
 **Link:** `https://pinrank.be/nl/renovatie/?utm_source=meta&utm_medium=paid&utm_campaign=pinrank_nl&utm_content=renovatie_leads`
 
+### social
+
+**Primary text**
+
+```
+Geen tijd voor Instagram, TikTok of YouTube?
+
+Wij maken van je werffoto’s en filmpjes reels met ondertitels, schrijven de captions en posten ze voor je. En we werken aan je plek bovenaan in Google Maps.
+
+Jij geeft toegang, wij doen de rest. Speciaal voor renovatiebedrijven in België.
+```
+
+**Headline:** Je socials én Google Maps, geregeld  
+**Description:** Jij geeft toegang, wij doen de rest  
+**Link:** `https://pinrank.be/nl/renovatie/?utm_source=meta&utm_medium=paid&utm_campaign=pinrank_nl&utm_content=renovatie_social`
+
 ## Loodgieters
 
 Landing page: `https://pinrank.be/nl/loodgieter/` · Video (feed): `ads/video/nl-loodgieter-4x5.mp4`
@@ -262,6 +311,22 @@ PinRank werkt aan je profiel om daar te komen. Met geld-terug-garantie na 3 maan
 **Description:** Geen commissie per aanvraag  
 **Link:** `https://pinrank.be/nl/loodgieter/?utm_source=meta&utm_medium=paid&utm_campaign=pinrank_nl&utm_content=loodgieter_leads`
 
+### social
+
+**Primary text**
+
+```
+Geen tijd voor Instagram, TikTok of YouTube?
+
+Wij maken van je werffoto’s en filmpjes reels met ondertitels, schrijven de captions en posten ze voor je. En we werken aan je plek bovenaan in Google Maps.
+
+Jij geeft toegang, wij doen de rest. Speciaal voor loodgieters in België.
+```
+
+**Headline:** Je socials én Google Maps, geregeld  
+**Description:** Jij geeft toegang, wij doen de rest  
+**Link:** `https://pinrank.be/nl/loodgieter/?utm_source=meta&utm_medium=paid&utm_campaign=pinrank_nl&utm_content=loodgieter_social`
+
 ## Elektriciens
 
 Landing page: `https://pinrank.be/nl/elektricien/` · Video (feed): `ads/video/nl-elektricien-4x5.mp4`
@@ -315,6 +380,22 @@ PinRank werkt aan je profiel om daar te komen. Met geld-terug-garantie na 3 maan
 **Headline:** Klanten die rechtstreeks jóu bellen  
 **Description:** Geen commissie per aanvraag  
 **Link:** `https://pinrank.be/nl/elektricien/?utm_source=meta&utm_medium=paid&utm_campaign=pinrank_nl&utm_content=elektricien_leads`
+
+### social
+
+**Primary text**
+
+```
+Geen tijd voor Instagram, TikTok of YouTube?
+
+Wij maken van je werffoto’s en filmpjes reels met ondertitels, schrijven de captions en posten ze voor je. En we werken aan je plek bovenaan in Google Maps.
+
+Jij geeft toegang, wij doen de rest. Speciaal voor elektriciens in België.
+```
+
+**Headline:** Je socials én Google Maps, geregeld  
+**Description:** Jij geeft toegang, wij doen de rest  
+**Link:** `https://pinrank.be/nl/elektricien/?utm_source=meta&utm_medium=paid&utm_campaign=pinrank_nl&utm_content=elektricien_social`
 
 ---
 
@@ -376,6 +457,22 @@ PinRank travaille votre fiche pour y arriver. Avec garantie satisfait ou rembour
 **Description:** Pas de commission par demande  
 **Link:** `https://pinrank.be/fr/?utm_source=meta&utm_medium=paid&utm_campaign=pinrank_fr&utm_content=all_leads`
 
+### social
+
+**Primary text**
+
+```
+Pas le temps pour Instagram, TikTok ou YouTube ?
+
+Nous transformons vos photos et vidéos de chantier en reels sous-titrés, écrivons les légendes et les publions pour vous. Et nous travaillons votre place en tête de Google Maps.
+
+Vous donnez l’accès, nous faisons le reste. Spécialement pour les artisans en Belgique.
+```
+
+**Headline:** Vos réseaux et Google Maps, réglés  
+**Description:** Vous donnez l’accès, on fait le reste  
+**Link:** `https://pinrank.be/fr/?utm_source=meta&utm_medium=paid&utm_campaign=pinrank_fr&utm_content=all_social`
+
 ## Couvreurs
 
 Landing page: `https://pinrank.be/fr/couvreur/` · Video (feed): `ads/video/fr-couvreur-4x5.mp4`
@@ -429,6 +526,22 @@ PinRank travaille votre fiche pour y arriver. Avec garantie satisfait ou rembour
 **Headline:** Les clients vous appellent en direct  
 **Description:** Pas de commission par demande  
 **Link:** `https://pinrank.be/fr/couvreur/?utm_source=meta&utm_medium=paid&utm_campaign=pinrank_fr&utm_content=couvreur_leads`
+
+### social
+
+**Primary text**
+
+```
+Pas le temps pour Instagram, TikTok ou YouTube ?
+
+Nous transformons vos photos et vidéos de chantier en reels sous-titrés, écrivons les légendes et les publions pour vous. Et nous travaillons votre place en tête de Google Maps.
+
+Vous donnez l’accès, nous faisons le reste. Spécialement pour les couvreurs en Belgique.
+```
+
+**Headline:** Vos réseaux et Google Maps, réglés  
+**Description:** Vous donnez l’accès, on fait le reste  
+**Link:** `https://pinrank.be/fr/couvreur/?utm_source=meta&utm_medium=paid&utm_campaign=pinrank_fr&utm_content=couvreur_social`
 
 ## Entreprises de rénovation
 
@@ -484,6 +597,22 @@ PinRank travaille votre fiche pour y arriver. Avec garantie satisfait ou rembour
 **Description:** Pas de commission par demande  
 **Link:** `https://pinrank.be/fr/renovation/?utm_source=meta&utm_medium=paid&utm_campaign=pinrank_fr&utm_content=renovation_leads`
 
+### social
+
+**Primary text**
+
+```
+Pas le temps pour Instagram, TikTok ou YouTube ?
+
+Nous transformons vos photos et vidéos de chantier en reels sous-titrés, écrivons les légendes et les publions pour vous. Et nous travaillons votre place en tête de Google Maps.
+
+Vous donnez l’accès, nous faisons le reste. Spécialement pour les entreprises de rénovation en Belgique.
+```
+
+**Headline:** Vos réseaux et Google Maps, réglés  
+**Description:** Vous donnez l’accès, on fait le reste  
+**Link:** `https://pinrank.be/fr/renovation/?utm_source=meta&utm_medium=paid&utm_campaign=pinrank_fr&utm_content=renovation_social`
+
 ## Plombiers
 
 Landing page: `https://pinrank.be/fr/plombier/` · Video (feed): `ads/video/fr-plombier-4x5.mp4`
@@ -538,6 +667,22 @@ PinRank travaille votre fiche pour y arriver. Avec garantie satisfait ou rembour
 **Description:** Pas de commission par demande  
 **Link:** `https://pinrank.be/fr/plombier/?utm_source=meta&utm_medium=paid&utm_campaign=pinrank_fr&utm_content=plombier_leads`
 
+### social
+
+**Primary text**
+
+```
+Pas le temps pour Instagram, TikTok ou YouTube ?
+
+Nous transformons vos photos et vidéos de chantier en reels sous-titrés, écrivons les légendes et les publions pour vous. Et nous travaillons votre place en tête de Google Maps.
+
+Vous donnez l’accès, nous faisons le reste. Spécialement pour les plombiers en Belgique.
+```
+
+**Headline:** Vos réseaux et Google Maps, réglés  
+**Description:** Vous donnez l’accès, on fait le reste  
+**Link:** `https://pinrank.be/fr/plombier/?utm_source=meta&utm_medium=paid&utm_campaign=pinrank_fr&utm_content=plombier_social`
+
 ## Électriciens
 
 Landing page: `https://pinrank.be/fr/electricien/` · Video (feed): `ads/video/fr-electricien-4x5.mp4`
@@ -591,3 +736,19 @@ PinRank travaille votre fiche pour y arriver. Avec garantie satisfait ou rembour
 **Headline:** Les clients vous appellent en direct  
 **Description:** Pas de commission par demande  
 **Link:** `https://pinrank.be/fr/electricien/?utm_source=meta&utm_medium=paid&utm_campaign=pinrank_fr&utm_content=electricien_leads`
+
+### social
+
+**Primary text**
+
+```
+Pas le temps pour Instagram, TikTok ou YouTube ?
+
+Nous transformons vos photos et vidéos de chantier en reels sous-titrés, écrivons les légendes et les publions pour vous. Et nous travaillons votre place en tête de Google Maps.
+
+Vous donnez l’accès, nous faisons le reste. Spécialement pour les électriciens en Belgique.
+```
+
+**Headline:** Vos réseaux et Google Maps, réglés  
+**Description:** Vous donnez l’accès, on fait le reste  
+**Link:** `https://pinrank.be/fr/electricien/?utm_source=meta&utm_medium=paid&utm_campaign=pinrank_fr&utm_content=electricien_social`

@@ -43,7 +43,7 @@ export default {
     ctaNote: "4 quick questions · 30 seconds · No obligation",
     wa: "Rather send a WhatsApp right away",
     pick: "Your trade?",
-    trust: ["Money-back guarantee after 3 months", "Your profile worked on every week", "Monthly ranking report"],
+    trust: ["Money-back guarantee after 3 months", "Reels and posts for your socials", "Your profile worked on every week", "Monthly ranking report"],
   },
 
   demo: {
@@ -120,6 +120,26 @@ export default {
     ],
   },
 
+  social: {
+    title: "And your socials? We handle those too.",
+    body: "Customers check your Instagram, TikTok or YouTube before they call. We turn your photos and videos into short reels with subtitles, write the captions and post them for you. All you do is give us access.",
+    steps: [
+      { t: "You give us access", d: "To your Instagram, Facebook, TikTok and YouTube. Once; we explain how." },
+      { t: "You send photos and clips", d: "Just on WhatsApp, straight from the job." },
+      { t: "We make and post everything", d: "Subtitled reels, captions and hashtags, on a steady schedule." },
+    ],
+    platforms: "Instagram · Facebook · TikTok · YouTube Shorts",
+    label: "Example reel",
+    handle: "@yourbusiness",
+    captions: {
+      roofer: "New roof in Ghent, done in 3 days",
+      renovation: "Bathroom fully renovated in Leuven",
+      plumber: "Leak found and fixed within the hour",
+      electrician: "New fuse box, safe and certified",
+      other: "Another happy customer nearby",
+    },
+  },
+
   proof: { title: "What clients say" },
 
   guarantee: {
@@ -165,6 +185,7 @@ export default {
       "Weekly posts and photos",
       "A reply to every review",
       "Monthly ranking report on the map",
+      "Reels and posts for Instagram, Facebook, TikTok and YouTube, with subtitles",
       "Money-back guarantee after 3 months",
     ],
     cta: "Book a free call",
@@ -175,6 +196,7 @@ export default {
     title: "Frequently asked questions",
     items: [
       { q: "What is the free ranking scan?", a: "A map of your area showing where you rank on Google Maps for your main keyword at 25 points around your business, and who ranks above you. We go through it together on the free call." },
+      { q: "What do I need to do for social media?", a: "You give us access to your Instagram, Facebook, TikTok and YouTube once, and send photos or clips of your work on WhatsApp now and then. We edit them into subtitled reels, write the captions and post everything for you." },
       { q: "How quickly will I see results?", a: "It depends on your area and how much competition there is. Local ranking builds over weeks, not days — that’s why we measure after 3 months and back it with a money-back guarantee." },
       { q: "How exactly does the money-back guarantee work?", a: "At the start we measure your ranking on the map for your main keywords. After 3 months we measure again, the same way. If your average position hasn’t improved, we refund what you paid." },
       { q: "Do I have to do much myself?", a: "Very little. You give us access to your Google Business Profile (we explain how) and forward photos of your work now and then. We do the rest." },

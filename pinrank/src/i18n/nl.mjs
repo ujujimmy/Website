@@ -43,7 +43,7 @@ export default {
     ctaNote: "4 korte vragen · 30 seconden · Vrijblijvend",
     wa: "Liever meteen een WhatsApp sturen",
     pick: "Wat is jouw vak?",
-    trust: ["Geld-terug-garantie na 3 maanden", "Elke week aan je profiel gewerkt", "Maandelijks rankingrapport"],
+    trust: ["Geld-terug-garantie na 3 maanden", "Reels en posts voor je socials", "Elke week aan je profiel gewerkt", "Maandelijks rankingrapport"],
   },
 
   demo: {
@@ -120,6 +120,26 @@ export default {
     ],
   },
 
+  social: {
+    title: "En je socials? Die doen we er gewoon bij.",
+    body: "Klanten checken je Instagram, TikTok of YouTube voor ze bellen. Wij maken van je foto’s en filmpjes korte reels met ondertitels, schrijven de captions en posten ze voor je. Jij hoeft alleen toegang te geven.",
+    steps: [
+      { t: "Jij geeft toegang", d: "Tot je Instagram, Facebook, TikTok en YouTube. Eén keer; we leggen uit hoe." },
+      { t: "Je stuurt foto’s en filmpjes", d: "Gewoon via WhatsApp, rechtstreeks van de werf." },
+      { t: "Wij maken en posten alles", d: "Reels met ondertitels, captions en hashtags, op een vast ritme." },
+    ],
+    platforms: "Instagram · Facebook · TikTok · YouTube Shorts",
+    label: "Voorbeeld van een reel",
+    handle: "@jouwbedrijf",
+    captions: {
+      roofer: "Nieuw dak in Gent, klaar in 3 dagen",
+      renovation: "Badkamer volledig vernieuwd in Leuven",
+      plumber: "Lek gevonden en hersteld binnen het uur",
+      electrician: "Nieuwe zekeringkast, veilig en gekeurd",
+      other: "Weer een tevreden klant in de buurt",
+    },
+  },
+
   proof: { title: "Wat klanten zeggen" },
 
   guarantee: {
@@ -165,6 +185,7 @@ export default {
       "Wekelijkse berichten en foto’s",
       "Antwoord op elke review",
       "Maandelijks rankingrapport op de kaart",
+      "Reels en posts voor Instagram, Facebook, TikTok en YouTube, met ondertitels",
       "Geld-terug-garantie na 3 maanden",
     ],
     cta: "Plan een gratis gesprek",
@@ -175,6 +196,7 @@ export default {
     title: "Veelgestelde vragen",
     items: [
       { q: "Wat is de gratis rankingscan?", a: "Een kaart van je regio waarop je ziet op welke plaats je in Google Maps staat voor je belangrijkste zoekwoord, op 25 punten rond je zaak, en wie er boven je staat. We overlopen hem samen in het gratis gesprek." },
+      { q: "Wat moet ik doen voor de social media?", a: "Je geeft ons één keer toegang tot je Instagram, Facebook, TikTok en YouTube en stuurt af en toe foto’s of filmpjes van je werk via WhatsApp. Wij monteren er reels van met ondertitels, schrijven de captions en posten alles voor je." },
       { q: "Hoe snel zie ik resultaat?", a: "Dat hangt af van je regio en hoeveel concurrentie er is. Lokale ranking bouw je op over weken, niet dagen — daarom meten we na 3 maanden en geven we je dan een geld-terug-garantie." },
       { q: "Hoe werkt de geld-terug-garantie precies?", a: "Bij de start meten we je ranking op de kaart voor je belangrijkste zoekwoorden. Na 3 maanden meten we opnieuw, op dezelfde manier. Is je gemiddelde positie niet verbeterd, dan storten we terug wat je betaald hebt." },
       { q: "Moet ik zelf veel doen?", a: "Heel weinig. Je geeft ons toegang tot je Google-bedrijfsprofiel (we leggen uit hoe) en stuurt af en toe foto’s van je werk door. De rest doen wij." },

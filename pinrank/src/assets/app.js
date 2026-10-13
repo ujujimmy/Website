@@ -140,7 +140,7 @@
     var typed = $("[data-typed]", root);
     var rows = {};
     $$("[data-row]", root).forEach(function (r) { rows[r.getAttribute("data-row")] = r; });
-    var timers = [], running = false, qi = 0;
+    var timers = [], running = false, qi = 0, inView = false;
     function later(ms, fn) { timers.push(setTimeout(fn, ms)); }
     function place(order) { // order: row keys from position 1 down; the 4th slot is "further down"
       order.forEach(function (k, i) {
@@ -169,9 +169,51 @@
     function start() { if (running) return; running = true; cycle(); }
     function stop() { running = false; timers.forEach(clearTimeout); timers = []; }
     if ("IntersectionObserver" in window) {
-      new IntersectionObserver(function (en) { en[0].isIntersecting ? start() : stop(); }, { threshold: 0.35 }).observe(root);
+      new IntersectionObserver(function (en) { inView = en[0].isIntersecting; inView ? start() : stop(); }, { threshold: 0.35 }).observe(root);
     }
-    document.addEventListener("visibilitychange", function () { if (document.hidden) stop(); });
+    document.addEventListener("visibilitychange", function () { if (document.hidden) stop(); else if (inView) start(); });
+  })(); } catch (err) { if (window.console) console.error(err); }
+
+  /* ---------- Example reel (socials section) ----------
+   * Subtitles appear word by word with the current word highlighted, the way
+   * the reels are captioned; the bars at the top track each caption. Only
+   * runs on screen; reduced motion keeps the full caption.
+   */
+  try { (function reel() {
+    var root = $("[data-reel]");
+    if (!root || (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches)) return;
+    var caps = JSON.parse(root.getAttribute("data-captions") || "[]");
+    var sub = $("[data-sub]", root), bars = $$(".reel-bars i", root);
+    var timers = [], running = false, n = 0, WORD = 340, HOLD = 1500, inView = false;
+    function later(ms, fn) { timers.push(setTimeout(fn, ms)); }
+    function play() {
+      var text = caps[n % caps.length], words = text.split(" "), seg = n % bars.length;
+      var dur = words.length * WORD + HOLD;
+      sub.innerHTML = words.map(function (w) { return "<span>" + w.replace(/</g, "&lt;") + "</span>"; }).join(" ");
+      var spans = $$("span", sub);
+      bars.forEach(function (b, i) {
+        b.classList.remove("run", "next");
+        b.style.setProperty("--fill", i < seg ? 1 : 0);
+        if (i > seg) b.classList.add("next");
+      });
+      void bars[seg].offsetWidth;
+      bars[seg].style.setProperty("--dur", dur + "ms");
+      bars[seg].classList.add("run");
+      spans.forEach(function (sp, i) {
+        later(200 + i * WORD, function () {
+          if (spans[i - 1]) spans[i - 1].classList.remove("hot");
+          sp.classList.add("on", "hot");
+        });
+      });
+      later(200 + words.length * WORD + 300, function () { spans.forEach(function (sp) { sp.classList.remove("hot"); }); });
+      later(dur + 200, function () { n++; play(); });
+    }
+    function start() { if (!running) { running = true; play(); } }
+    function stop() { running = false; timers.forEach(clearTimeout); timers = []; }
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (en) { inView = en[0].isIntersecting; inView ? start() : stop(); }, { threshold: 0.35 }).observe(root);
+    }
+    document.addEventListener("visibilitychange", function () { if (document.hidden) stop(); else if (inView) start(); });
   })(); } catch (err) { if (window.console) console.error(err); }
 
   /* ---------- ROI calculator ---------- */
